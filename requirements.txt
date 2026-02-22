@@ -6,3 +6,4 @@ tensorflow
 scikit-learn
 Pillow
 opencv-python-headless
+plotly
