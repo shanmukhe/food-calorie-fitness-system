@@ -177,24 +177,11 @@ def calculate_target_calories(age, gender, height, weight, activity, goal):
 
 def metric_card(label, value, icon=""):
     st.markdown(f"""
-        <div style="
-            background: var(--secondary-background-color);
-            padding:20px;
-            border-radius:16px;
-            border: 1px solid var(--secondary-background-color);
-            text-align:center;
-        ">
-            <div style="
-                font-size:14px;
-                opacity:0.7;
-            ">
+        <div class="metric-card">
+            <div class="metric-label">
                 {icon} {label}
             </div>
-            <div style="
-                font-size:28px;
-                font-weight:700;
-                margin-top:6px;
-            ">
+            <div class="metric-value">
                 {value}
             </div>
         </div>
@@ -267,10 +254,28 @@ if "chat_history" not in st.session_state:
 
 st.markdown("""
 <style>
+            
+@media (prefers-color-scheme: light) {
+    .stApp {
+        background: linear-gradient(
+            180deg,
+            #f8fafc 0%,
+            #eef2ff 100%
+        );
+    }
+}
+            
 .hero-card {
     padding: 30px;
     border-radius: 20px;
     margin-bottom: 20px;
+}
+            
+.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
 }
 
 /* DARK MODE */
@@ -439,19 +444,37 @@ div[role="radiogroup"] > label:has(input:checked)::before {
    ========================================================== */
 
 .card {
-    background: var(--secondary-background-color);
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    padding: 22px;
+    border-radius: 18px;
     margin-bottom: 20px;
+    transition: all 0.3s ease;
 }
 
 .feature-card {
-    background: var(--secondary-background-color);
-    padding: 20px;
-    border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    padding: 22px;
+    border-radius: 20px;
     height: 100%;
+    transition: all 0.3s ease;
+}
+
+/* LIGHT MODE */
+@media (prefers-color-scheme: light) {
+    .card, .feature-card {
+        background: #ffffff;
+        box-shadow: 
+            0 10px 30px rgba(0,0,0,0.08),
+            0 1px 2px rgba(0,0,0,0.04);
+        border: 1px solid rgba(0,0,0,0.04);
+    }
+}
+
+/* DARK MODE */
+@media (prefers-color-scheme: dark) {
+    .card, .feature-card {
+        background: var(--secondary-background-color);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.06);
+    }
 }
 
 .feature-card h4 {
@@ -468,6 +491,77 @@ div[role="radiogroup"] > label:has(input:checked)::before {
     margin: 26px 0;
     height: 1px;
     background: linear-gradient(to right, transparent, #cbd5e1, transparent);
+}
+            
+.feature-card:hover {
+    transform: translateY(-6px);
+}
+
+@media (prefers-color-scheme: light) {
+    .feature-card:hover {
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .feature-card:hover {
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+}
+            
+.metric-card {
+    padding: 22px;
+    border-radius: 18px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* LABEL */
+.metric-label {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* VALUE */
+.metric-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+/* =========================
+   LIGHT MODE
+========================= */
+@media (prefers-color-scheme: light) {
+    .metric-card {
+        background: #ffffff;
+        box-shadow:
+            0 8px 24px rgba(0,0,0,0.08),
+            0 2px 4px rgba(0,0,0,0.04);
+        border: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            0 16px 32px rgba(0,0,0,0.12);
+    }
+}
+
+/* =========================
+   DARK MODE
+========================= */
+@media (prefers-color-scheme: dark) {
+    .metric-card {
+        background: var(--secondary-background-color);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 32px rgba(0,0,0,0.7);
+    }
 }
 
 </style>
@@ -828,7 +922,7 @@ if st.session_state.page == "🏠 Home":
     
 
     # ---------------- FEATURES SECTION ----------------
-    st.subheader("✨ What You Can Do Here")
+    st.markdown('<div class="section-title">✨ What You Can Do Here</div>', unsafe_allow_html=True)
 
     f1, f2, f3 = st.columns(3)
 
