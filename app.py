@@ -276,7 +276,7 @@ div[data-testid="stVerticalBlock"] > div:empty {
    MAIN APP BACKGROUND (SOFT PREMIUM)
 ========================================================== */
 
-//* LIGHT THEME MAIN BACKGROUND */
+/* LIGHT THEME MAIN BACKGROUND */
 html[data-theme="light"] .stApp {
     background:
         radial-gradient(circle at 10% 10%, rgba(99,102,241,0.25), transparent 40%),
@@ -445,9 +445,17 @@ html[data-theme="dark"] .metric-card {
     font-size: 26px;
     font-weight: 700;
     margin-top: 6px;
+}
+
+/* Light specific */
+html[data-theme="light"] .metric-value {
     color: #1e293b;
 }
 
+/* Dark specific */
+html[data-theme="dark"] .metric-value {
+    color: #f1f5f9;
+}
 /* ==========================================================
    LOGIN / SIGNUP FULL GRADIENT BACKGROUND
 ========================================================== */
