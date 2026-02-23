@@ -255,7 +255,7 @@ if "chat_history" not in st.session_state:
 st.markdown("""
 <style>
             
-@media (prefers-color-scheme: light) {
+html[data-theme="light"] {
     .stApp {
         background: linear-gradient(
             180deg,
@@ -662,39 +662,75 @@ body:has(.login-active) .stButton button:hover {
     box-shadow: 0 12px 25px rgba(0,0,0,0.3);
 }
 
-/* =========================================================
-   STREAMLIT NATIVE THEME SUPPORT
-   ========================================================= */
+/* ================= LIGHT THEME – PREMIUM ================= */
 
-/* ================= LIGHT THEME ================= */
 html[data-theme="light"] .stApp {
-    background: #f6f8fc;
+    background: linear-gradient(
+        180deg,
+        #f8fafc 0%,
+        #eef2ff 40%,
+        #ffffff 100%
+    );
 }
 
+/* Hero Card */
+html[data-theme="light"] .hero-card {
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    color: white;
+    box-shadow: 0 20px 40px rgba(99,102,241,0.25);
+}
+
+/* Sidebar Welcome */
+html[data-theme="light"] .sidebar-welcome {
+    background: linear-gradient(135deg, #6366f1, #0ea5e9);
+    color: white;
+    box-shadow: 0 12px 28px rgba(99,102,241,0.25);
+}
+
+/* Cards */
 html[data-theme="light"] .card,
 html[data-theme="light"] .feature-card,
 html[data-theme="light"] .metric-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.06),
+        0 2px 6px rgba(0,0,0,0.04);
 }
 
-html[data-theme="light"] .hero-card {
-    background: linear-gradient(135deg, #6366f1, #3b82f6);
-    box-shadow: 0 18px 40px rgba(99,102,241,0.25);
+/* Card Hover */
+html[data-theme="light"] .feature-card:hover,
+html[data-theme="light"] .metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 18px 36px rgba(0,0,0,0.10);
 }
 
+/* Sidebar Menu Items */
 html[data-theme="light"] div[role="radiogroup"] > label {
-    background: rgba(0,0,0,0.04);
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.12);
 }
 
 html[data-theme="light"] div[role="radiogroup"] > label:hover {
-    background: rgba(99,102,241,0.12);
-    transform: none;
+    background: linear-gradient(90deg, #6366f1, #3b82f6);
+    color: white;
+    transform: translateX(4px);
+    box-shadow: 0 8px 18px rgba(99,102,241,0.25);
 }
 
 html[data-theme="light"] div[role="radiogroup"] > label:has(input:checked) {
-    background: rgba(99,102,241,0.18);
+    background: linear-gradient(90deg, #6366f1, #3b82f6);
+    color: white;
+    box-shadow: 0 10px 24px rgba(99,102,241,0.35);
+}
+
+/* Logout Button */
+html[data-theme="light"] [data-testid="stSidebar"] button {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    color: white;
+    box-shadow: 0 10px 24px rgba(239,68,68,0.25);
 }
 
 
