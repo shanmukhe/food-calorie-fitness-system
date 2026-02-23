@@ -181,7 +181,7 @@ def metric_card(label, value, icon=""):
             background: var(--secondary-background-color);
             padding:20px;
             border-radius:16px;
-            border: 1px solid rgba(0,0,0,0.08);
+            border: 1px solid var(--secondary-background-color);
             text-align:center;
         ">
             <div style="
@@ -267,7 +267,29 @@ if "chat_history" not in st.session_state:
 
 st.markdown("""
 <style>
+.hero-card {
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
 
+/* DARK MODE */
+@media (prefers-color-scheme: dark) {
+    .hero-card {
+        background: linear-gradient(135deg, #7c3aed, #38b9c7);
+        color: white;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
+}
+
+/* LIGHT MODE */
+@media (prefers-color-scheme: light) {
+    .hero-card {
+        background: linear-gradient(135deg, #6366f1, #0ea5e9);
+        color: white;
+        box-shadow: 0 15px 40px rgba(99,102,241,0.25);
+    }
+}
 /* ==========================================================
    1️⃣ GLOBAL RESET & STREAMLIT FIXES
    ========================================================== */
@@ -307,22 +329,28 @@ section[data-testid="stTabs"]::after {
 
 /* Sidebar welcome card */
 .sidebar-welcome {
-    background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
     padding: 16px;
     border-radius: 18px;
     margin: 0 12px 22px 12px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-    color: white;
 }
 
-/* Sidebar small section titles */
-[data-testid="stSidebar"] small {
-    display: block;
-    margin: 8px 12px 10px;
-    font-size: 11px;
-    letter-spacing: 1px;
-    color: #cbd5e1 !important;
+/* Dark */
+@media (prefers-color-scheme: dark) {
+    .sidebar-welcome {
+        background: linear-gradient(135deg, #7c3aed, #38b9c7);
+        color: white;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
+}
+
+/* Light */
+@media (prefers-color-scheme: light) {
+    .sidebar-welcome {
+        background: linear-gradient(135deg, #6366f1, #0ea5e9);
+        color: white;
+        box-shadow: 0 10px 25px rgba(99,102,241,0.25);
+    }
 }
 
 
@@ -557,7 +585,7 @@ if not st.session_state.get("logged_in", False):
 
     # Project Title
     st.markdown(
-            "<h2 style='color:white; text-align:left;'>FOOD CALORIE ESTIMATOR FITNESS RECOMENDATION SYSTEM</h2>",
+            "<h2 style='text-align:left;'>FOOD CALORIE ESTIMATOR FITNESS RECOMENDATION SYSTEM</h2>",
             unsafe_allow_html=True
     )
 
@@ -575,7 +603,7 @@ if not st.session_state.get("logged_in", False):
     if auth_mode == "Login":
 
         st.markdown(
-            "<h3 style='color:white; text-align:center;'>Welcome Back 👋</h3>",
+            "<h3 style='text-align:center;'>Welcome Back 👋</h3>",
             unsafe_allow_html=True
         )
 
@@ -602,7 +630,7 @@ if not st.session_state.get("logged_in", False):
     # ================= SIGNUP =================
     else:
         st.markdown(
-            "<h3 style='color:white; text-align:center;'>Create Account ✨</h3>",
+            "<h3 style='text-align:center;'>Create Account ✨</h3>",
             unsafe_allow_html=True
         )
 
@@ -717,12 +745,9 @@ if st.sidebar.button("🚪 Logout"):
 # =========================================================
 if st.session_state.page == "🏠 Home":
     st.markdown("""
-    <div class="card" style="
-        background: linear-gradient(135deg, #7c3aed, #38b9c7);
-        color: white;
-    ">
-        <h1 style="margin-bottom: 10px;">Eat Smart. Live Strong.</h1>
-        <p style="font-size:18px; line-height:1.6;">
+    <div class="hero-card">
+        <h1>Eat Smart. Live Strong.</h1>
+        <p>
             AI-powered calorie tracking & personalized fitness guidance,
             designed around <b>you</b>.
         </p>
@@ -733,7 +758,7 @@ if st.session_state.page == "🏠 Home":
     #st.title("🍎 DESIGNING FOOD CALORIE ESTIMATION AND FITNESS RECOMMENDATION SYSTEM BASED ON USER INFORMATION")
     #st.caption("Your AI-powered companion for smart eating & healthy living")
     st.markdown(
-    "<p style='color:#475569;margin-top:10px;'>Your AI-powered companion for smart eating & healthy living</p>",
+    "<p style='opacity:0.7;margin-top:10px;'>Your AI-powered companion for smart eating & healthy living</p>",
     unsafe_allow_html=True
     )
 
