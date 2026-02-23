@@ -178,16 +178,23 @@ def calculate_target_calories(age, gender, height, weight, activity, goal):
 def metric_card(label, value, icon=""):
     st.markdown(f"""
         <div style="
-            background:white;
+            background: var(--secondary-background-color);
             padding:20px;
             border-radius:16px;
-            box-shadow:0 10px 28px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.08);
             text-align:center;
         ">
-            <div style="font-size:14px;color:#64748b;">
+            <div style="
+                font-size:14px;
+                opacity:0.7;
+            ">
                 {icon} {label}
             </div>
-            <div style="font-size:28px;font-weight:700;margin-top:6px;">
+            <div style="
+                font-size:28px;
+                font-weight:700;
+                margin-top:6px;
+            ">
                 {value}
             </div>
         </div>
@@ -294,7 +301,7 @@ section[data-testid="stTabs"]::after {
 
 /* Sidebar background */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0b0f3b, #1e3a8a);
+    background: var(--secondary-background-color);
     padding: 22px 14px;
 }
 
@@ -318,10 +325,7 @@ section[data-testid="stTabs"]::after {
     color: #cbd5e1 !important;
 }
 
-/* Sidebar text override */
-[data-testid="stSidebar"] * {
-    color: #ffffff !important;
-}
+
 
 
 /* ==========================================================
@@ -395,13 +399,7 @@ div[role="radiogroup"] > label:has(input:checked)::before {
    5️⃣ GLOBAL INPUT STYLING
    ========================================================== */
 
-.stTextInput input,
-.stNumberInput input,
-.stSelectbox div {
-    background-color: #f8fafc !important;
-    color: #000000 !important;
-    border-radius: 14px !important;
-}
+
 
 .stSelectbox span {
     color: #000000 !important;
@@ -454,8 +452,7 @@ st.markdown("""
    GLOBAL LOGIN MODE ACTIVATION
 ================================ */
 body:has(.login-active) .stApp {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #7c3aed 100%);
-    background-attachment: fixed;
+    background: var(--background-color);
 }
 
 /* Hide sidebar completely */
@@ -1270,15 +1267,13 @@ elif st.session_state.page == "❤️ Health Insights":
     ))
 
     fig.update_layout(
-        barmode="group",
-        title="Weekly Energy Balance Overview",
-        title_x=0.5,
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        xaxis_title="Date",
-        yaxis_title="Calories (kcal)",
-        font=dict(size=14)
-    )
+    barmode="group",
+    title="Weekly Energy Balance Overview",
+    title_x=0.5,
+    xaxis_title="Date",
+    yaxis_title="Calories (kcal)",
+    template="plotly"
+)
 
     st.plotly_chart(fig, width="stretch")
     st.markdown("---")
@@ -1439,7 +1434,7 @@ elif st.session_state.page == "📚 Facts & Myths":
         with container:
             st.markdown(f"""
                 <div style="
-                    background:white;
+                    background: var(--secondary-background-color);
                     padding:18px;
                     border-radius:16px;
                     box-shadow:0 6px 18px rgba(0,0,0,0.08);
@@ -1518,7 +1513,7 @@ elif st.session_state.page == "📚 Facts & Myths":
 
         st.markdown(f"""
             <div style="
-                background:white;
+                background: var(--secondary-background-color);
                 padding:20px;
                 border-radius:18px;
                 box-shadow:0 8px 24px rgba(0,0,0,0.08);
