@@ -411,7 +411,7 @@ div[role="radiogroup"] > label:has(input:checked)::before {
    ========================================================== */
 
 .card {
-    background: white;
+    background: var(--secondary-background-color);
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
@@ -419,7 +419,7 @@ div[role="radiogroup"] > label:has(input:checked)::before {
 }
 
 .feature-card {
-    background: white;
+    background: var(--secondary-background-color);
     padding: 20px;
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.06);
