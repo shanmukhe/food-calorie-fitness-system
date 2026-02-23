@@ -264,64 +264,66 @@ html, body {
 
 .stApp {
     min-height: 100vh;
-    transition: background 0.3s ease;
+    transition: background 0.4s ease;
 }
 
+/* Remove empty blocks */
 div[data-testid="stVerticalBlock"] > div:empty {
     display: none !important;
 }
 
 /* ==========================================================
-   PREMIUM BACKGROUND (BOTH THEMES)
+   MAIN APP BACKGROUND (SOFT PREMIUM)
 ========================================================== */
 
-/* LIGHT */
+/* LIGHT THEME */
 html[data-theme="light"] .stApp {
     background:
-        radial-gradient(circle at 10% 20%, rgba(99,102,241,0.12), transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(14,165,233,0.12), transparent 40%),
+        radial-gradient(circle at 15% 20%, rgba(99,102,241,0.18), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(14,165,233,0.18), transparent 40%),
         linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
-/* DARK */
+/* DARK THEME */
 html[data-theme="dark"] .stApp {
     background:
-        radial-gradient(circle at 15% 25%, rgba(124,58,237,0.18), transparent 40%),
-        radial-gradient(circle at 85% 75%, rgba(6,182,212,0.18), transparent 40%),
-        #0f172a;
+        radial-gradient(circle at 15% 20%, rgba(124,58,237,0.25), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(6,182,212,0.25), transparent 40%),
+        linear-gradient(180deg, #0f172a 0%, #111827 100%);
 }
 
 /* ==========================================================
-   SIDEBAR – CLEAN PREMIUM
+   SIDEBAR – FULL GRADIENT (LIKE YOUR PREVIOUS DESIGN)
 ========================================================== */
 
 [data-testid="stSidebar"] {
-    padding: 25px 18px;
-    backdrop-filter: blur(12px);
+    padding: 28px 18px;
+    color: white;
+    backdrop-filter: blur(16px);
 }
 
-/* Light Sidebar */
+/* LIGHT SIDEBAR */
 html[data-theme="light"] [data-testid="stSidebar"] {
     background: linear-gradient(
         180deg,
-        rgba(255,255,255,0.9),
-        rgba(255,255,255,0.95)
+        #4f46e5 0%,
+        #3b82f6 50%,
+        #06b6d4 100%
     );
-    border-right: 1px solid #e5e7eb;
 }
 
-/* Dark Sidebar */
+/* DARK SIDEBAR */
 html[data-theme="dark"] [data-testid="stSidebar"] {
     background: linear-gradient(
         180deg,
-        rgba(17,24,39,0.95),
-        rgba(15,23,42,0.98)
+        #1e1b4b 0%,
+        #312e81 50%,
+        #0e7490 100%
     );
-    border-right: 1px solid rgba(255,255,255,0.06);
 }
 
 /* ==========================================================
-   SIDEBAR MENU ITEMS
+   SIDEBAR MENU ITEMS (GRADIENT ACTIVE)
 ========================================================== */
 
 div[role="radiogroup"] input {
@@ -333,47 +335,29 @@ div[role="radiogroup"] > label {
     align-items: center;
     gap: 10px;
     padding: 12px 16px;
-    margin: 8px 4px;
+    margin: 10px 4px;
     border-radius: 14px;
     font-weight: 500;
-    transition: all 0.25s ease;
     cursor: pointer;
-}
-
-/* LIGHT */
-html[data-theme="light"] div[role="radiogroup"] > label {
-    background: rgba(99,102,241,0.06);
-    border: 1px solid rgba(99,102,241,0.12);
-}
-
-html[data-theme="light"] div[role="radiogroup"] > label:hover {
-    background: linear-gradient(90deg, #6366f1, #3b82f6);
+    transition: all 0.25s ease;
     color: white;
-    transform: translateX(5px);
-    box-shadow: 0 8px 20px rgba(99,102,241,0.25);
 }
 
-html[data-theme="light"] div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg, #6366f1, #3b82f6);
-    color: white;
-    box-shadow: 0 10px 25px rgba(99,102,241,0.35);
+/* Default subtle */
+div[role="radiogroup"] > label {
+    background: rgba(255,255,255,0.08);
 }
 
-/* DARK */
-html[data-theme="dark"] div[role="radiogroup"] > label {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
+/* Hover */
+div[role="radiogroup"] > label:hover {
+    background: rgba(255,255,255,0.18);
+    transform: translateX(6px);
 }
 
-html[data-theme="dark"] div[role="radiogroup"] > label:hover {
-    background: linear-gradient(90deg, #7c3aed, #06b6d4);
-    color: white;
-    transform: translateX(5px);
-}
-
-html[data-theme="dark"] div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg, #7c3aed, #06b6d4);
-    color: white;
+/* Active */
+div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(90deg, #a855f7, #06b6d4);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
 }
 
 /* ==========================================================
@@ -385,18 +369,37 @@ html[data-theme="dark"] div[role="radiogroup"] > label:has(input:checked) {
     border-radius: 16px;
     font-weight: 600;
     padding: 10px 0;
+    border: none;
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    color: white;
     transition: 0.25s ease;
 }
 
-html[data-theme="light"] [data-testid="stSidebar"] button {
-    background: linear-gradient(90deg, #ef4444, #dc2626);
-    color: white;
-    box-shadow: 0 8px 22px rgba(239,68,68,0.25);
+[data-testid="stSidebar"] button:hover {
+    transform: translateY(-2px);
 }
 
-html[data-theme="dark"] [data-testid="stSidebar"] button {
-    background: linear-gradient(90deg, #dc2626, #991b1b);
+/* ==========================================================
+   HERO CARD (MATCHING GRADIENT STYLE)
+========================================================== */
+
+.hero-card {
+    padding: 32px;
+    border-radius: 22px;
     color: white;
+    transition: all 0.3s ease;
+}
+
+/* LIGHT */
+html[data-theme="light"] .hero-card {
+    background: linear-gradient(135deg, #7c3aed, #3b82f6, #06b6d4);
+    box-shadow: 0 25px 50px rgba(99,102,241,0.25);
+}
+
+/* DARK */
+html[data-theme="dark"] .hero-card {
+    background: linear-gradient(135deg, #9333ea, #2563eb, #0891b2);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6);
 }
 
 /* ==========================================================
@@ -416,13 +419,7 @@ html[data-theme="light"] .feature-card,
 html[data-theme="light"] .metric-card {
     background: #ffffff;
     border: 1px solid #e5e7eb;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-}
-
-html[data-theme="light"] .feature-card:hover,
-html[data-theme="light"] .metric-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.10);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
 }
 
 /* DARK */
@@ -431,31 +428,11 @@ html[data-theme="dark"] .feature-card,
 html[data-theme="dark"] .metric-card {
     background: #1e293b;
     border: 1px solid rgba(255,255,255,0.06);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
 }
 
 /* ==========================================================
-   HERO CARD
-========================================================== */
-
-.hero-card {
-    padding: 30px;
-    border-radius: 20px;
-}
-
-html[data-theme="light"] .hero-card {
-    background: linear-gradient(135deg, #6366f1, #3b82f6);
-    color: white;
-    box-shadow: 0 20px 45px rgba(99,102,241,0.25);
-}
-
-html[data-theme="dark"] .hero-card {
-    background: linear-gradient(135deg, #7c3aed, #06b6d4);
-    box-shadow: 0 20px 45px rgba(0,0,0,0.7);
-}
-
-/* ==========================================================
-   LOGIN MODE
+   LOGIN / SIGNUP FULL GRADIENT BACKGROUND
 ========================================================== */
 
 body:has(.login-active) section[data-testid="stSidebar"] {
@@ -464,22 +441,40 @@ body:has(.login-active) section[data-testid="stSidebar"] {
 
 body:has(.login-active) .block-container {
     max-width: 520px !important;
-    margin-top: 12vh !important;
+    margin-top: 10vh !important;
 }
 
+/* LIGHT LOGIN */
 html[data-theme="light"] body:has(.login-active) .stApp {
     background: linear-gradient(
-        180deg,
-        #eef2ff 0%,
-        #ffffff 100%
+        135deg,
+        #4f46e5,
+        #7c3aed,
+        #06b6d4
     );
 }
 
-html[data-theme="light"] body:has(.login-active) .block-container {
-    background: white;
-    padding: 35px;
-    border-radius: 24px;
-    box-shadow: 0 20px 45px rgba(99,102,241,0.18);
+/* DARK LOGIN */
+html[data-theme="dark"] body:has(.login-active) .stApp {
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #312e81,
+        #0e7490
+    );
+}
+
+/* Login card styling */
+body:has(.login-active) .block-container {
+    background: rgba(255,255,255,0.95);
+    padding: 40px;
+    border-radius: 28px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+}
+
+html[data-theme="dark"] body:has(.login-active) .block-container {
+    background: rgba(30,41,59,0.95);
+    color: white;
 }
 
 </style>
