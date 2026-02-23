@@ -276,14 +276,13 @@ div[data-testid="stVerticalBlock"] > div:empty {
    MAIN APP BACKGROUND (SOFT PREMIUM)
 ========================================================== */
 
-/* LIGHT THEME */
+//* LIGHT THEME MAIN BACKGROUND */
 html[data-theme="light"] .stApp {
     background:
-        radial-gradient(circle at 15% 20%, rgba(99,102,241,0.18), transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(14,165,233,0.18), transparent 40%),
-        linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        radial-gradient(circle at 10% 10%, rgba(99,102,241,0.25), transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(14,165,233,0.25), transparent 40%),
+        linear-gradient(180deg, #eef2ff 0%, #ffffff 60%);
 }
-
 /* DARK THEME */
 html[data-theme="dark"] .stApp {
     background:
@@ -310,6 +309,10 @@ html[data-theme="light"] [data-testid="stSidebar"] {
         #3b82f6 50%,
         #06b6d4 100%
     );
+}
+html[data-theme="light"] div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 /* DARK SIDEBAR */
@@ -392,8 +395,8 @@ div[role="radiogroup"] > label:has(input:checked) {
 
 /* LIGHT */
 html[data-theme="light"] .hero-card {
-    background: linear-gradient(135deg, #7c3aed, #3b82f6, #06b6d4);
-    box-shadow: 0 25px 50px rgba(99,102,241,0.25);
+    background: linear-gradient(135deg, #6366f1, #3b82f6, #06b6d4);
+    box-shadow: 0 30px 60px rgba(59,130,246,0.25);
 }
 
 /* DARK */
@@ -413,13 +416,14 @@ html[data-theme="dark"] .hero-card {
     transition: all 0.25s ease;
 }
 
-/* LIGHT */
+/* LIGHT CARDS */
 html[data-theme="light"] .card,
 html[data-theme="light"] .feature-card,
 html[data-theme="light"] .metric-card {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    border: 1px solid rgba(99,102,241,0.15);
+    box-shadow: 0 15px 35px rgba(99,102,241,0.08);
+    backdrop-filter: blur(6px);
 }
 
 /* DARK */
@@ -429,6 +433,19 @@ html[data-theme="dark"] .metric-card {
     background: #1e293b;
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+.metric-label {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+.metric-value {
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 6px;
+    color: #1e293b;
 }
 
 /* ==========================================================
