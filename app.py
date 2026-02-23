@@ -254,487 +254,94 @@ if "chat_history" not in st.session_state:
 
 st.markdown("""
 <style>
-            
-html[data-theme="light"] {
-    .stApp {
-        background: linear-gradient(
-            180deg,
-            #f8fafc 0%,
-            #eef2ff 100%
-        );
-    }
-}
-            
-.hero-card {
-    padding: 30px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-}
-            
-.section-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 18px;
-    letter-spacing: -0.5px;
-}
 
-/* DARK MODE */
-@media (prefers-color-scheme: dark) {
-    .hero-card {
-        background: linear-gradient(135deg, #7c3aed, #38b9c7);
-        color: white;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-    }
-}
-
-/* LIGHT MODE */
-@media (prefers-color-scheme: light) {
-    .hero-card {
-        background: linear-gradient(135deg, #6366f1, #0ea5e9);
-        color: white;
-        box-shadow: 0 15px 40px rgba(99,102,241,0.25);
-    }
-}
 /* ==========================================================
-   1️⃣ GLOBAL RESET & STREAMLIT FIXES
-   ========================================================== */
+   GLOBAL BASE
+========================================================== */
 
-/* Ensure full height layout */
 html, body {
     height: 100%;
 }
 
 .stApp {
     min-height: 100vh;
+    transition: background 0.3s ease;
 }
 
-/* Remove empty vertical blocks created by Streamlit */
+/* Remove empty blocks */
 div[data-testid="stVerticalBlock"] > div:empty {
     display: none !important;
-    height: 0 !important;
-    margin: 0 !important;
 }
-
-/* Remove unwanted tab rounded effects */
-section[data-testid="stTabs"]::before,
-section[data-testid="stTabs"]::after {
-    display: none !important;
-}
-
 
 /* ==========================================================
-   2️⃣ SIDEBAR STYLING
-   ========================================================== */
-
-/* Sidebar background */
-[data-testid="stSidebar"] {
-    background: var(--secondary-background-color);
-    padding: 22px 14px;
-}
-
-/* Sidebar welcome card */
-.sidebar-welcome {
-    padding: 16px;
-    border-radius: 18px;
-    margin: 0 12px 22px 12px;
-    text-align: center;
-}
-
-/* Dark */
-@media (prefers-color-scheme: dark) {
-    .sidebar-welcome {
-        background: linear-gradient(135deg, #7c3aed, #38b9c7);
-        color: white;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-    }
-}
-
-/* Light */
-@media (prefers-color-scheme: light) {
-    .sidebar-welcome {
-        background: linear-gradient(135deg, #6366f1, #0ea5e9);
-        color: white;
-        box-shadow: 0 10px 25px rgba(99,102,241,0.25);
-    }
-}
-
-
-
-
-/* ==========================================================
-   3️⃣ SIDEBAR MENU RADIO CUSTOMIZATION
-   ========================================================== */
-
-/* Remove default radio input circle */
-div[role="radiogroup"] input {
-    display: none !important;
-}
-
-/* Menu item style */
-div[role="radiogroup"] > label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 12px 16px;
-    margin: 8px;
-    font-weight: 500;
-    transition: all 0.25s ease;
-    cursor: pointer;
-}
-
-/* Hover effect */
-div[role="radiogroup"] > label:hover {
-    background: linear-gradient(90deg, #7c3aed, #38b9c7);
-    transform: translateX(6px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-
-/* Active selected menu item */
-div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg, #9333ea, #38b9c7);
-    font-weight: 600;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
-}
-
-/* Active indicator strip */
-div[role="radiogroup"] > label:has(input:checked)::before {
-    content: "";
-    width: 6px;
-    height: 70%;
-    background: #38b9c7;
-    border-radius: 6px;
-    margin-right: 10px;
-}
-
-
-/* ==========================================================
-   4️⃣ SIDEBAR BUTTON (LOGOUT)
-   ========================================================== */
-
-[data-testid="stSidebar"] button {
-    margin-top: 18px;
-    width: 100%;
-    background: linear-gradient(90deg, #ef4444, #dc2626);
-    border-radius: 18px;
-    font-weight: 600;
-    padding: 10px 0;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-}
-
-[data-testid="stSidebar"] button:hover {
-    background: linear-gradient(90deg, #dc2626, #b91c1c);
-}
-
-
-/* ==========================================================
-   5️⃣ GLOBAL INPUT STYLING
-   ========================================================== */
-
-
-
-.stSelectbox span {
-    color: #000000 !important;
-}
-
-
-/* ==========================================================
-   6️⃣ GENERAL CARD COMPONENTS
-   ========================================================== */
-
-.card {
-    padding: 22px;
-    border-radius: 18px;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-}
-
-.feature-card {
-    padding: 22px;
-    border-radius: 20px;
-    height: 100%;
-    transition: all 0.3s ease;
-}
-
-/* LIGHT MODE */
-@media (prefers-color-scheme: light) {
-    .card, .feature-card {
-        background: #ffffff;
-        box-shadow: 
-            0 10px 30px rgba(0,0,0,0.08),
-            0 1px 2px rgba(0,0,0,0.04);
-        border: 1px solid rgba(0,0,0,0.04);
-    }
-}
-
-/* DARK MODE */
-@media (prefers-color-scheme: dark) {
-    .card, .feature-card {
-        background: var(--secondary-background-color);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        border: 1px solid rgba(255,255,255,0.06);
-    }
-}
-
-.feature-card h4 {
-    margin-bottom: 10px;
-}
-
-.section-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-
-.soft-divider {
-    margin: 26px 0;
-    height: 1px;
-    background: linear-gradient(to right, transparent, #cbd5e1, transparent);
-}
-            
-.feature-card:hover {
-    transform: translateY(-6px);
-}
-
-@media (prefers-color-scheme: light) {
-    .feature-card:hover {
-        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    .feature-card:hover {
-        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-    }
-}
-            
-.metric-card {
-    padding: 22px;
-    border-radius: 18px;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-/* LABEL */
-.metric-label {
-    font-size: 14px;
-    opacity: 0.7;
-}
-
-/* VALUE */
-.metric-value {
-    font-size: 28px;
-    font-weight: 700;
-    margin-top: 8px;
-}
-
-/* =========================
-   LIGHT MODE
-========================= */
-@media (prefers-color-scheme: light) {
-    .metric-card {
-        background: #ffffff;
-        box-shadow:
-            0 8px 24px rgba(0,0,0,0.08),
-            0 2px 4px rgba(0,0,0,0.04);
-        border: 1px solid rgba(0,0,0,0.04);
-    }
-
-    .metric-card:hover {
-        transform: translateY(-4px);
-        box-shadow:
-            0 16px 32px rgba(0,0,0,0.12);
-    }
-}
-
-/* =========================
-   DARK MODE
-========================= */
-@media (prefers-color-scheme: dark) {
-    .metric-card {
-        background: var(--secondary-background-color);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-        border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .metric-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 16px 32px rgba(0,0,0,0.7);
-    }
-}
-
-
-/* ================================
-   GLOBAL LOGIN MODE ACTIVATION
-================================ */
-body:has(.login-active) .stApp {
-    background: var(--background-color);
-}
-
-/* Hide sidebar completely */
-body:has(.login-active) section[data-testid="stSidebar"] {
-    display: none !important;
-}
-
-/* Expand main container */
-body:has(.login-active) .block-container {
-    max-width: 520px !important;
-    margin-top: 12vh !important;
-    margin-bottom: 8vh !important;
-}
-
-/* Fade animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Title styling */
-.login-title {
-    font-size: 28px;
-    font-weight: 800;
-    background: linear-gradient(90deg, #ffffff, #c4b5fd);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-    margin-bottom: 8px;
-}
-
-.login-subtitle {
-    text-align: center;
-    color: #cbd5e1;
-    margin-bottom: 20px;
-}
-
-/* Input styling */
-body:has(.login-active) .stTextInput input {
-    border-radius: 14px !important;
-    padding: 12px !important;
-    border: none !important;
-}
-
-body:has(.login-active) .stTextInput input:focus {
-    border: 2px solid #a78bfa !important;
-    box-shadow: 0 0 0 2px rgba(167,139,250,0.3);
-}
-body:has(.login-active) label {
-    color: #e2e8f0 !important;
-    font-weight: 600 !important;
-}
-            body:has(.login-active) .stNumberInput input {
-    border-radius: 14px !important;
-    padding: 10px !important;
-}
-/* Segmented toggle styling */
-body:has(.login-active) [data-testid="stRadio"] > div {
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-body:has(.login-active) [data-testid="stRadio"] label {
-    background: rgba(255,255,255,0.1);
-    padding: 10px 22px;
-    border-radius: 30px;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-body:has(.login-active) [data-testid="stRadio"] input:checked + div {
-    background: linear-gradient(90deg, #7c3aed, #38bdf8);
-    color: white !important;
-}
-
-/* Button styling */
-body:has(.login-active) .stButton button {
-    background: linear-gradient(90deg, #7c3aed, #38bdf8);
-    border: none;
-    border-radius: 18px;
-    font-weight: 700;
-    height: 3.2em;
-    transition: 0.3s ease;
-}
-
-body:has(.login-active) .stButton button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-}
-
-/* ================= LIGHT THEME – PREMIUM ================= */
+   LIGHT THEME
+========================================================== */
 
 html[data-theme="light"] .stApp {
     background: linear-gradient(
         180deg,
         #f8fafc 0%,
-        #eef2ff 40%,
+        #eef2ff 50%,
         #ffffff 100%
     );
-}
-
-/* Hero Card */
-html[data-theme="light"] .hero-card {
-    background: linear-gradient(135deg, #6366f1, #3b82f6);
-    color: white;
-    box-shadow: 0 20px 40px rgba(99,102,241,0.25);
-}
-
-/* Sidebar Welcome */
-html[data-theme="light"] .sidebar-welcome {
-    background: linear-gradient(135deg, #6366f1, #0ea5e9);
-    color: white;
-    box-shadow: 0 12px 28px rgba(99,102,241,0.25);
 }
 
 /* Cards */
 html[data-theme="light"] .card,
 html[data-theme="light"] .feature-card,
 html[data-theme="light"] .metric-card {
-    background: rgba(255,255,255,0.9);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(0,0,0,0.05);
-    box-shadow:
-        0 8px 24px rgba(0,0,0,0.06),
-        0 2px 6px rgba(0,0,0,0.04);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    border-radius: 18px;
+    transition: all 0.25s ease;
 }
 
-/* Card Hover */
 html[data-theme="light"] .feature-card:hover,
 html[data-theme="light"] .metric-card:hover {
     transform: translateY(-4px);
-    box-shadow:
-        0 18px 36px rgba(0,0,0,0.10);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.10);
 }
 
-/* Sidebar Menu Items */
+/* Hero */
+html[data-theme="light"] .hero-card {
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    color: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 45px rgba(99,102,241,0.25);
+}
+
+/* Sidebar Welcome */
+html[data-theme="light"] .sidebar-welcome {
+    background: linear-gradient(135deg, #6366f1, #0ea5e9);
+    color: white;
+    border-radius: 18px;
+    box-shadow: 0 15px 30px rgba(99,102,241,0.25);
+}
+
+/* Sidebar Menu */
 html[data-theme="light"] div[role="radiogroup"] > label {
     background: rgba(99,102,241,0.08);
-    border: 1px solid rgba(99,102,241,0.12);
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 14px;
+    transition: 0.2s ease;
 }
 
 html[data-theme="light"] div[role="radiogroup"] > label:hover {
     background: linear-gradient(90deg, #6366f1, #3b82f6);
     color: white;
     transform: translateX(4px);
-    box-shadow: 0 8px 18px rgba(99,102,241,0.25);
 }
 
 html[data-theme="light"] div[role="radiogroup"] > label:has(input:checked) {
     background: linear-gradient(90deg, #6366f1, #3b82f6);
     color: white;
-    box-shadow: 0 10px 24px rgba(99,102,241,0.35);
 }
 
-/* Logout Button */
-html[data-theme="light"] [data-testid="stSidebar"] button {
-    background: linear-gradient(90deg, #ef4444, #dc2626);
-    color: white;
-    box-shadow: 0 10px 24px rgba(239,68,68,0.25);
-}
+/* ==========================================================
+   DARK THEME (UNCHANGED BUT CLEAN)
+========================================================== */
 
-
-/* ================= DARK THEME ================= */
 html[data-theme="dark"] .stApp {
     background: #0f172a;
 }
@@ -745,6 +352,7 @@ html[data-theme="dark"] .metric-card {
     background: #1e293b;
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    border-radius: 18px;
 }
 
 html[data-theme="dark"] .hero-card {
@@ -756,9 +364,32 @@ html[data-theme="dark"] div[role="radiogroup"] > label {
     background: rgba(255,255,255,0.06);
 }
 
-html[data-theme="dark"] div[role="radiogroup"] > label:hover {
-    background: rgba(124,58,237,0.25);
-    transform: none;
+/* ==========================================================
+   LOGIN MODE
+========================================================== */
+
+body:has(.login-active) section[data-testid="stSidebar"] {
+    display: none !important;
+}
+
+body:has(.login-active) .block-container {
+    max-width: 520px !important;
+    margin-top: 12vh !important;
+}
+
+html[data-theme="light"] body:has(.login-active) .stApp {
+    background: linear-gradient(
+        180deg,
+        #eef2ff 0%,
+        #ffffff 100%
+    );
+}
+
+html[data-theme="light"] body:has(.login-active) .block-container {
+    background: white;
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(99,102,241,0.18);
 }
 
 </style>
