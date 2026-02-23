@@ -251,7 +251,6 @@ if "chat_open" not in st.session_state:
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-
 st.markdown("""
 <style>
 
@@ -268,33 +267,156 @@ html, body {
     transition: background 0.3s ease;
 }
 
-/* Remove empty blocks */
 div[data-testid="stVerticalBlock"] > div:empty {
     display: none !important;
 }
 
 /* ==========================================================
-   LIGHT THEME
+   PREMIUM BACKGROUND (BOTH THEMES)
 ========================================================== */
 
+/* LIGHT */
 html[data-theme="light"] .stApp {
-    background: linear-gradient(
-        180deg,
-        #f8fafc 0%,
-        #eef2ff 50%,
-        #ffffff 100%
-    );
+    background:
+        radial-gradient(circle at 10% 20%, rgba(99,102,241,0.12), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(14,165,233,0.12), transparent 40%),
+        linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
-/* Cards */
+/* DARK */
+html[data-theme="dark"] .stApp {
+    background:
+        radial-gradient(circle at 15% 25%, rgba(124,58,237,0.18), transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(6,182,212,0.18), transparent 40%),
+        #0f172a;
+}
+
+/* ==========================================================
+   SIDEBAR – CLEAN PREMIUM
+========================================================== */
+
+[data-testid="stSidebar"] {
+    padding: 25px 18px;
+    backdrop-filter: blur(12px);
+}
+
+/* Light Sidebar */
+html[data-theme="light"] [data-testid="stSidebar"] {
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.9),
+        rgba(255,255,255,0.95)
+    );
+    border-right: 1px solid #e5e7eb;
+}
+
+/* Dark Sidebar */
+html[data-theme="dark"] [data-testid="stSidebar"] {
+    background: linear-gradient(
+        180deg,
+        rgba(17,24,39,0.95),
+        rgba(15,23,42,0.98)
+    );
+    border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ==========================================================
+   SIDEBAR MENU ITEMS
+========================================================== */
+
+div[role="radiogroup"] input {
+    display: none !important;
+}
+
+div[role="radiogroup"] > label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    margin: 8px 4px;
+    border-radius: 14px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+/* LIGHT */
+html[data-theme="light"] div[role="radiogroup"] > label {
+    background: rgba(99,102,241,0.06);
+    border: 1px solid rgba(99,102,241,0.12);
+}
+
+html[data-theme="light"] div[role="radiogroup"] > label:hover {
+    background: linear-gradient(90deg, #6366f1, #3b82f6);
+    color: white;
+    transform: translateX(5px);
+    box-shadow: 0 8px 20px rgba(99,102,241,0.25);
+}
+
+html[data-theme="light"] div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(90deg, #6366f1, #3b82f6);
+    color: white;
+    box-shadow: 0 10px 25px rgba(99,102,241,0.35);
+}
+
+/* DARK */
+html[data-theme="dark"] div[role="radiogroup"] > label {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+html[data-theme="dark"] div[role="radiogroup"] > label:hover {
+    background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    color: white;
+    transform: translateX(5px);
+}
+
+html[data-theme="dark"] div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    color: white;
+}
+
+/* ==========================================================
+   LOGOUT BUTTON
+========================================================== */
+
+[data-testid="stSidebar"] button {
+    margin-top: 25px;
+    border-radius: 16px;
+    font-weight: 600;
+    padding: 10px 0;
+    transition: 0.25s ease;
+}
+
+html[data-theme="light"] [data-testid="stSidebar"] button {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    color: white;
+    box-shadow: 0 8px 22px rgba(239,68,68,0.25);
+}
+
+html[data-theme="dark"] [data-testid="stSidebar"] button {
+    background: linear-gradient(90deg, #dc2626, #991b1b);
+    color: white;
+}
+
+/* ==========================================================
+   CARDS
+========================================================== */
+
+.card,
+.feature-card,
+.metric-card {
+    border-radius: 18px;
+    transition: all 0.25s ease;
+}
+
+/* LIGHT */
 html[data-theme="light"] .card,
 html[data-theme="light"] .feature-card,
 html[data-theme="light"] .metric-card {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    border-radius: 18px;
-    transition: all 0.25s ease;
 }
 
 html[data-theme="light"] .feature-card:hover,
@@ -303,65 +425,33 @@ html[data-theme="light"] .metric-card:hover {
     box-shadow: 0 18px 40px rgba(0,0,0,0.10);
 }
 
-/* Hero */
-html[data-theme="light"] .hero-card {
-    background: linear-gradient(135deg, #6366f1, #3b82f6);
-    color: white;
-    border-radius: 20px;
-    box-shadow: 0 20px 45px rgba(99,102,241,0.25);
-}
-
-/* Sidebar Welcome */
-html[data-theme="light"] .sidebar-welcome {
-    background: linear-gradient(135deg, #6366f1, #0ea5e9);
-    color: white;
-    border-radius: 18px;
-    box-shadow: 0 15px 30px rgba(99,102,241,0.25);
-}
-
-/* Sidebar Menu */
-html[data-theme="light"] div[role="radiogroup"] > label {
-    background: rgba(99,102,241,0.08);
-    border: 1px solid rgba(99,102,241,0.15);
-    border-radius: 14px;
-    transition: 0.2s ease;
-}
-
-html[data-theme="light"] div[role="radiogroup"] > label:hover {
-    background: linear-gradient(90deg, #6366f1, #3b82f6);
-    color: white;
-    transform: translateX(4px);
-}
-
-html[data-theme="light"] div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg, #6366f1, #3b82f6);
-    color: white;
-}
-
-/* ==========================================================
-   DARK THEME (UNCHANGED BUT CLEAN)
-========================================================== */
-
-html[data-theme="dark"] .stApp {
-    background: #0f172a;
-}
-
+/* DARK */
 html[data-theme="dark"] .card,
 html[data-theme="dark"] .feature-card,
 html[data-theme="dark"] .metric-card {
     background: #1e293b;
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    border-radius: 18px;
+}
+
+/* ==========================================================
+   HERO CARD
+========================================================== */
+
+.hero-card {
+    padding: 30px;
+    border-radius: 20px;
+}
+
+html[data-theme="light"] .hero-card {
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    color: white;
+    box-shadow: 0 20px 45px rgba(99,102,241,0.25);
 }
 
 html[data-theme="dark"] .hero-card {
     background: linear-gradient(135deg, #7c3aed, #06b6d4);
     box-shadow: 0 20px 45px rgba(0,0,0,0.7);
-}
-
-html[data-theme="dark"] div[role="radiogroup"] > label {
-    background: rgba(255,255,255,0.06);
 }
 
 /* ==========================================================
