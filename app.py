@@ -250,193 +250,70 @@ if "chat_open" not in st.session_state:
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
-
 st.markdown("""
 <style>
 
 /* ================= GLOBAL FONT ================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+* { font-family: 'Inter', sans-serif !important; }
 
-* {
-    font-family: 'Inter', sans-serif !important;
-}
-
-/* ================= FULL BACKGROUND ================= */
+/* ================= MAIN APP BACKGROUND ================= */
 
 .stApp {
     background:
-        radial-gradient(circle at 15% 20%, rgba(139,0,139,0.45), transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(128,0,64,0.45), transparent 45%),
+        radial-gradient(circle at 15% 20%, rgba(139,0,139,0.35), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(128,0,64,0.35), transparent 45%),
         linear-gradient(135deg, #1a001f 0%, #2a0033 50%, #3a001a 100%);
 }
 
-/* ================= CENTER LOGIN CARD ================= */
-
-.block-container {
-    max-width: 460px !important;
-    margin: 10vh auto !important;
-    padding: 55px !important;
-    border-radius: 24px;
-
-    background: rgba(20, 0, 25, 0.92);
-    border: 1px solid rgba(190,24,93,0.35);
-
-    box-shadow:
-        0 50px 100px rgba(0,0,0,0.75),
-        0 0 60px rgba(139,0,139,0.35);
-
-    backdrop-filter: blur(18px);
-}
-
-/* ================= HEADINGS ================= */
-
-h2, h3 {
-    text-align: center;
-    color: white;
-}
-
-/* ================= INPUTS ================= */
-
-div[data-baseweb="input"] > div {
-    border-radius: 14px !important;
-    background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(190,24,93,0.4) !important;
-}
-
-input {
-    color: white !important;
-}
-
-/* Focus effect */
-div[data-baseweb="input"]:focus-within {
-    border: 1px solid #c026d3 !important;
-    box-shadow: 0 0 15px rgba(192,38,211,0.6) !important;
-}
-
-/* ================= BUTTON ================= */
-
-.stButton > button {
-    border-radius: 14px !important;
-    font-weight: 600 !important;
-    background: linear-gradient(90deg,#7e22ce,#be185d) !important;
-    color: white !important;
-    border: none !important;
-    transition: 0.25s ease !important;
-}
-
-.stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(190,24,93,0.55);
-}
-
-/* ================= RADIO ================= */
-
-div[role="radiogroup"] > label {
-    border-radius: 999px;
-    padding: 8px 22px;
-    border: 1px solid rgba(190,24,93,0.4);
-}
-
-div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg,#7e22ce,#be185d);
-    color: white !important;
-    border: none;
-}
-/* ===============================
-   GLOBAL FONT
-=================================*/
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-* {
-    font-family: 'Inter', sans-serif !important;
-}
-
-/* ===============================
-   MAIN APP BACKGROUND
-=================================*/
-
-.stApp {
-    background:
-        radial-gradient(circle at 20% 20%, rgba(139,0,139,0.45), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(128,0,64,0.45), transparent 45%),
-        linear-gradient(135deg, #1a001f 0%, #2a0033 50%, #3a001a 100%);
-}
-
-/* ===============================
-   SIDEBAR – OPPOSITE GRADIENT
-=================================*/
+/* ================= SIDEBAR (OPPOSITE GRADIENT) ================= */
 
 section[data-testid="stSidebar"] {
     background:
-        radial-gradient(circle at 80% 20%, rgba(128,0,64,0.45), transparent 40%),
-        radial-gradient(circle at 20% 80%, rgba(139,0,139,0.45), transparent 45%),
+        radial-gradient(circle at 80% 20%, rgba(128,0,64,0.35), transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(139,0,139,0.35), transparent 45%),
         linear-gradient(135deg, #3a001a 0%, #2a0033 50%, #1a001f 100%);
-
-    padding: 30px 20px;
+    padding: 28px 18px;
     border-right: 1px solid rgba(255,255,255,0.08);
 }
 
-/* Remove white top area */
-section[data-testid="stSidebar"] > div:first-child {
-    padding-top: 0 !important;
-}
-
-/* ===============================
-   SIDEBAR TOP CARD
-=================================*/
+/* ================= SIDEBAR WELCOME CARD ================= */
 
 .sidebar-welcome {
     background: linear-gradient(135deg,#7e22ce,#be185d);
-    padding: 22px;
+    padding: 20px;
     border-radius: 18px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     color: white;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
 }
 
-/* ===============================
-   NAVIGATION LABEL
-=================================*/
+/* ================= SIDEBAR NAV ITEMS ================= */
 
-section[data-testid="stSidebar"] small {
-    color: #e9d5ff !important;
-    letter-spacing: 1px;
-    font-size: 11px;
-}
-
-/* ===============================
-   NAVIGATION ITEMS
-=================================*/
-
-div[role="radiogroup"] > label {
+section[data-testid="stSidebar"] div[role="radiogroup"] > label {
     border-radius: 999px;
-    padding: 10px 18px;
-    margin: 8px 0;
-    font-weight: 500;
-    transition: 0.25s ease;
-    color: #f3e8ff !important;
-    border: 1px solid rgba(255,255,255,0.15);
+    padding: 10px 16px;
+    margin: 6px 0;
     background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #f3e8ff !important;
+    transition: 0.25s ease;
 }
 
-/* Hover */
-div[role="radiogroup"] > label:hover {
+section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
     background: rgba(190,24,93,0.25);
     transform: translateX(4px);
 }
 
-/* Active */
-div[role="radiogroup"] > label:has(input:checked) {
+section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
     background: linear-gradient(90deg,#7e22ce,#be185d);
     border: none;
     color: white !important;
     box-shadow: 0 6px 20px rgba(190,24,93,0.5);
 }
 
-/* ===============================
-   LOGOUT BUTTON
-=================================*/
+/* ================= SIDEBAR LOGOUT ================= */
 
 section[data-testid="stSidebar"] .stButton > button {
     margin-top: 25px;
@@ -445,37 +322,44 @@ section[data-testid="stSidebar"] .stButton > button {
     color: white !important;
     border: none !important;
     font-weight: 600;
-    transition: 0.25s ease;
 }
 
-section[data-testid="stSidebar"] .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(190,24,93,0.5);
+/* ================= LOGIN MODE ONLY ================= */
+
+body:has(.login-active) section[data-testid="stSidebar"] {
+    display: none !important;
 }
 
-/* ===============================
-   SCROLLBAR (Premium Look)
-=================================*/
-
-::-webkit-scrollbar {
-    width: 8px;
+body:has(.login-active) .block-container {
+    max-width: 480px !important;
+    margin: 10vh auto !important;
+    padding: 55px !important;
+    border-radius: 24px;
+    background: rgba(20, 0, 25, 0.92);
+    border: 1px solid rgba(190,24,93,0.35);
+    box-shadow:
+        0 50px 100px rgba(0,0,0,0.75),
+        0 0 60px rgba(139,0,139,0.35);
+    backdrop-filter: blur(18px);
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
+/* ================= LOGIN INPUTS ONLY ================= */
+
+body:has(.login-active) div[data-baseweb="input"] > div {
+    border-radius: 14px !important;
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(190,24,93,0.4) !important;
 }
 
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(#7e22ce,#be185d);
-    border-radius: 20px;
+body:has(.login-active) input {
+    color: white !important;
 }
 
-/* ===============================
-   MAIN CONTENT CARD POLISH
-=================================*/
-
-.block-container {
-    padding-top: 2rem !important;
+body:has(.login-active) .stButton > button {
+    border-radius: 14px !important;
+    background: linear-gradient(90deg,#7e22ce,#be185d) !important;
+    color: white !important;
+    border: none !important;
 }
 
 </style>
