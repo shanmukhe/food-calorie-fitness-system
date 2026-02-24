@@ -296,8 +296,11 @@ body:has(.login-active) .stApp {
 ========================================================= */
 
 body:not(:has(.login-active)) .stApp {
-    background: #EEAECA;
-    background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+    background: #020024;
+    background: -webkit-linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(0, 212, 255, 1) 100%);
+    background: -moz-linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(0, 212, 255, 1) 100%);
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(0, 212, 255, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024", endColorstr="#00D4FF", GradientType=1);
     background-attachment: fixed;
 }
 
