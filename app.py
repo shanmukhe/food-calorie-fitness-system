@@ -327,6 +327,14 @@ div[role="radiogroup"] > label:has(input:checked) {
 div[role="radiogroup"] > label:hover {
     background: rgba(109,40,217,0.12);
 }
+/* SLIDER BRAND COLOR */
+.stSlider > div[data-baseweb="slider"] > div > div {
+    background-color: #6D28D9 !important;
+}
+
+.stSlider span {
+    color: #6D28D9 !important;
+}
 
 /* ==========================================================
    CARDS
@@ -453,7 +461,22 @@ html[data-theme="dark"] body:has(.login-active) .block-container {
     background: rgba(30,30,40,0.9);
     box-shadow: 0 40px 80px rgba(0,0,0,0.6);
 }
+/* RADIO BUTTONS */
+div[role="radiogroup"] {
+    gap: 12px;
+}
 
+div[role="radiogroup"] label {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(109,40,217,0.3);
+}
+
+div[role="radiogroup"] label:has(input:checked) {
+    background: linear-gradient(90deg, #6D28D9, #A855F7);
+    color: white !important;
+    border: none;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -510,7 +533,7 @@ if not st.session_state.get("logged_in", False):
     # ================= SIGNUP =================
     else:
         st.markdown(
-            "<h3 style='text-align:center;'>Create Account</h3>",
+            "<h3 style='text-align:center;'>Create Account ✨</h3>",
             unsafe_allow_html=True
         )
 
@@ -598,7 +621,8 @@ if "page" not in st.session_state or st.session_state.page not in menu_options:
 
 st.sidebar.markdown(f"""
 <div class="sidebar-welcome">
-    <h3>🍎 Food Fitness</h3>
+    <h3 style="font-weight:600;">Food Fitness</h3>
+    <p style="opacity:0.6;font-size:13px;">AI Nutrition Intelligence</p>
     <p>Welcome,<br><b>{st.session_state.username}</b></p>
 </div>
 """, unsafe_allow_html=True)
@@ -649,7 +673,7 @@ if st.session_state.page == "Home":
     with c1:
         st.markdown("""
         <div class="card">
-            <h3>Eat Smart. Move Better. Live Healthier.</h3>
+            <h3>🌱 Eat Smart. Move Better. Live Healthier.</h3>
             <p>This platform uses <b>AI & personalization</b> to help you:</p>
             <ul>
                 <li>Recognize food using images</li>
@@ -708,7 +732,7 @@ if st.session_state.page == "Home":
     
 
     # ---------------- FEATURES SECTION ----------------
-    st.markdown('<div class="section-title">✨ What You Can Do Here</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">What You Can Do Here</div>', unsafe_allow_html=True)
 
     f1, f2, f3 = st.columns(3)
 
@@ -774,41 +798,51 @@ if st.session_state.page == "Home":
 # =========================================================
 #  ANALYZE FOOD – FINAL PROFESSIONAL VERSION
 # =========================================================
+# =========================================================
+# ANALYZE FOOD – STARTUP GRADE UI VERSION
+# =========================================================
 elif st.session_state.page == "Analyze Food":
 
-    st.title("AI Food Analysis")
-    st.caption("Upload a food image or select food manually")
-    st.markdown("---")
+    # -----------------------------------------------------
+    # HEADER
+    # -----------------------------------------------------
+    st.markdown("""
+    <div class="page-header">
+        <h1>AI Food Analysis</h1>
+        <p>Upload a food image or select food manually</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     # ---------------- SAFETY CHECK ----------------
     if model is None:
-        st.error("⚠️ AI model not loaded. Please restart the application.")
+        st.error("AI model not loaded. Please restart the application.")
         st.stop()
 
     # ---------------- SESSION INIT ----------------
-    if "current_image" not in st.session_state:
-        st.session_state.current_image = None
+    defaults = {
+        "current_image": None,
+        "analysis_done": False,
+        "top_results": None,
+        "selected_food": None
+    }
 
-    if "analysis_done" not in st.session_state:
-        st.session_state.analysis_done = False
-
-    if "top_results" not in st.session_state:
-        st.session_state.top_results = None
-
-    if "selected_food" not in st.session_state:
-        st.session_state.selected_food = None
+    for key, val in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = val
 
     # ---------------- MODE SELECT ----------------
     mode = st.radio(
-        "Choose Input Method:",
+        "",
         ["Upload Image", "Select Manually"],
         horizontal=True
     )
 
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+
     # =====================================================
-    #  IMAGE MODE
+    # IMAGE MODE
     # =====================================================
-    if mode == " Upload Image":
+    if mode == "Upload Image":
 
         uploaded_file = st.file_uploader(
             "Upload Food Image",
@@ -821,13 +855,32 @@ elif st.session_state.page == "Analyze Food":
 
         if st.session_state.current_image is not None:
 
-            st.image(st.session_state.current_image, width=350)
+            col1, col2 = st.columns([1.2, 1])
 
-            col1, col2 = st.columns(2)
-
-            # Remove Image
             with col1:
-                if st.button("🗑 Remove Image"):
+                st.image(st.session_state.current_image, use_container_width=True)
+
+            with col2:
+
+                if not st.session_state.analysis_done:
+                    if st.button("Analyze Food", use_container_width=True):
+                        with st.spinner("Analyzing with AI model..."):
+                            processed = preprocess_image(
+                                np.array(st.session_state.current_image)
+                            )
+                            preds = model.predict(processed, verbose=0)[0]
+
+                        top_indices = preds.argsort()[-3:][::-1]
+
+                        st.session_state.top_results = [
+                            (class_names[i], float(preds[i] * 100))
+                            for i in top_indices
+                        ]
+
+                        st.session_state.analysis_done = True
+                        st.rerun()
+
+                if st.button("Remove Image", use_container_width=True):
                     st.session_state.current_image = None
                     st.session_state.analysis_done = False
                     st.session_state.top_results = None
@@ -835,35 +888,18 @@ elif st.session_state.page == "Analyze Food":
                     st.session_state.uploader_key += 1
                     st.rerun()
 
-            # Analyze Button
-            if not st.session_state.analysis_done:
-                if st.button("Analyze Food"):
-                    with st.spinner("Analyzing image with AI model..."):
-                        processed = preprocess_image(np.array(st.session_state.current_image))
-                        preds = model.predict(processed, verbose=0)[0]
-
-                    processed = preprocess_image(
-                        np.array(st.session_state.current_image)
-                    )
-
-                    preds = model.predict(processed, verbose=0)[0]
-                    top_indices = preds.argsort()[-3:][::-1]
-
-                    st.session_state.top_results = [
-                        (class_names[i], float(preds[i] * 100))
-                        for i in top_indices
-                    ]
-
-                    st.session_state.analysis_done = True
-                    st.rerun()
-
         # ---------------- SHOW RESULTS ----------------
         if st.session_state.analysis_done and st.session_state.top_results:
 
-            st.markdown("## 🔍 AI Predictions")
+            st.markdown("<h3>AI Predictions</h3>", unsafe_allow_html=True)
 
             for food, conf in st.session_state.top_results:
-                st.write(f"• **{food}** — {conf:.2f}%")
+                st.markdown(f"""
+                <div class="feature-card" style="margin-bottom:10px;">
+                    <strong>{food}</strong><br>
+                    Confidence: {conf:.2f}%
+                </div>
+                """, unsafe_allow_html=True)
 
             st.session_state.selected_food = st.selectbox(
                 "Confirm the detected food:",
@@ -885,7 +921,7 @@ elif st.session_state.page == "Analyze Food":
                 col1.metric("Portion", f"{grams} g")
                 col2.metric("Total Calories", f"{total_calories:.0f} kcal")
 
-                if st.button("Confirm & Log Food"):
+                if st.button("Confirm & Log Food", use_container_width=True):
 
                     today = datetime.date.today().isoformat()
 
@@ -900,9 +936,9 @@ elif st.session_state.page == "Analyze Food":
                     )
                     conn.commit()
 
-                    st.success("Food logged successfully!")
+                    st.success("Food logged successfully.")
 
-                    # AUTO CLEAR AFTER LOGGING
+                    # Reset
                     st.session_state.current_image = None
                     st.session_state.analysis_done = False
                     st.session_state.top_results = None
@@ -915,7 +951,7 @@ elif st.session_state.page == "Analyze Food":
     # =====================================================
     else:
 
-        st.markdown("## Manual Food Selection")
+        st.markdown("<h3>Manual Food Selection</h3>", unsafe_allow_html=True)
 
         manual_food = st.selectbox(
             "Select Food Item",
@@ -943,7 +979,7 @@ elif st.session_state.page == "Analyze Food":
             col1.metric("Portion", f"{manual_grams} g")
             col2.metric("Total Calories", f"{total_calories:.0f} kcal")
 
-            if st.button("Log Manual Food"):
+            if st.button("Log Manual Food", use_container_width=True):
 
                 today = datetime.date.today().isoformat()
 
@@ -958,7 +994,9 @@ elif st.session_state.page == "Analyze Food":
                 )
                 conn.commit()
 
-                st.success("Manual food logged successfully!")
+                st.success("Manual food logged successfully.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 # =========================================================
 # HEALTH INSIGHTS – FULLY UPGRADED VERSION
 # =========================================================
@@ -1177,7 +1215,9 @@ elif st.session_state.page == "Health Insights":
     title_x=0.5,
     xaxis_title="Date",
     yaxis_title="Calories (kcal)",
-    template="plotly"
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(color="#E5E7EB"),
 )
 
     st.plotly_chart(fig, width="stretch")
