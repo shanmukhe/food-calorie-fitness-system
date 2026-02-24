@@ -178,13 +178,14 @@ def calculate_target_calories(age, gender, height, weight, activity, goal):
 def metric_card(label, value, icon=""):
     st.markdown(f"""
         <div style="
-            background:white;
+            background: var(--secondary-background-color);
+            color: var(--text-color);
             padding:20px;
             border-radius:16px;
             box-shadow:0 10px 28px rgba(0,0,0,0.08);
             text-align:center;
         ">
-            <div style="font-size:14px;color:#64748b;">
+            <div style="font-size:14px;">
                 {icon} {label}
             </div>
             <div style="font-size:28px;font-weight:700;margin-top:6px;">
@@ -294,7 +295,7 @@ section[data-testid="stTabs"]::after {
 
 /* Sidebar background */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0b0f3b, #1e3a8a);
+    background: var(--secondary-background-color);
     padding: 22px 14px;
 }
 
@@ -398,8 +399,8 @@ div[role="radiogroup"] > label:has(input:checked)::before {
 .stTextInput input,
 .stNumberInput input,
 .stSelectbox div {
-    background-color: #f8fafc !important;
-    color: #000000 !important;
+    background-color: var(--secondary-background-color) !important;
+    color: var(--text-color) !important;
     border-radius: 14px !important;
 }
 
@@ -413,7 +414,7 @@ div[role="radiogroup"] > label:has(input:checked)::before {
    ========================================================== */
 
 .card {
-    background: white;
+    background: var(--secondary-background-color);
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
@@ -421,7 +422,7 @@ div[role="radiogroup"] > label:has(input:checked)::before {
 }
 
 .feature-card {
-    background: white;
+    background: var(--secondary-background-color);
     padding: 20px;
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.06);
@@ -553,94 +554,83 @@ body:has(.login-active) .stButton button:hover {
 
 
 # =========================================================
-# 🔐 LOGIN / SIGNUP PAGE WITH SECURE PASSWORD HANDLING
+# 🔐 LOGIN / SIGNUP PAGE – CLEAN CONTAINER VERSION
 # =========================================================
 if not st.session_state.get("logged_in", False):
-    st.markdown('<div class="login-active"></div>', unsafe_allow_html=True)
 
-    # Project Title
-    st.markdown(
-            "<h2 style='color:white; text-align:left;'>FOOD CALORIE ESTIMATOR FITNESS RECOMENDATION SYSTEM</h2>",
-            unsafe_allow_html=True
-    )
+    # Hide sidebar safely
+    st.markdown("""
+        <style>
+            section[data-testid="stSidebar"] {display: none;}
+        </style>
+    """, unsafe_allow_html=True)
 
+    # Center layout
+    col1, col2, col3 = st.columns([1,2,1])
 
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+            <div style="
+                background: var(--secondary-background-color);
+                padding: 35px;
+                border-radius: 18px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+                color: var(--text-color);
+            ">
+        """, unsafe_allow_html=True)
 
-    auth_mode = st.radio(
-        "",
-        ["Login", "Sign Up"],
-        horizontal=True,
-        label_visibility="collapsed"
-    )
-    
-    # ================= LOGIN =================
-    if auth_mode == "Login":
+        st.markdown("## 🍎 Food Calorie & Fitness System")
+        st.markdown("### Welcome 👋")
 
-        st.markdown(
-            "<h3 style='color:white; text-align:center;'>Welcome Back 👋</h3>",
-            unsafe_allow_html=True
+        auth_mode = st.radio(
+            "",
+            ["Login", "Sign Up"],
+            horizontal=True,
+            label_visibility="collapsed"
         )
 
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
+        # ================= LOGIN =================
+        if auth_mode == "Login":
 
-        if st.button("Login", use_container_width=True):
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
 
-            if not username or not password:
-                st.error("Please enter both username and password")
+            if st.button("Login", use_container_width=True):
 
-            else:
                 cursor.execute("SELECT password FROM users WHERE username=?", (username,))
                 result = cursor.fetchone()
 
                 if result and bcrypt.checkpw(password.encode("utf-8"), result[0]):
                     st.session_state.logged_in = True
                     st.session_state.username = username
-                    st.toast("Login successful 🎉")
                     st.rerun()
                 else:
                     st.error("Invalid username or password")
 
-    # ================= SIGNUP =================
-    else:
-        st.markdown(
-            "<h3 style='color:white; text-align:center;'>Create Account ✨</h3>",
-            unsafe_allow_html=True
-        )
+        # ================= SIGNUP =================
+        else:
 
-        su_username = st.text_input("Username")
-        su_password = st.text_input("Password", type="password")
-        su_confirm = st.text_input("Confirm Password", type="password")
+            su_username = st.text_input("Username")
+            su_password = st.text_input("Password", type="password")
+            su_confirm = st.text_input("Confirm Password", type="password")
 
-        col1, col2 = st.columns(2)
-        with col1:
-            su_age = st.number_input("Age", 10, 100, 22)
-            su_height = st.number_input("Height (cm)", 120, 220, 160)
-        with col2:
-            su_weight = st.number_input("Weight (kg)", 30, 150, 55)
-            su_gender = st.selectbox("Gender", ["Female", "Male"])
+            colA, colB = st.columns(2)
+            with colA:
+                su_age = st.number_input("Age", 10, 100, 22)
+                su_height = st.number_input("Height (cm)", 120, 220, 160)
+            with colB:
+                su_weight = st.number_input("Weight (kg)", 30, 150, 55)
+                su_gender = st.selectbox("Gender", ["Female", "Male"])
 
-        su_activity = st.selectbox(
-            "Activity Level",
-            ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"]
-        )
+            su_activity = st.selectbox(
+                "Activity Level",
+                ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"]
+            )
 
-        if st.button("Create Account", use_container_width=True):
+            if st.button("Create Account", use_container_width=True):
 
-            if not su_username or not su_password:
-                st.error("Username and password required")
-
-            elif len(su_password) < 6:
-                st.error("Password must be at least 6 characters")
-
-            elif su_password != su_confirm:
-                st.error("Passwords do not match")
-
-            else:
-                cursor.execute("SELECT username FROM users WHERE username=?", (su_username,))
-                if cursor.fetchone():
-                    st.error("Username already exists")
+                if su_password != su_confirm:
+                    st.error("Passwords do not match")
                 else:
                     hashed_pw = bcrypt.hashpw(
                         su_password.encode("utf-8"),
@@ -664,9 +654,9 @@ if not st.session_state.get("logged_in", False):
                     conn.commit()
                     st.success("Account created successfully! Please login.")
 
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.stop()
+        st.markdown("</div>", unsafe_allow_html=True)
 
+    st.stop()
 
 if "page" not in st.session_state:
     st.session_state.page = "🏠 Home"
@@ -1439,7 +1429,8 @@ elif st.session_state.page == "📚 Facts & Myths":
         with container:
             st.markdown(f"""
                 <div style="
-                    background:white;
+                    background: var(--secondary-background-color);
+                    color: var(--text-color);
                     padding:18px;
                     border-radius:16px;
                     box-shadow:0 6px 18px rgba(0,0,0,0.08);
@@ -1518,7 +1509,8 @@ elif st.session_state.page == "📚 Facts & Myths":
 
         st.markdown(f"""
             <div style="
-                background:white;
+                background: var(--secondary-background-color);
+                color: var(--text-color);
                 padding:20px;
                 border-radius:18px;
                 box-shadow:0 8px 24px rgba(0,0,0,0.08);
