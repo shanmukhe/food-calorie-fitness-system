@@ -254,9 +254,7 @@ if "chat_history" not in st.session_state:
 st.markdown("""
 <style>
 
-/* ===============================
-   GLOBAL RESET
-=================================*/
+/* ================= GLOBAL FONT ================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -264,91 +262,61 @@ st.markdown("""
     font-family: 'Inter', sans-serif !important;
 }
 
-/* Remove default padding issues */
-.block-container {
-    padding-top: 2rem !important;
-}
-
-/* ===============================
-   FULL PAGE GRADIENT BACKGROUND
-=================================*/
+/* ================= FULL BACKGROUND ================= */
 
 .stApp {
-    background: 
-        radial-gradient(circle at 20% 20%, rgba(139, 0, 139, 0.35), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(128, 0, 64, 0.35), transparent 45%),
+    background:
+        radial-gradient(circle at 15% 20%, rgba(139,0,139,0.45), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(128,0,64,0.45), transparent 45%),
         linear-gradient(135deg, #1a001f 0%, #2a0033 50%, #3a001a 100%);
 }
 
-/* ===============================
-   CENTER LOGIN WRAPPER
-=================================*/
+/* ================= CENTER LOGIN CARD ================= */
 
-.login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-}
+.block-container {
+    max-width: 460px !important;
+    margin: 10vh auto !important;
+    padding: 55px !important;
+    border-radius: 24px;
 
-/* ===============================
-   LOGIN CARD
-=================================*/
-
-.login-card {
-    width: 420px;
-    padding: 50px;
-    border-radius: 22px;
-
-    background: rgba(20, 0, 25, 0.85);
-    border: 1px solid rgba(255, 0, 120, 0.25);
+    background: rgba(20, 0, 25, 0.92);
+    border: 1px solid rgba(190,24,93,0.35);
 
     box-shadow:
-        0 40px 80px rgba(0,0,0,0.6),
-        0 0 40px rgba(139,0,139,0.25);
+        0 50px 100px rgba(0,0,0,0.75),
+        0 0 60px rgba(139,0,139,0.35);
 
     backdrop-filter: blur(18px);
 }
 
-/* ===============================
-   HEADINGS
-=================================*/
+/* ================= HEADINGS ================= */
 
-.login-card h2 {
+h2, h3 {
     text-align: center;
-    margin-bottom: 8px;
-    font-weight: 600;
     color: white;
 }
 
-.login-card p {
-    text-align: center;
-    opacity: 0.7;
-    margin-bottom: 30px;
-    color: #e0c7ff;
-}
+/* ================= INPUTS ================= */
 
-/* ===============================
-   INPUTS
-=================================*/
-
-.login-card input {
+div[data-baseweb="input"] > div {
     border-radius: 14px !important;
     background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(255,0,120,0.3) !important;
+    border: 1px solid rgba(190,24,93,0.4) !important;
+}
+
+input {
     color: white !important;
 }
 
-.login-card input:focus {
+/* Focus effect */
+div[data-baseweb="input"]:focus-within {
     border: 1px solid #c026d3 !important;
-    box-shadow: 0 0 12px rgba(192,38,211,0.6) !important;
+    box-shadow: 0 0 15px rgba(192,38,211,0.6) !important;
 }
 
-/* ===============================
-   BUTTON
-=================================*/
+/* ================= BUTTON ================= */
 
-.login-card button {
+.stButton > button {
     border-radius: 14px !important;
     font-weight: 600 !important;
     background: linear-gradient(90deg,#7e22ce,#be185d) !important;
@@ -357,22 +325,20 @@ st.markdown("""
     transition: 0.25s ease !important;
 }
 
-.login-card button:hover {
+.stButton > button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(190,24,93,0.45);
+    box-shadow: 0 12px 30px rgba(190,24,93,0.55);
 }
 
-/* ===============================
-   RADIO BUTTONS
-=================================*/
+/* ================= RADIO ================= */
 
-.login-card div[role="radiogroup"] > label {
+div[role="radiogroup"] > label {
     border-radius: 999px;
-    padding: 8px 20px;
+    padding: 8px 22px;
     border: 1px solid rgba(190,24,93,0.4);
 }
 
-.login-card div[role="radiogroup"] > label:has(input:checked) {
+div[role="radiogroup"] > label:has(input:checked) {
     background: linear-gradient(90deg,#7e22ce,#be185d);
     color: white !important;
     border: none;
