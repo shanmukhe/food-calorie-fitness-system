@@ -255,10 +255,9 @@ st.markdown("""
 <style>
 
 /* ==========================================================
-   STARTUP DESIGN SYSTEM – VIOLET BRAND
+   STARTUP DESIGN SYSTEM – VIOLET INTELLIGENCE
 ========================================================== */
 
-/* Import Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 html, body, [class*="css"] {
@@ -266,13 +265,18 @@ html, body, [class*="css"] {
 }
 
 /* ==========================================================
-   BRAND COLORS
+   DESIGN TOKENS
 ========================================================== */
+
 :root {
     --brand-primary: #6D28D9;
     --brand-accent: #A855F7;
-    --radius-lg: 18px;
+
+    --radius-lg: 20px;
     --radius-md: 14px;
+
+    --transition-fast: 0.18s ease;
+    --transition-smooth: 0.25s ease;
 }
 
 /* ==========================================================
@@ -281,12 +285,17 @@ html, body, [class*="css"] {
 
 /* DARK MODE */
 html[data-theme="dark"] .stApp {
-    background: linear-gradient(180deg, #0B0B12 0%, #111118 100%);
+    background:
+        radial-gradient(circle at 10% 10%, rgba(109,40,217,0.08), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(168,85,247,0.06), transparent 40%),
+        linear-gradient(180deg, #0B0B12 0%, #111118 100%);
 }
 
 /* LIGHT MODE */
 html[data-theme="light"] .stApp {
-    background: #F8F9FC;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(109,40,217,0.05), transparent 40%),
+        #F8F9FC;
 }
 
 /* ==========================================================
@@ -294,46 +303,54 @@ html[data-theme="light"] .stApp {
 ========================================================== */
 
 [data-testid="stSidebar"] {
-    padding: 24px 16px;
+    padding: 26px 18px;
     border-right: 1px solid rgba(0,0,0,0.05);
 }
 
-/* Dark Sidebar */
 html[data-theme="dark"] [data-testid="stSidebar"] {
     background: #0F0F17;
 }
 
-/* Light Sidebar */
 html[data-theme="light"] [data-testid="stSidebar"] {
-    background: #ffffff;
+    background: #FFFFFF;
 }
 
-/* Sidebar Menu Items */
+/* Sidebar Navigation Items */
+
 div[role="radiogroup"] > label {
     border-radius: var(--radius-md);
-    padding: 10px 14px;
+    padding: 10px 16px;
     margin: 6px 0;
-    transition: 0.2s ease;
     font-weight: 500;
+    transition: var(--transition-fast);
 }
 
-/* Active */
+div[role="radiogroup"] > label:hover {
+    background: rgba(109,40,217,0.10);
+}
+
 div[role="radiogroup"] > label:has(input:checked) {
     background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
     color: white !important;
 }
 
-/* Hover */
-div[role="radiogroup"] > label:hover {
-    background: rgba(109,40,217,0.12);
-}
-/* SLIDER BRAND COLOR */
-.stSlider > div[data-baseweb="slider"] > div > div {
-    background-color: #6D28D9 !important;
+/* ==========================================================
+   PAGE HEADER SYSTEM
+========================================================== */
+
+.page-header {
+    margin-bottom: 32px;
 }
 
-.stSlider span {
-    color: #6D28D9 !important;
+.page-header h1 {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.page-header p {
+    font-size: 14px;
+    opacity: 0.6;
 }
 
 /* ==========================================================
@@ -344,29 +361,28 @@ div[role="radiogroup"] > label:hover {
 .feature-card,
 .metric-card {
     border-radius: var(--radius-lg);
-    padding: 24px;
-    transition: 0.25s ease;
+    padding: 28px;
+    transition: var(--transition-smooth);
 }
 
-/* Light Cards */
+/* LIGHT CARDS */
 html[data-theme="light"] .card,
 html[data-theme="light"] .feature-card,
 html[data-theme="light"] .metric-card {
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
 }
 
-/* Dark Cards */
+/* DARK CARDS */
 html[data-theme="dark"] .card,
 html[data-theme="dark"] .feature-card,
 html[data-theme="dark"] .metric-card {
-    background: rgba(30,30,40,0.8);
+    background: rgba(30,30,40,0.85);
     border: 1px solid rgba(168,85,247,0.15);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.55);
 }
 
-/* Subtle Hover Lift */
 .card:hover,
 .feature-card:hover,
 .metric-card:hover {
@@ -378,28 +394,37 @@ html[data-theme="dark"] .metric-card {
 ========================================================== */
 
 .hero-card {
-    border-radius: 22px;
-    padding: 40px;
+    border-radius: 24px;
+    padding: 48px;
     color: white;
     background: linear-gradient(135deg, #4C1D95, #6D28D9);
-    box-shadow: 0 25px 60px rgba(109,40,217,0.35);
+    box-shadow: 0 30px 70px rgba(109,40,217,0.35);
 }
 
 /* ==========================================================
-   BUTTONS
+   BUTTON SYSTEM
 ========================================================== */
 
+/* Default subtle button */
 .stButton > button {
     border-radius: var(--radius-md);
-    background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
-    border: none;
+    background: rgba(109,40,217,0.08);
+    color: var(--brand-primary);
+    border: 1px solid rgba(109,40,217,0.25);
     font-weight: 600;
-    transition: 0.25s ease;
+    transition: var(--transition-fast);
 }
 
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(109,40,217,0.35);
+    background: rgba(109,40,217,0.15);
+    transform: translateY(-1px);
+}
+
+/* Primary button wrapper */
+.primary-btn button {
+    background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent)) !important;
+    color: white !important;
+    border: none !important;
 }
 
 /* ==========================================================
@@ -411,18 +436,18 @@ input, textarea {
     padding: 10px 14px !important;
 }
 
-/* Light Inputs */
+/* LIGHT */
 html[data-theme="light"] input,
 html[data-theme="light"] textarea {
-    background: #ffffff !important;
+    background: #FFFFFF !important;
     border: 1px solid rgba(0,0,0,0.08) !important;
 }
 
-/* Dark Inputs */
+/* DARK */
 html[data-theme="dark"] input,
 html[data-theme="dark"] textarea {
     background: rgba(255,255,255,0.06) !important;
-    border: 1px solid rgba(168,85,247,0.2) !important;
+    border: 1px solid rgba(168,85,247,0.25) !important;
     color: white !important;
 }
 
@@ -430,7 +455,19 @@ html[data-theme="dark"] textarea {
 input:focus,
 textarea:focus {
     border: 1px solid var(--brand-accent) !important;
-    box-shadow: 0 0 10px rgba(168,85,247,0.4) !important;
+    box-shadow: 0 0 10px rgba(168,85,247,0.35) !important;
+}
+
+/* ==========================================================
+   SLIDER
+========================================================== */
+
+.stSlider > div[data-baseweb="slider"] > div > div {
+    background-color: var(--brand-primary) !important;
+}
+
+.stSlider span {
+    color: var(--brand-primary) !important;
 }
 
 /* ==========================================================
@@ -442,52 +479,32 @@ body:has(.login-active) section[data-testid="stSidebar"] {
     display: none !important;
 }
 
-/* LOGIN CARD BASE */
+/* Login Card Base */
 body:has(.login-active) .block-container {
     max-width: 460px !important;
     margin: 12vh auto !important;
-    padding: 45px !important;
-    border-radius: 22px;
-    backdrop-filter: blur(12px);
+    padding: 50px !important;
+    border-radius: 24px;
+    backdrop-filter: blur(14px);
 }
 
-/* DARK CARD */
+/* DARK LOGIN CARD */
 html[data-theme="dark"] body:has(.login-active) .block-container {
-    background: rgba(25, 25, 35, 0.75);
-    border: 1px solid rgba(168,85,247,0.15);
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    background: rgba(25, 25, 35, 0.80);
+    border: 1px solid rgba(168,85,247,0.18);
+    box-shadow: 0 50px 90px rgba(0,0,0,0.65);
 }
 
-/* LIGHT CARD */
+/* LIGHT LOGIN CARD */
 html[data-theme="light"] body:has(.login-active) .block-container {
-    background: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.90);
     border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-}
-            
-}
-/* RADIO BUTTONS */
-div[role="radiogroup"] {
-    gap: 12px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.08);
 }
 
-div[role="radiogroup"] label {
-    padding: 8px 18px;
-    border-radius: 999px;
-    border: 1px solid rgba(109,40,217,0.3);
-}
+/* Login Background Upgrade */
 
-div[role="radiogroup"] label:has(input:checked) {
-    background: linear-gradient(90deg, #6D28D9, #A855F7);
-    color: white !important;
-    border: none;
-}
-
-/* ==========================================================
-   PREMIUM LOGIN BACKGROUND
-========================================================== */
-
-/* DARK MODE LOGIN */
+/* DARK */
 html[data-theme="dark"] body:has(.login-active) .stApp {
     background:
         radial-gradient(circle at 20% 30%, rgba(109,40,217,0.18), transparent 40%),
@@ -495,13 +512,22 @@ html[data-theme="dark"] body:has(.login-active) .stApp {
         linear-gradient(135deg, #0B0B12 0%, #111118 100%);
 }
 
-/* LIGHT MODE LOGIN */
+/* LIGHT */
 html[data-theme="light"] body:has(.login-active) .stApp {
     background:
         radial-gradient(circle at 15% 25%, rgba(109,40,217,0.10), transparent 35%),
         radial-gradient(circle at 85% 75%, rgba(168,85,247,0.08), transparent 40%),
         #F6F7FB;
 }
+
+/* ==========================================================
+   SPACING UTILITY
+========================================================== */
+
+.spacer {
+    height: 28px;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -560,7 +586,7 @@ if not st.session_state.get("logged_in", False):
     # ================= SIGNUP =================
     else:
         st.markdown(
-            "<h3 style='text-align:center;'>Create Account ✨</h3>",
+            "<h3 style='text-align:center;'>Create Account</h3>",
             unsafe_allow_html=True
         )
 
