@@ -466,17 +466,7 @@ body:has(.login-active) .stButton > button:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 50px rgba(168,85,247,0.8);
 }
-div[role="radiogroup"] {
-    background: rgba(255,255,255,0.05);
-    padding: 6px;
-    border-radius: 20px;
-}
 
-div[role="radiogroup"] > label {
-    border-radius: 14px;
-    padding: 8px 18px;
-    margin: 0 4px;
-}
 </style>
 """, unsafe_allow_html=True)
 
