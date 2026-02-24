@@ -250,6 +250,7 @@ if "chat_open" not in st.session_state:
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
+
 st.markdown("""
 <style>
 
@@ -262,18 +263,18 @@ st.markdown("""
 
 .stApp {
     background:
-        radial-gradient(circle at 15% 20%, rgba(139,0,139,0.35), transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(128,0,64,0.35), transparent 45%),
-        linear-gradient(135deg, #1a001f 0%, #2a0033 50%, #3a001a 100%);
+        radial-gradient(circle at 15% 20%, rgba(124,58,237,0.35), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(59,130,246,0.35), transparent 45%),
+        linear-gradient(135deg, #0f0f1a 0%, #1e1b4b 50%, #0f172a 100%);
 }
 
-/* ================= SIDEBAR (OPPOSITE GRADIENT) ================= */
+/* ================= SIDEBAR ================= */
 
 section[data-testid="stSidebar"] {
     background:
-        radial-gradient(circle at 80% 20%, rgba(128,0,64,0.35), transparent 40%),
-        radial-gradient(circle at 20% 80%, rgba(139,0,139,0.35), transparent 45%),
-        linear-gradient(135deg, #3a001a 0%, #2a0033 50%, #1a001f 100%);
+        radial-gradient(circle at 80% 20%, rgba(59,130,246,0.35), transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(124,58,237,0.35), transparent 45%),
+        linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
     padding: 28px 18px;
     border-right: 1px solid rgba(255,255,255,0.08);
 }
@@ -281,15 +282,15 @@ section[data-testid="stSidebar"] {
 /* ================= SIDEBAR WELCOME CARD ================= */
 
 .sidebar-welcome {
-    background: linear-gradient(135deg,#7e22ce,#be185d);
+    background: linear-gradient(135deg,#7c3aed,#3b82f6);
     padding: 20px;
     border-radius: 18px;
     margin-bottom: 25px;
     color: white;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
 }
 
-/* ================= SIDEBAR NAV ITEMS ================= */
+/* ================= NAV ITEMS ================= */
 
 section[data-testid="stSidebar"] div[role="radiogroup"] > label {
     border-radius: 999px;
@@ -297,34 +298,34 @@ section[data-testid="stSidebar"] div[role="radiogroup"] > label {
     margin: 6px 0;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.15);
-    color: #f3e8ff !important;
+    color: #e0e7ff !important;
     transition: 0.25s ease;
 }
 
 section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
-    background: rgba(190,24,93,0.25);
+    background: rgba(59,130,246,0.25);
     transform: translateX(4px);
 }
 
 section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg,#7e22ce,#be185d);
+    background: linear-gradient(90deg,#7c3aed,#3b82f6);
     border: none;
     color: white !important;
-    box-shadow: 0 6px 20px rgba(190,24,93,0.5);
+    box-shadow: 0 6px 20px rgba(59,130,246,0.4);
 }
 
-/* ================= SIDEBAR LOGOUT ================= */
+/* ================= LOGOUT BUTTON ================= */
 
 section[data-testid="stSidebar"] .stButton > button {
     margin-top: 25px;
     border-radius: 14px !important;
-    background: linear-gradient(90deg,#7e22ce,#be185d) !important;
+    background: linear-gradient(90deg,#7c3aed,#3b82f6) !important;
     color: white !important;
     border: none !important;
     font-weight: 600;
 }
 
-//* ================= LOGIN MODE ONLY ================= */
+/* ================= LOGIN MODE ================= */
 
 body:has(.login-active) section[data-testid="stSidebar"] {
     display: none !important;
@@ -338,25 +339,25 @@ body:has(.login-active) .block-container {
 
     background: linear-gradient(
         135deg,
-        rgba(40, 0, 50, 0.95),
-        rgba(60, 0, 40, 0.95)
+        rgba(30, 27, 75, 0.95),
+        rgba(15, 23, 42, 0.95)
     );
 
-    border: 1px solid rgba(255, 0, 150, 0.35);
+    border: 1px solid rgba(124,58,237,0.4);
 
     box-shadow:
         0 60px 120px rgba(0,0,0,0.8),
-        0 0 80px rgba(139,0,139,0.45);
+        0 0 60px rgba(59,130,246,0.3);
 
     backdrop-filter: blur(20px);
 }
 
-/* ================= LOGIN INPUTS ONLY ================= */
+/* ================= LOGIN INPUTS ================= */
 
 body:has(.login-active) div[data-baseweb="input"] > div {
     border-radius: 14px !important;
     background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(190,24,93,0.4) !important;
+    border: 1px solid rgba(124,58,237,0.4) !important;
 }
 
 body:has(.login-active) input {
@@ -365,18 +366,9 @@ body:has(.login-active) input {
 
 body:has(.login-active) .stButton > button {
     border-radius: 14px !important;
-    background: linear-gradient(90deg,#7e22ce,#be185d) !important;
+    background: linear-gradient(90deg,#7c3aed,#3b82f6) !important;
     color: white !important;
     border: none !important;
-}
-            
-body:has(.login-active) h2,
-body:has(.login-active) h3 {
-    color: #ffffff !important;
-}
-
-body:has(.login-active) label {
-    color: #f3e8ff !important;
 }
 
 </style>
