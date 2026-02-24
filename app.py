@@ -343,6 +343,140 @@ div[role="radiogroup"] > label:has(input:checked) {
     color: white !important;
     border: none;
 }
+/* ===============================
+   GLOBAL FONT
+=================================*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* ===============================
+   MAIN APP BACKGROUND
+=================================*/
+
+.stApp {
+    background:
+        radial-gradient(circle at 20% 20%, rgba(139,0,139,0.45), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(128,0,64,0.45), transparent 45%),
+        linear-gradient(135deg, #1a001f 0%, #2a0033 50%, #3a001a 100%);
+}
+
+/* ===============================
+   SIDEBAR – OPPOSITE GRADIENT
+=================================*/
+
+section[data-testid="stSidebar"] {
+    background:
+        radial-gradient(circle at 80% 20%, rgba(128,0,64,0.45), transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(139,0,139,0.45), transparent 45%),
+        linear-gradient(135deg, #3a001a 0%, #2a0033 50%, #1a001f 100%);
+
+    padding: 30px 20px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Remove white top area */
+section[data-testid="stSidebar"] > div:first-child {
+    padding-top: 0 !important;
+}
+
+/* ===============================
+   SIDEBAR TOP CARD
+=================================*/
+
+.sidebar-welcome {
+    background: linear-gradient(135deg,#7e22ce,#be185d);
+    padding: 22px;
+    border-radius: 18px;
+    margin-bottom: 30px;
+    color: white;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+/* ===============================
+   NAVIGATION LABEL
+=================================*/
+
+section[data-testid="stSidebar"] small {
+    color: #e9d5ff !important;
+    letter-spacing: 1px;
+    font-size: 11px;
+}
+
+/* ===============================
+   NAVIGATION ITEMS
+=================================*/
+
+div[role="radiogroup"] > label {
+    border-radius: 999px;
+    padding: 10px 18px;
+    margin: 8px 0;
+    font-weight: 500;
+    transition: 0.25s ease;
+    color: #f3e8ff !important;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+}
+
+/* Hover */
+div[role="radiogroup"] > label:hover {
+    background: rgba(190,24,93,0.25);
+    transform: translateX(4px);
+}
+
+/* Active */
+div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(90deg,#7e22ce,#be185d);
+    border: none;
+    color: white !important;
+    box-shadow: 0 6px 20px rgba(190,24,93,0.5);
+}
+
+/* ===============================
+   LOGOUT BUTTON
+=================================*/
+
+section[data-testid="stSidebar"] .stButton > button {
+    margin-top: 25px;
+    border-radius: 14px !important;
+    background: linear-gradient(90deg,#7e22ce,#be185d) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+section[data-testid="stSidebar"] .stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(190,24,93,0.5);
+}
+
+/* ===============================
+   SCROLLBAR (Premium Look)
+=================================*/
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(#7e22ce,#be185d);
+    border-radius: 20px;
+}
+
+/* ===============================
+   MAIN CONTENT CARD POLISH
+=================================*/
+
+.block-container {
+    padding-top: 2rem !important;
+}
 
 </style>
 """, unsafe_allow_html=True)
