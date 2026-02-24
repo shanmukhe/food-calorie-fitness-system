@@ -1556,63 +1556,63 @@ elif st.session_state.page == "👤 Edit Profile":
     st.markdown("---")
 
     # ================= ACCOUNT DELETE =================
-st.subheader("⚠ Delete Account")
+    st.subheader("⚠ Delete Account")
 
-st.warning("This action is permanent and cannot be undone.")
+    st.warning("This action is permanent and cannot be undone.")
 
-delete_password = st.text_input(
-    "Enter your current password to confirm deletion",
-    type="password"
-)
+    delete_password = st.text_input(
+        "Enter your current password to confirm deletion",
+        type="password"
+    )
 
-if st.button("❌ Delete My Account Permanently"):
+    if st.button("❌ Delete My Account Permanently"):
 
-    if not delete_password:
-        st.error("Please enter your password.")
-    else:
-        # Get stored hash
-        cursor.execute(
-            "SELECT password FROM users WHERE username=?",
-            (st.session_state.username,)
-        )
-        result = cursor.fetchone()
-
-        if not result:
-            st.error("User not found.")
+        if not delete_password:
+            st.error("Please enter your password.")
         else:
-            stored_hash = result[0]
+            # Get stored hash
+            cursor.execute(
+                "SELECT password FROM users WHERE username=?",
+                (st.session_state.username,)
+            )
+            result = cursor.fetchone()
 
-            # Verify password using bcrypt
-            if not bcrypt.checkpw(delete_password.encode(), stored_hash):
-                st.error("Incorrect password. Account not deleted.")
+            if not result:
+                st.error("User not found.")
             else:
-                # Delete user data
-                cursor.execute(
-                    "DELETE FROM users WHERE username=?",
-                    (st.session_state.username,)
-                )
-                cursor.execute(
-                    "DELETE FROM food_logs WHERE username=?",
-                    (st.session_state.username,)
-                )
-                cursor.execute(
-                    "DELETE FROM weight_logs WHERE username=?",
-                    (st.session_state.username,)
-                )
-                cursor.execute(
-                    "DELETE FROM exercise_logs WHERE username=?",
-                    (st.session_state.username,)
-                )
+                stored_hash = result[0]
 
-                conn.commit()
+                # Verify password using bcrypt
+                if not bcrypt.checkpw(delete_password.encode(), stored_hash):
+                    st.error("Incorrect password. Account not deleted.")
+                else:
+                    # Delete user data
+                    cursor.execute(
+                        "DELETE FROM users WHERE username=?",
+                        (st.session_state.username,)
+                    )
+                    cursor.execute(
+                        "DELETE FROM food_logs WHERE username=?",
+                        (st.session_state.username,)
+                    )
+                    cursor.execute(
+                        "DELETE FROM weight_logs WHERE username=?",
+                        (st.session_state.username,)
+                    )
+                    cursor.execute(
+                        "DELETE FROM exercise_logs WHERE username=?",
+                        (st.session_state.username,)
+                    )
 
-                # Clear session safely
-                st.session_state.logged_in = False
-                st.session_state.username = None
-                st.session_state.page = "🏠 Home"
+                    conn.commit()
 
-                st.success("Account deleted successfully.")
-                st.rerun()
+                    # Clear session safely
+                    st.session_state.logged_in = False
+                    st.session_state.username = None
+                    st.session_state.page = "🏠 Home"
+
+                    st.success("Account deleted successfully.")
+                    st.rerun()
 
 elif st.session_state.page == "📚 Facts & Myths":
 
