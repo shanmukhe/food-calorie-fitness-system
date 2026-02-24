@@ -410,61 +410,63 @@ html[data-theme="dark"] .metric-card {
     box-shadow: 0 8px 25px rgba(168,85,247,0.6);
 }
 
-//* ==========================================================
-   LOGIN IMMERSIVE LUXURY
+/* ==========================================================
+   LOGIN IMMERSIVE – CENTERED FLOATING LUXURY
 ========================================================== */
 
-body:has(.login-active) .stApp {
-    background:
-        radial-gradient(circle at 30% 20%, rgba(124,58,237,0.25), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(168,85,247,0.25), transparent 40%),
-        linear-gradient(135deg, #0b0b12, #151522);
-}
-
-/* Remove sidebar */
+/* Hide sidebar */
 body:has(.login-active) section[data-testid="stSidebar"] {
     display: none !important;
 }
 
-/* Center login card */
+/* Background */
+body:has(.login-active) .stApp {
+    background:
+        radial-gradient(circle at 30% 20%, rgba(124,58,237,0.20), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(168,85,247,0.20), transparent 40%),
+        linear-gradient(135deg, #0b0b12, #151522);
+}
+
+/* Center container */
 body:has(.login-active) .block-container {
     max-width: 480px !important;
-    margin-top: 8vh !important;
-    padding: 45px;
+    margin: 10vh auto !important;
+    padding: 50px !important;
     border-radius: 28px;
 
     background: rgba(20,20,35,0.85);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
 
-    border: 1px solid rgba(168,85,247,0.2);
-    box-shadow: 0 40px 80px rgba(124,58,237,0.4);
+    border: 1px solid rgba(168,85,247,0.15);
+    box-shadow: 0 40px 100px rgba(124,58,237,0.35);
 }
 
-/* Login Inputs */
+/* Input fields */
 body:has(.login-active) input {
-    background: rgba(255,255,255,0.05) !important;
-    border: 1px solid rgba(168,85,247,0.2) !important;
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(168,85,247,0.15) !important;
     border-radius: 14px !important;
     color: white !important;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
 }
 
-/* Focus Glow */
+/* Focus glow */
 body:has(.login-active) input:focus {
     border: 1px solid #a855f7 !important;
-    box-shadow: 0 0 12px rgba(168,85,247,0.6) !important;
+    box-shadow: 0 0 12px rgba(168,85,247,0.5) !important;
 }
 
-/* Login Button */
+/* Login button */
 body:has(.login-active) .stButton > button {
     background: linear-gradient(90deg, #6d28d9, #a855f7);
     border-radius: 14px;
     font-weight: 600;
-    box-shadow: 0 15px 40px rgba(168,85,247,0.5);
+    box-shadow: 0 15px 40px rgba(168,85,247,0.4);
 }
 
 body:has(.login-active) .stButton > button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 20px 50px rgba(168,85,247,0.8);
+    box-shadow: 0 20px 50px rgba(168,85,247,0.6);
 }
 
 </style>
