@@ -107,6 +107,7 @@ conn.commit()
 
 
 
+
 # ---------------- HELPERS ----------------
 def hash_password(password):
     # Generate salt + hash
@@ -194,7 +195,17 @@ def metric_card(label, value, icon=""):
         </div>
     """, unsafe_allow_html=True)
 
+# ================= SAFE SCHEMA MIGRATION =================
 
+def column_exists(table, column):
+    cursor.execute(f"PRAGMA table_info({table})")
+    columns = [row[1] for row in cursor.fetchall()]
+    return column in columns
+
+# Add avatar column if missing
+if not column_exists("users", "avatar"):
+    cursor.execute("ALTER TABLE users ADD COLUMN avatar BLOB")
+    conn.commit()
 
 exercise_map = {
     "Idli": ("Brisk walking", 25),
@@ -649,7 +660,11 @@ if not st.session_state.get("logged_in", False):
                     )
 
                     cursor.execute("""
-                        INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        INSERT INTO users (
+                            username, password, age, gender, height, weight,
+                            activity, goal, diabetes, acidity, constipation, obesity
+                        )
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """, (
                         su_username,
                         hashed_pw,
@@ -683,6 +698,7 @@ menu_options = [
     "🧠 Healthy Weight Toolkit",
     "📚 Facts & Myths",
     "🥗 Ingredients Guide",
+    "👤 Edit Profile",
     "🍭 Fight Sugar Cravings",
     "🔥 Lose Weight Safely",
     "ℹ️ About Project",
@@ -1393,6 +1409,165 @@ elif st.session_state.page == "❤️ Health Insights":
     else:
         st.info("Adaptive system requires at least a few days of logs.")
 
+# =========================================================
+# 👤 PREMIUM PROFILE MANAGEMENT
+# =========================================================
+elif st.session_state.page == "👤 Edit Profile":
+
+    st.title("👤 Profile Management")
+    st.caption("Update profile • Change password • Manage account")
+
+    cursor.execute("""
+        SELECT age, gender, height, weight, activity, goal,
+               diabetes, acidity, constipation, obesity, avatar
+        FROM users WHERE username=?
+    """, (st.session_state.username,))
+    
+    user = cursor.fetchone()
+
+    if not user:
+        st.error("User not found.")
+        st.stop()
+
+    age, gender, height, weight, activity, goal, diabetes, acidity, constipation, obesity, avatar = user
+
+    # ================= PROFILE HEADER =================
+    col1, col2 = st.columns([1,2])
+
+    with col1:
+        if avatar:
+            st.image(avatar, width=150)
+        else:
+            st.image("https://cdn-icons-png.flaticon.com/512/149/149071.png", width=150)
+
+        uploaded_avatar = st.file_uploader("Upload New Avatar", type=["jpg","jpeg","png"])
+
+        if uploaded_avatar:
+            avatar_bytes = uploaded_avatar.read()
+            cursor.execute(
+                "UPDATE users SET avatar=? WHERE username=?",
+                (avatar_bytes, st.session_state.username)
+            )
+            conn.commit()
+            st.success("Avatar updated!")
+            st.rerun()
+
+    with col2:
+        st.markdown(f"### {st.session_state.username}")
+        st.write("Manage your personal information below.")
+
+    st.markdown("---")
+
+    # ================= PROFILE EDIT =================
+    st.subheader("✏ Edit Personal Information")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        new_age = st.number_input("Age", 10, 100, age)
+        new_height = st.number_input("Height (cm)", 120, 220, height)
+        new_weight = st.number_input("Weight (kg)", 30.0, 200.0, float(weight))
+        new_gender = st.selectbox("Gender", ["Female","Male"], index=["Female","Male"].index(gender))
+
+    with col2:
+        new_activity = st.selectbox(
+            "Activity Level",
+            ["Sedentary","Lightly Active","Moderately Active","Very Active"],
+            index=["Sedentary","Lightly Active","Moderately Active","Very Active"].index(activity)
+        )
+
+        new_goal = st.selectbox(
+            "Goal",
+            ["Weight Loss","Maintain","Weight Gain"],
+            index=["Weight Loss","Maintain","Weight Gain"].index(goal)
+        )
+
+        new_diabetes = st.checkbox("Diabetes", value=bool(diabetes))
+        new_acidity = st.checkbox("Acidity", value=bool(acidity))
+        new_constipation = st.checkbox("Constipation", value=bool(constipation))
+        new_obesity = st.checkbox("Obesity", value=bool(obesity))
+
+    if st.button("💾 Save Profile Changes", use_container_width=True):
+
+        cursor.execute("""
+            UPDATE users
+            SET age=?, gender=?, height=?, weight=?, activity=?, goal=?,
+                diabetes=?, acidity=?, constipation=?, obesity=?
+            WHERE username=?
+        """, (
+            new_age,
+            new_gender,
+            new_height,
+            new_weight,
+            new_activity,
+            new_goal,
+            int(new_diabetes),
+            int(new_acidity),
+            int(new_constipation),
+            int(new_obesity),
+            st.session_state.username
+        ))
+
+        conn.commit()
+        st.success("Profile updated successfully 🎉")
+        st.rerun()
+
+    st.markdown("---")
+
+    # ================= PASSWORD CHANGE =================
+    st.subheader("🔐 Change Password")
+
+    old_pw = st.text_input("Current Password", type="password")
+    new_pw = st.text_input("New Password", type="password")
+    confirm_pw = st.text_input("Confirm New Password", type="password")
+
+    if st.button("Update Password"):
+
+        cursor.execute("SELECT password FROM users WHERE username=?", (st.session_state.username,))
+        stored_hash = cursor.fetchone()[0]
+
+        if not bcrypt.checkpw(old_pw.encode(), stored_hash):
+            st.error("Current password is incorrect.")
+        elif len(new_pw) < 6:
+            st.error("New password must be at least 6 characters.")
+        elif new_pw != confirm_pw:
+            st.error("Passwords do not match.")
+        else:
+            new_hash = bcrypt.hashpw(new_pw.encode(), bcrypt.gensalt())
+            cursor.execute(
+                "UPDATE users SET password=? WHERE username=?",
+                (new_hash, st.session_state.username)
+            )
+            conn.commit()
+            st.success("Password updated successfully 🔐")
+
+    st.markdown("---")
+
+    # ================= ACCOUNT DELETE =================
+    st.subheader("⚠ Delete Account")
+
+    st.warning("This action is permanent and cannot be undone.")
+
+    confirm_delete = st.text_input("Type DELETE to confirm")
+
+    if st.button("❌ Delete My Account"):
+
+        if confirm_delete == "DELETE":
+
+            cursor.execute("DELETE FROM users WHERE username=?", (st.session_state.username,))
+            cursor.execute("DELETE FROM food_logs WHERE username=?", (st.session_state.username,))
+            cursor.execute("DELETE FROM weight_logs WHERE username=?", (st.session_state.username,))
+            cursor.execute("DELETE FROM exercise_logs WHERE username=?", (st.session_state.username,))
+            conn.commit()
+
+            st.session_state.logged_in = False
+            st.session_state.username = None
+
+            st.success("Account deleted successfully.")
+            st.rerun()
+
+        else:
+            st.error("Please type DELETE to confirm.")
 
 elif st.session_state.page == "📚 Facts & Myths":
 
