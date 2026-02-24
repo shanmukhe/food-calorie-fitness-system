@@ -467,8 +467,9 @@ body:has(.login-active) section[data-testid="stSidebar"] {
 /* Expand main container */
 body:has(.login-active) .block-container {
     max-width: 520px !important;
-    margin-top: 12vh !important;
+    margin-top: 10vh !important;
     margin-bottom: 8vh !important;
+    padding-top: 0 !important;
 }
 
 /* Fade animation */
@@ -548,7 +549,32 @@ body:has(.login-active) .stButton button:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 25px rgba(0,0,0,0.3);
 }
+/* ================================
+   LOGIN CARD CONTAINER
+================================ */
 
+.login-card {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px);
+    padding: 40px 35px;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.15);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Center title better */
+body:has(.login-active) h2 {
+    text-align: center !important;
+    margin-bottom: 30px !important;
+}
+
+/* Improve spacing inside card */
+body:has(.login-active) .stTextInput,
+body:has(.login-active) .stNumberInput,
+body:has(.login-active) .stSelectbox {
+    margin-bottom: 16px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -564,7 +590,10 @@ if not st.session_state.get("logged_in", False):
             "<h2 style='color:white; text-align:left;'>FOOD CALORIE ESTIMATOR FITNESS RECOMENDATION SYSTEM</h2>",
             unsafe_allow_html=True
     )
-
+    st.markdown(
+    "<p class='login-subtitle'>AI Powered Personalized Nutrition Intelligence</p>",
+    unsafe_allow_html=True
+    )
 
     st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
