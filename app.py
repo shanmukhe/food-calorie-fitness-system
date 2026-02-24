@@ -1465,8 +1465,20 @@ elif st.session_state.page == "👤 Edit Profile":
 
     with col1:
         new_age = st.number_input("Age", 10, 100, age)
-        new_height = st.number_input("Height (cm)", 120, 220, height)
-        new_weight = st.number_input("Weight (kg)", 30.0, 200.0, float(weight))
+        new_height = st.number_input(
+            "Height (cm)",
+            min_value=120.0,
+            max_value=220.0,
+            value=float(height),
+            step=0.1
+        )
+        new_age = st.number_input(
+            "Age",
+            min_value=10,
+            max_value=100,
+            value=int(age),
+            step=1
+        )
         new_gender = st.selectbox("Gender", ["Female","Male"], index=["Female","Male"].index(gender))
 
     with col2:
