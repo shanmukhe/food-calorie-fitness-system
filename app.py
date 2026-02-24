@@ -442,24 +442,29 @@ body:has(.login-active) section[data-testid="stSidebar"] {
     display: none !important;
 }
 
-/* Center Login Card */
+/* LOGIN CARD BASE */
 body:has(.login-active) .block-container {
-    max-width: 480px !important;
-    margin: 10vh auto !important;
-    padding: 50px !important;
+    max-width: 460px !important;
+    margin: 12vh auto !important;
+    padding: 45px !important;
     border-radius: 22px;
+    backdrop-filter: blur(12px);
 }
 
-/* Light Login Card */
-html[data-theme="light"] body:has(.login-active) .block-container {
-    background: #ffffff;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-}
-
-/* Dark Login Card */
+/* DARK CARD */
 html[data-theme="dark"] body:has(.login-active) .block-container {
-    background: rgba(30,30,40,0.9);
+    background: rgba(25, 25, 35, 0.75);
+    border: 1px solid rgba(168,85,247,0.15);
     box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+
+/* LIGHT CARD */
+html[data-theme="light"] body:has(.login-active) .block-container {
+    background: rgba(255,255,255,0.85);
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+            
 }
 /* RADIO BUTTONS */
 div[role="radiogroup"] {
@@ -477,6 +482,26 @@ div[role="radiogroup"] label:has(input:checked) {
     color: white !important;
     border: none;
 }
+
+/* ==========================================================
+   PREMIUM LOGIN BACKGROUND
+========================================================== */
+
+/* DARK MODE LOGIN */
+html[data-theme="dark"] body:has(.login-active) .stApp {
+    background:
+        radial-gradient(circle at 20% 30%, rgba(109,40,217,0.18), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(168,85,247,0.12), transparent 45%),
+        linear-gradient(135deg, #0B0B12 0%, #111118 100%);
+}
+
+/* LIGHT MODE LOGIN */
+html[data-theme="light"] body:has(.login-active) .stApp {
+    background:
+        radial-gradient(circle at 15% 25%, rgba(109,40,217,0.10), transparent 35%),
+        radial-gradient(circle at 85% 75%, rgba(168,85,247,0.08), transparent 40%),
+        #F6F7FB;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -487,10 +512,12 @@ if not st.session_state.get("logged_in", False):
     st.markdown('<div class="login-active"></div>', unsafe_allow_html=True)
 
     # Project Title
-    st.markdown(
-            "<h2 style='text-align:left;'>FOOD CALORIE ESTIMATOR FITNESS RECOMENDATION SYSTEM</h2>",
-            unsafe_allow_html=True
-    )
+    st.markdown("""
+    <div style="text-align:center;margin-bottom:25px;">
+        <h2 style="font-weight:600;">Food Fitness</h2>
+        <p style="opacity:0.6;">AI Nutrition Intelligence Platform</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 
     st.markdown('<div class="login-card">', unsafe_allow_html=True)
@@ -794,10 +821,6 @@ if st.session_state.page == "Home":
 
     st.caption("👉 Use the sidebar to explore food analysis, insights, and tools")
 
-
-# =========================================================
-#  ANALYZE FOOD – FINAL PROFESSIONAL VERSION
-# =========================================================
 # =========================================================
 # ANALYZE FOOD – STARTUP GRADE UI VERSION
 # =========================================================
