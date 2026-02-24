@@ -255,137 +255,117 @@ st.markdown("""
 <style>
 
 /* ==========================================================
-   STARTUP DESIGN SYSTEM – VIOLET INTELLIGENCE
+   GLOBAL FONT
 ========================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
+* {
+    font-family: 'Inter', sans-serif !important;
 }
 
 /* ==========================================================
-   DESIGN TOKENS
+   FORCE BACKGROUND (WORKS IN STREAMLIT)
 ========================================================== */
 
-:root {
-    --brand-primary: #6D28D9;
-    --brand-accent: #A855F7;
-
-    --radius-lg: 20px;
-    --radius-md: 14px;
-
-    --transition-fast: 0.18s ease;
-    --transition-smooth: 0.25s ease;
-}
-
-/* ==========================================================
-   GLOBAL BACKGROUND
-========================================================== */
-
-/* DARK MODE */
-html[data-theme="dark"] .stApp {
+.stApp {
     background:
-        radial-gradient(circle at 10% 10%, rgba(109,40,217,0.08), transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(168,85,247,0.06), transparent 40%),
+        radial-gradient(circle at 15% 20%, rgba(109,40,217,0.12), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(168,85,247,0.08), transparent 40%),
         linear-gradient(180deg, #0B0B12 0%, #111118 100%);
 }
 
-/* LIGHT MODE */
-html[data-theme="light"] .stApp {
+/* Light theme override */
+[data-theme="light"] .stApp {
     background:
-        radial-gradient(circle at 90% 10%, rgba(109,40,217,0.05), transparent 40%),
-        #F8F9FC;
+        radial-gradient(circle at 15% 20%, rgba(109,40,217,0.06), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(168,85,247,0.05), transparent 40%),
+        #F5F7FB;
 }
 
 /* ==========================================================
-   SIDEBAR
+   SIDEBAR – STRONGER TARGETING
 ========================================================== */
 
-[data-testid="stSidebar"] {
-    padding: 26px 18px;
-    border-right: 1px solid rgba(0,0,0,0.05);
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg,#111118,#0F0F17);
+    border-right: 1px solid rgba(168,85,247,0.15);
 }
 
-html[data-theme="dark"] [data-testid="stSidebar"] {
-    background: #0F0F17;
-}
-
-html[data-theme="light"] [data-testid="stSidebar"] {
+[data-theme="light"] section[data-testid="stSidebar"] {
     background: #FFFFFF;
+    border-right: 1px solid rgba(0,0,0,0.08);
 }
 
-/* Sidebar Navigation Items */
-
-div[role="radiogroup"] > label {
-    border-radius: var(--radius-md);
-    padding: 10px 16px;
+/* Sidebar radio buttons */
+section[data-testid="stSidebar"] div[role="radiogroup"] > label {
+    border-radius: 12px;
+    padding: 10px 14px;
     margin: 6px 0;
-    font-weight: 500;
-    transition: var(--transition-fast);
+    transition: 0.2s ease;
 }
 
-div[role="radiogroup"] > label:hover {
-    background: rgba(109,40,217,0.10);
-}
-
-div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+/* Active */
+section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(90deg,#6D28D9,#A855F7);
     color: white !important;
 }
 
+/* Hover */
+section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
+    background: rgba(109,40,217,0.12);
+}
+
 /* ==========================================================
-   PAGE HEADER SYSTEM
+   FIX LOGIN FLOATING ISSUE
 ========================================================== */
 
-.page-header {
-    margin-bottom: 32px;
+.login-active .block-container {
+    max-width: 460px !important;
+    margin-top: 8vh !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 50px !important;
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
 }
 
-.page-header h1 {
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 6px;
+/* Dark login card */
+.login-active .block-container {
+    background: rgba(25,25,35,0.85);
+    border: 1px solid rgba(168,85,247,0.2);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.7);
 }
 
-.page-header p {
-    font-size: 14px;
-    opacity: 0.6;
+/* Light login card */
+[data-theme="light"] .login-active .block-container {
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
 }
 
 /* ==========================================================
    CARDS
 ========================================================== */
 
-.card,
-.feature-card,
-.metric-card {
-    border-radius: var(--radius-lg);
+.card, .feature-card, .metric-card {
+    border-radius: 18px;
     padding: 28px;
-    transition: var(--transition-smooth);
-}
-
-/* LIGHT CARDS */
-html[data-theme="light"] .card,
-html[data-theme="light"] .feature-card,
-html[data-theme="light"] .metric-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
-}
-
-/* DARK CARDS */
-html[data-theme="dark"] .card,
-html[data-theme="dark"] .feature-card,
-html[data-theme="dark"] .metric-card {
+    transition: 0.2s ease;
     background: rgba(30,30,40,0.85);
     border: 1px solid rgba(168,85,247,0.15);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 
-.card:hover,
-.feature-card:hover,
-.metric-card:hover {
+[data-theme="light"] .card,
+[data-theme="light"] .feature-card,
+[data-theme="light"] .metric-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.card:hover, .feature-card:hover {
     transform: translateY(-3px);
 }
 
@@ -394,37 +374,29 @@ html[data-theme="dark"] .metric-card {
 ========================================================== */
 
 .hero-card {
-    border-radius: 24px;
-    padding: 48px;
+    border-radius: 22px;
+    padding: 50px;
+    background: linear-gradient(135deg,#4C1D95,#6D28D9);
     color: white;
-    background: linear-gradient(135deg, #4C1D95, #6D28D9);
     box-shadow: 0 30px 70px rgba(109,40,217,0.35);
 }
 
 /* ==========================================================
-   BUTTON SYSTEM
+   BUTTONS
 ========================================================== */
 
-/* Default subtle button */
 .stButton > button {
-    border-radius: var(--radius-md);
-    background: rgba(109,40,217,0.08);
-    color: var(--brand-primary);
-    border: 1px solid rgba(109,40,217,0.25);
+    border-radius: 12px;
     font-weight: 600;
-    transition: var(--transition-fast);
+    border: none;
+    background: linear-gradient(90deg,#6D28D9,#A855F7);
+    color: white;
+    transition: 0.2s ease;
 }
 
 .stButton > button:hover {
-    background: rgba(109,40,217,0.15);
-    transform: translateY(-1px);
-}
-
-/* Primary button wrapper */
-.primary-btn button {
-    background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent)) !important;
-    color: white !important;
-    border: none !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(109,40,217,0.35);
 }
 
 /* ==========================================================
@@ -432,30 +404,20 @@ html[data-theme="dark"] .metric-card {
 ========================================================== */
 
 input, textarea {
-    border-radius: var(--radius-md) !important;
-    padding: 10px 14px !important;
+    border-radius: 12px !important;
 }
 
-/* LIGHT */
-html[data-theme="light"] input,
-html[data-theme="light"] textarea {
-    background: #FFFFFF !important;
-    border: 1px solid rgba(0,0,0,0.08) !important;
-}
-
-/* DARK */
-html[data-theme="dark"] input,
-html[data-theme="dark"] textarea {
+[data-theme="dark"] input,
+[data-theme="dark"] textarea {
     background: rgba(255,255,255,0.06) !important;
     border: 1px solid rgba(168,85,247,0.25) !important;
     color: white !important;
 }
 
-/* Focus */
-input:focus,
-textarea:focus {
-    border: 1px solid var(--brand-accent) !important;
-    box-shadow: 0 0 10px rgba(168,85,247,0.35) !important;
+[data-theme="light"] input,
+[data-theme="light"] textarea {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
 }
 
 /* ==========================================================
@@ -463,114 +425,64 @@ textarea:focus {
 ========================================================== */
 
 .stSlider > div[data-baseweb="slider"] > div > div {
-    background-color: var(--brand-primary) !important;
-}
-
-.stSlider span {
-    color: var(--brand-primary) !important;
+    background-color: #6D28D9 !important;
 }
 
 /* ==========================================================
-   LOGIN PAGE
-========================================================== */
-
-/* Hide Sidebar on Login */
-body:has(.login-active) section[data-testid="stSidebar"] {
-    display: none !important;
-}
-
-/* Login Card Base */
-body:has(.login-active) .block-container {
-    max-width: 460px !important;
-    margin: 12vh auto !important;
-    padding: 50px !important;
-    border-radius: 24px;
-    backdrop-filter: blur(14px);
-}
-
-/* DARK LOGIN CARD */
-html[data-theme="dark"] body:has(.login-active) .block-container {
-    background: rgba(25, 25, 35, 0.80);
-    border: 1px solid rgba(168,85,247,0.18);
-    box-shadow: 0 50px 90px rgba(0,0,0,0.65);
-}
-
-/* LIGHT LOGIN CARD */
-html[data-theme="light"] body:has(.login-active) .block-container {
-    background: rgba(255,255,255,0.90);
-    border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.08);
-}
-
-/* Login Background Upgrade */
-
-/* DARK */
-html[data-theme="dark"] body:has(.login-active) .stApp {
-    background:
-        radial-gradient(circle at 20% 30%, rgba(109,40,217,0.18), transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(168,85,247,0.12), transparent 45%),
-        linear-gradient(135deg, #0B0B12 0%, #111118 100%);
-}
-
-/* LIGHT */
-html[data-theme="light"] body:has(.login-active) .stApp {
-    background:
-        radial-gradient(circle at 15% 25%, rgba(109,40,217,0.10), transparent 35%),
-        radial-gradient(circle at 85% 75%, rgba(168,85,247,0.08), transparent 40%),
-        #F6F7FB;
-}
-
-/* ==========================================================
-   SPACING UTILITY
+   SPACING
 ========================================================== */
 
 .spacer {
-    height: 28px;
+    height: 25px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =========================================================
-# 🔐 LOGIN / SIGNUP PAGE WITH SECURE PASSWORD HANDLING
+# 🔐 AUTH SYSTEM – STARTUP LEVEL VERSION
 # =========================================================
 if not st.session_state.get("logged_in", False):
+
     st.markdown('<div class="login-active"></div>', unsafe_allow_html=True)
 
-    # Project Title
+    # Logo / Brand
     st.markdown("""
-    <div style="text-align:center;margin-bottom:25px;">
-        <h2 style="font-weight:600;">Food Fitness</h2>
-        <p style="opacity:0.6;">AI Nutrition Intelligence Platform</p>
+    <div style="text-align:center;margin-bottom:35px;">
+        <h2 style="font-weight:600;margin-bottom:6px;">Food Fitness</h2>
+        <p style="opacity:0.6;font-size:14px;">
+            AI-Powered Nutrition Intelligence
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
-
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
-
     auth_mode = st.radio(
         "",
-        ["Login", "Sign Up"],
+        ["Login", "Create Account"],
         horizontal=True,
         label_visibility="collapsed"
     )
-    
+
+    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+
     # ================= LOGIN =================
     if auth_mode == "Login":
 
-        st.markdown(
-            "<h3 style='text-align:center;'>Welcome Back</h3>",
-            unsafe_allow_html=True
-        )
+        st.markdown("<h3 style='text-align:center;'>Welcome Back</h3>", unsafe_allow_html=True)
+        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
 
-        if st.button("Login", use_container_width=True):
+        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
+        st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
+        login_clicked = st.button("Login", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        if login_clicked:
             if not username or not password:
-                st.error("Please enter both username and password")
-
+                st.error("Enter both username and password.")
             else:
                 cursor.execute("SELECT password FROM users WHERE username=?", (username,))
                 result = cursor.fetchone()
@@ -578,26 +490,28 @@ if not st.session_state.get("logged_in", False):
                 if result and bcrypt.checkpw(password.encode("utf-8"), result[0]):
                     st.session_state.logged_in = True
                     st.session_state.username = username
-                    st.toast("Login successful")
                     st.rerun()
                 else:
-                    st.error("Invalid username or password")
+                    st.error("Invalid credentials.")
 
     # ================= SIGNUP =================
     else:
-        st.markdown(
-            "<h3 style='text-align:center;'>Create Account</h3>",
-            unsafe_allow_html=True
-        )
+
+        st.markdown("<h3 style='text-align:center;'>Create Account</h3>", unsafe_allow_html=True)
+        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
         su_username = st.text_input("Username")
         su_password = st.text_input("Password", type="password")
         su_confirm = st.text_input("Confirm Password", type="password")
 
+        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+
         col1, col2 = st.columns(2)
+
         with col1:
             su_age = st.number_input("Age", 10, 100, 22)
             su_height = st.number_input("Height (cm)", 120, 220, 160)
+
         with col2:
             su_weight = st.number_input("Weight (kg)", 30, 150, 55)
             su_gender = st.selectbox("Gender", ["Female", "Male"])
@@ -607,21 +521,27 @@ if not st.session_state.get("logged_in", False):
             ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"]
         )
 
-        if st.button("Create Account", use_container_width=True):
+        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
+        signup_clicked = st.button("Create Account", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        if signup_clicked:
 
             if not su_username or not su_password:
-                st.error("Username and password required")
+                st.error("Username and password required.")
 
             elif len(su_password) < 6:
-                st.error("Password must be at least 6 characters")
+                st.error("Password must be at least 6 characters.")
 
             elif su_password != su_confirm:
-                st.error("Passwords do not match")
+                st.error("Passwords do not match.")
 
             else:
                 cursor.execute("SELECT username FROM users WHERE username=?", (su_username,))
                 if cursor.fetchone():
-                    st.error("Username already exists")
+                    st.error("Username already exists.")
                 else:
                     hashed_pw = bcrypt.hashpw(
                         su_password.encode("utf-8"),
@@ -643,117 +563,89 @@ if not st.session_state.get("logged_in", False):
                     ))
 
                     conn.commit()
-                    st.success("Account created successfully! Please login.")
+                    st.success("Account created successfully. Please login.")
 
-    st.markdown('</div>', unsafe_allow_html=True)
     st.stop()
 
+# =========================================================
+# SIDEBAR – CLEAN SaaS STYLE
+# =========================================================
 
 if "page" not in st.session_state:
     st.session_state.page = "Home"
-
-# =========================================================
-# SIDEBAR (AFTER LOGIN ONLY) — SAFE VERSION
-# =========================================================
 
 menu_options = [
     "Home",
     "Analyze Food",
     "Health Insights",
     "Healthy Weight Toolkit",
-    "Facts & Myths",
     "Ingredients Guide",
     "Fight Sugar Cravings",
     "Lose Weight Safely",
-    "About Project",
+    "About",
 ]
 
-# Reset invalid stored page automatically
-if "page" not in st.session_state or st.session_state.page not in menu_options:
+if st.session_state.page not in menu_options:
     st.session_state.page = "Home"
 
+# Premium Brand Card
 st.sidebar.markdown(f"""
-<div class="sidebar-welcome">
-    <h3 style="font-weight:600;">Food Fitness</h3>
-    <p style="opacity:0.6;font-size:13px;">AI Nutrition Intelligence</p>
-    <p>Welcome,<br><b>{st.session_state.username}</b></p>
+<div style="
+padding:22px;
+border-radius:20px;
+background:linear-gradient(135deg,#4C1D95,#6D28D9);
+color:white;
+margin-bottom:24px;
+">
+    <h3 style="margin:0;font-weight:600;">Food Fitness</h3>
+    <p style="margin:6px 0 12px 0;font-size:12px;opacity:0.85;">
+        AI Nutrition Intelligence
+    </p>
+    <small>Welcome,<br><b>{st.session_state.username}</b></small>
 </div>
 """, unsafe_allow_html=True)
 
-st.sidebar.markdown("<small>MAIN</small>", unsafe_allow_html=True)
+st.sidebar.markdown("<small style='opacity:0.5;'>NAVIGATION</small>", unsafe_allow_html=True)
 
 page = st.sidebar.radio(
-    "Navigation",
+    "",
     menu_options,
-    key="sidebar_nav",
-    label_visibility="collapsed"
+    key="sidebar_nav"
 )
 
 st.session_state.page = page
 
-if st.sidebar.button("Logout"):
+st.sidebar.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+
+# Logout Button
+st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
+logout = st.sidebar.button("Logout", use_container_width=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+if logout:
     st.session_state.logged_in = False
     st.session_state.username = None
-    st.session_state.page = "Home"   # reset properly
+    st.session_state.page = "Home"
     st.rerun()
 
 # =========================================================
-# HOME – PREMIUM DASHBOARD
+# HOME – STARTUP DASHBOARD
 # =========================================================
 if st.session_state.page == "Home":
+
+    # ---------------- HERO ----------------
     st.markdown("""
     <div class="hero-card">
-        <h1>Eat Smart. Live Strong.</h1>
+        <h1>Welcome Back</h1>
         <p>
-            AI-powered calorie tracking & personalized fitness guidance,
-            designed around <b>you</b>.
+            Your personalized nutrition intelligence dashboard.
         </p>
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
-    #st.title("🍎 DESIGNING FOOD CALORIE ESTIMATION AND FITNESS RECOMMENDATION SYSTEM BASED ON USER INFORMATION")
-    #st.caption("Your AI-powered companion for smart eating & healthy living")
-    st.markdown(
-    "<p style='opacity:0.7;margin-top:10px;'>Your AI-powered companion for smart eating & healthy living</p>",
-    unsafe_allow_html=True
-    )
-
-
-    # ---------------- HERO SECTION ----------------
-    c1, c2 = st.columns(2)
-
-    with c1:
-        st.markdown("""
-        <div class="card">
-            <h3>🌱 Eat Smart. Move Better. Live Healthier.</h3>
-            <p>This platform uses <b>AI & personalization</b> to help you:</p>
-            <ul>
-                <li>Recognize food using images</li>
-                <li>Track calories effortlessly</li>
-                <li>Get personalized fitness & weight guidance</li>
-                <li>Monitor your health progress weekly</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with c2:
-        st.markdown("""
-        <div class="card">
-            <h3>Your Journey</h3>
-            <ul>
-                <li>Secure Login</li>
-                <li>Personalized Insights</li>
-                <li>Smart Health Tips</li>
-                <li>Progress Tracking</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-
-    # ---------------- QUICK STATS CARDS ----------------
-   
-
+    # ---------------- LOAD PROFILE ----------------
     cursor.execute("""
     SELECT age, gender, height, weight, activity, goal
     FROM users WHERE username=?
@@ -761,10 +653,17 @@ if st.session_state.page == "Home":
     profile = cursor.fetchone()
 
     if profile and all(profile):
+
         age, gender, height, weight, activity, goal = profile
         bmi = bmi_calc(weight, height)
 
-        st.subheader("📊 Your Quick Health Snapshot")
+        # ---------------- SNAPSHOT ----------------
+        st.markdown("""
+        <div class="page-header">
+            <h1>Health Snapshot</h1>
+            <p>Real-time overview of your current status</p>
+        </div>
+        """, unsafe_allow_html=True)
 
         c1, c2, c3, c4 = st.columns(4)
 
@@ -779,10 +678,56 @@ if st.session_state.page == "Home":
 
         with c4:
             metric_card("Goal", goal, "🎯")
-    else:
-        st.info("Complete your profile in Analyze Food to see personalized stats.")
 
-    
+        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+
+        # ---------------- SMART INSIGHT ----------------
+        st.markdown("""
+        <div class="card">
+            <h3>AI Insight</h3>
+        """, unsafe_allow_html=True)
+
+        if bmi < 18.5:
+            st.info("You are currently underweight. Focus on gradual calorie surplus and strength training.")
+        elif bmi < 25:
+            st.success("You are within a healthy BMI range. Maintain consistency.")
+        elif bmi < 30:
+            st.warning("You are slightly above ideal range. Moderate calorie control recommended.")
+        else:
+            st.error("High BMI detected. Structured fat-loss strategy advised.")
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+
+        # ---------------- QUICK ACTIONS ----------------
+        st.markdown("""
+        <div class="page-header">
+            <h1>Quick Actions</h1>
+            <p>Start tracking or analyzing instantly</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        c1, c2 = st.columns(2)
+
+        with c1:
+            st.markdown("""
+            <div class="feature-card">
+                <h4>Analyze Food</h4>
+                <p>Upload food image or log manually.</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+        with c2:
+            st.markdown("""
+            <div class="feature-card">
+                <h4>View Insights</h4>
+                <p>Check calorie trends & adaptive targets.</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+    else:
+        st.info("Complete your profile in Analyze Food to activate dashboard insights.")
 
     # ---------------- FEATURES SECTION ----------------
     st.markdown('<div class="section-title">What You Can Do Here</div>', unsafe_allow_html=True)
@@ -2338,31 +2283,30 @@ elif st.session_state.page == "Lose Weight Safely":
 
     else:
         st.error("User profile incomplete. Please update your details.")
-
 # =========================================================
-# 🍭 SUGAR CRAVING CONTROL ENGINE
+# 🍭 SUGAR CONTROL – BEHAVIOR ENGINE
 # =========================================================
 elif st.session_state.page == "Fight Sugar Cravings":
 
-    st.title("Sugar Craving Control Engine")
-    st.caption("Behavior-based • Science-backed • Practical control")
-    st.markdown("---")
+    # ---------------- PAGE HEADER ----------------
+    st.markdown("""
+    <div class="page-header">
+        <h1>Sugar Control Engine</h1>
+        <p>Real-time craving intervention & behavior tracking</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # ---------------- CRAVING INTENSITY ----------------
-    st.subheader("How strong is your craving right now?")
+    # ---------------- INPUT CARD ----------------
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown("<h3>Craving Assessment</h3>", unsafe_allow_html=True)
 
     craving_level = st.slider(
-        "Craving Intensity",
-        min_value=1,
-        max_value=10,
-        value=5
+        "Craving Intensity (1–10)",
+        1, 10, 5
     )
 
-    # ---------------- TRIGGER SELECTION ----------------
-    st.subheader("What triggered it?")
-
     trigger = st.selectbox(
-        "Select Trigger",
+        "Trigger",
         [
             "Stress",
             "Boredom",
@@ -2374,63 +2318,72 @@ elif st.session_state.page == "Fight Sugar Cravings":
         ]
     )
 
-    st.markdown("---")
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
-    # ---------------- PERSONALIZED RESPONSE ENGINE ----------------
-    st.subheader("Smart Intervention")
-
-    intervention = ""
+    # ---------------- AI INTERVENTION ----------------
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown("<h3>AI Intervention</h3>", unsafe_allow_html=True)
 
     if craving_level <= 3:
-        intervention = "Drink water and wait 10 minutes."
+        intervention = "Hydrate. Wait 10 minutes. Reassess."
     elif craving_level <= 6:
-        intervention = "Eat protein snack (nuts / yogurt / eggs)."
+        intervention = "Consume protein (nuts, yogurt, eggs). Stabilize blood sugar."
     else:
-        intervention = "Take a 10-minute walk + deep breathing + protein snack."
+        intervention = "10-minute brisk walk + breathing + protein snack."
 
-    # Trigger-based adjustment
     if trigger == "Stress":
-        intervention += " Also try 5-minute breathing exercise."
+        intervention += " Add 5-minute deep breathing."
     elif trigger == "Boredom":
-        intervention += " Do a quick task or short activity."
+        intervention += " Switch environment immediately."
     elif trigger == "Hunger":
-        intervention += " You likely need a proper meal, not sugar."
+        intervention += " Eat a balanced meal instead."
     elif trigger == "Lack of Sleep":
-        intervention += " Prioritize sleep tonight."
+        intervention += " Improve sleep tonight."
     elif trigger == "After Meals":
-        intervention += " Brush your teeth to reset taste."
+        intervention += " Brush teeth to reset craving."
     elif trigger == "Social Event":
-        intervention += " Choose fruit or small dark chocolate portion."
+        intervention += " Choose fruit or small dark chocolate."
     elif trigger == "Habit":
         intervention += " Replace with herbal tea."
 
     st.success(intervention)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown("---")
+    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
-    # ---------------- QUICK HEALTH CHECK ----------------
-    st.subheader("⚖ Sugar Risk Score")
+    # ---------------- RISK SCORE SYSTEM ----------------
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown("<h3>Relapse Risk Score</h3>", unsafe_allow_html=True)
 
     risk_score = 0
 
     if craving_level > 7:
+        risk_score += 3
+    elif craving_level > 5:
         risk_score += 2
+
     if trigger in ["Stress", "Lack of Sleep"]:
         risk_score += 2
     if trigger == "Habit":
         risk_score += 1
 
     if risk_score <= 2:
-        st.success("Low sugar relapse risk.")
+        st.success("Low risk. Maintain control.")
     elif risk_score <= 4:
-        st.warning("Moderate risk — apply intervention strictly.")
+        st.warning("Moderate risk. Follow intervention strictly.")
     else:
-        st.error("High relapse risk — avoid sugar completely now.")
+        st.error("High relapse probability. Avoid sugar completely now.")
 
-    st.markdown("---")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # ---------------- LOG CRAVING ----------------
-    if st.button("Log This Craving"):
+    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+
+    # ---------------- LOGGING SYSTEM ----------------
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown("<h3>Behavior Tracking</h3>", unsafe_allow_html=True)
+
+    if st.button("Log Craving Event", use_container_width=True):
 
         today = datetime.date.today().isoformat()
 
@@ -2445,39 +2398,46 @@ elif st.session_state.page == "Fight Sugar Cravings":
 
         cursor.execute("""
             INSERT INTO sugar_logs VALUES (?, ?, ?, ?)
-        """, (st.session_state.username, craving_level, trigger, today))
+        """, (
+            st.session_state.username,
+            craving_level,
+            trigger,
+            today
+        ))
 
         conn.commit()
-
         st.success("Craving logged successfully.")
 
-    st.markdown("---")
+    # Show weekly craving frequency
+    week_ago = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
 
-    # ---------------- EDUCATION SECTION ----------------
-    st.subheader("13 Proven Ways to Reduce Sugar Cravings")
+    df_week = pd.read_sql_query("""
+        SELECT craving_level FROM sugar_logs
+        WHERE username=? AND date>=?
+    """, conn, params=(st.session_state.username, week_ago))
 
-    tips = [
-        "Drink water when craving hits",
-        "Eat protein-rich meals",
-        "Don’t skip meals",
-        "Choose fruits instead of sweets",
-        "Sleep at least 7 hours",
-        "Reduce sugary drinks",
-        "Add fiber to your diet",
-        "Manage stress",
-        "Avoid shopping when hungry",
-        "Brush teeth after meals",
-        "Distract yourself (walk, music)",
-        "Eat dark chocolate (small portion)",
-        "Practice mindful eating"
-    ]
+    if not df_week.empty:
+        avg_craving = df_week["craving_level"].mean()
+        st.info(f"Weekly Avg Craving Level: {avg_craving:.1f}/10")
 
-    cols = st.columns(2)
-    for i, tip in enumerate(tips):
-        cols[i % 2].info(f"{i+1}. {tip}")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    st.info("Cravings last 10–20 minutes. Smart response builds discipline.")
+    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
+    # ---------------- EDUCATION PANEL ----------------
+    with st.expander("Proven Sugar Control Strategies"):
+        tips = [
+            "Hydrate before reacting.",
+            "Increase daily protein intake.",
+            "Sleep 7–8 hours consistently.",
+            "Manage stress proactively.",
+            "Avoid grocery shopping hungry.",
+            "Use distraction strategy (10-minute rule).",
+            "Practice mindful eating."
+        ]
+
+        for tip in tips:
+            st.write("•", tip)
 
 # =========================================================
 # ABOUT PROJECT – UPGRADED
