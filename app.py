@@ -254,154 +254,162 @@ if "chat_history" not in st.session_state:
 st.markdown("""
 <style>
 
-/* ================= GLOBAL FONT ================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-* {
-    font-family: 'Inter', sans-serif !important;
+/* =====================================================
+   GLOBAL – CLEAN DARK BASE
+===================================================== */
+body {
+    background-color: #0F172A;
+    color: #E2E8F0;
+    font-family: 'Inter', sans-serif;
 }
 
-/* ================= GLOBAL TEXT VISIBILITY ================= */
-
-h1, h2, h3, h4, h5, h6 {
-    color: #FFFFFF !important;
+.block-container {
+    padding-top: 2rem;
 }
 
-p, span, label, div, small {
-    color: #F1F5F9 !important;
+/* =====================================================
+   MAIN PAGE – NO OUTER GRADIENT
+===================================================== */
+.main {
+    background-color: #0F172A;
 }
 
-input, textarea {
-    color: #FFFFFF !important;
-    font-weight: 500 !important;
+/* =====================================================
+   CARD SYSTEM – SOFT DARK GRADIENT
+===================================================== */
+.card {
+    background: linear-gradient(145deg, #1E293B, #172033);
+    padding: 22px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-/* =========================================================
-   LOGIN + SIDEBAR GRADIENT (DARK BLUE → CYAN)
-========================================================= */
-
-section[data-testid="stSidebar"],
-body:has(.login-active) .stApp {
-    background: linear-gradient(
-        90deg,
-        rgba(2, 0, 36, 1) 0%,
-        rgba(9, 9, 121, 1) 35%,
-        rgba(0, 212, 255, 1) 100%
-    ) !important;
+.metric-card {
+    background: linear-gradient(145deg, #1E293B, #141c2b);
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.04);
+    text-align: left;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
 }
 
-/* =========================================================
-   MAIN PAGE GRADIENT (CYAN → VIOLET VERTICAL)
-========================================================= */
-
-body:not(:has(.login-active)) .stApp {
-    background: #020024;
-    background: -webkit-linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(0, 212, 255, 1) 100%);
-    background: -moz-linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(0, 212, 255, 1) 100%);
-    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(0, 212, 255, 1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024", endColorstr="#00D4FF", GradientType=1);
-    background-attachment: fixed;
+.metric-label {
+    font-size: 13px;
+    color: #94A3B8;
+    margin-bottom: 6px;
 }
 
-/* =========================================================
-   SIDEBAR STYLING
-========================================================= */
+.metric-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: #F8FAFC;
+}
 
+/* =====================================================
+   BUTTONS
+===================================================== */
+.stButton > button {
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    border-radius: 12px;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.65rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99,102,241,0.4);
+}
+
+/* =====================================================
+   INPUTS
+===================================================== */
+div[data-baseweb="input"] > div {
+    background-color: #1E293B !important;
+    border: 1px solid #334155 !important;
+    border-radius: 12px !important;
+}
+
+/* =====================================================
+   SIDEBAR – VISUALLY IMPACTFUL
+===================================================== */
 section[data-testid="stSidebar"] {
-    border-right: 1px solid rgba(255,255,255,0.25);
+    background: linear-gradient(180deg, #0B1220, #111827);
+    border-right: 1px solid rgba(255,255,255,0.08);
+    box-shadow: inset -3px 0 20px rgba(0,0,0,0.4);
 }
 
-/* Sidebar Navigation Pills */
+/* Brand Card */
+.brand-card {
+    background: linear-gradient(145deg, #312E81, #1E1B4B);
+    padding: 22px;
+    border-radius: 18px;
+    margin-bottom: 24px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
 
+.brand-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.brand-sub {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-bottom: 10px;
+}
+
+/* NAV LABEL */
+.nav-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #9CA3AF;
+    margin-bottom: 10px;
+}
+
+/* RADIO NAV STYLE */
 section[data-testid="stSidebar"] div[role="radiogroup"] > label {
-    border-radius: 999px;
-    padding: 10px 16px;
-    margin: 6px 0;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.4);
-    color: #FFFFFF !important;
-    font-weight: 500;
-    transition: 0.25s ease;
+    background: transparent;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    transition: all 0.2s ease-in-out;
 }
 
 section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
-    background: rgba(255,255,255,0.25);
-    transform: translateX(4px);
+    background: rgba(99,102,241,0.15);
 }
 
 section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-    background: rgba(255,255,255,0.35);
-    color: #020024 !important;
-    font-weight: 600;
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    color: white;
+    box-shadow: 0 6px 20px rgba(99,102,241,0.4);
 }
 
-/* Sidebar Buttons */
-
-section[data-testid="stSidebar"] .stButton > button {
-    border-radius: 14px !important;
-    background: rgba(255,255,255,0.25) !important;
-    color: white !important;
-    border: 1px solid rgba(255,255,255,0.4) !important;
-    font-weight: 600;
-}
-
-/* =========================================================
-   LOGIN CARD (DO NOT CHANGE CONTAINER STRUCTURE)
-========================================================= */
-
-body:has(.login-active) section[data-testid="stSidebar"] {
-    display: none !important;
-}
-
-body:has(.login-active) .block-container {
-    max-width: 520px !important;
-    margin: 12vh auto !important;
-    padding: 60px !important;
-    border-radius: 28px;
-
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(18px);
-
-    border: 1px solid rgba(255,255,255,0.4);
-
-    box-shadow:
-        0 40px 80px rgba(0,0,0,0.6);
-}
-
-/* Login Inputs */
-
-body:has(.login-active) div[data-baseweb="input"] > div {
-    border-radius: 14px !important;
-    background: rgba(255,255,255,0.15) !important;
-    border: 1px solid rgba(255,255,255,0.5) !important;
-}
-
-body:has(.login-active) input {
-    color: #FFFFFF !important;
+/* Logout Button */
+.logout-btn button {
+    background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+    border-radius: 12px !important;
     font-weight: 600 !important;
 }
 
-body:has(.login-active) label {
-    color: #FFFFFF !important;
+.logout-btn button:hover {
+    box-shadow: 0 8px 20px rgba(239,68,68,0.4);
 }
 
-body:has(.login-active) .stButton > button {
-    border-radius: 14px !important;
-    background: rgba(255,255,255,0.25) !important;
-    color: white !important;
-    border: 1px solid rgba(255,255,255,0.5) !important;
+/* =====================================================
+   SECTION TITLES
+===================================================== */
+.section-title {
+    font-size: 20px;
     font-weight: 600;
-}
-
-/* =========================================================
-   MOBILE RESPONSIVENESS
-========================================================= */
-
-@media (max-width: 768px) {
-    .block-container {
-        padding: 30px !important;
-    }
+    margin-bottom: 12px;
 }
 
 </style>
@@ -511,9 +519,8 @@ if not st.session_state.get("logged_in", False):
                     st.success("Account created successfully. Please login.")
 
     st.stop()
-
 # =========================================================
-# SIDEBAR – CLEAN SaaS STYLE
+# SIDEBAR – CLEAN MODERN STRUCTURE
 # =========================================================
 
 if "page" not in st.session_state:
@@ -527,45 +534,40 @@ menu_options = [
     "Ingredients Guide",
     "Fight Sugar Cravings",
     "Lose Weight Safely",
-    "About",
+    "About"
 ]
 
 if st.session_state.page not in menu_options:
     st.session_state.page = "Home"
 
-# Premium Brand Card
+# ---------- BRAND CARD ----------
 st.sidebar.markdown(f"""
-<div style="
-padding:22px;
-border-radius:20px;
-background:linear-gradient(135deg,#4C1D95,#6D28D9);
-color:white;
-margin-bottom:24px;
-">
-    <h3 style="margin:0;font-weight:600;">Food Fitness</h3>
-    <p style="margin:6px 0 12px 0;font-size:12px;opacity:0.85;">
-        AI Nutrition Intelligence
-    </p>
-    <small>Welcome,<br><b>{st.session_state.username}</b></small>
+<div class="brand-card">
+    <div class="brand-title">Food Fitness</div>
+    <div class="brand-sub">AI Nutrition Platform</div>
+    <hr style="border-color:#334155;">
+    <small style="color:#94A3B8;">Welcome</small><br>
+    <b>{st.session_state.username}</b>
 </div>
 """, unsafe_allow_html=True)
 
-st.sidebar.markdown("<small style='opacity:0.5;'>NAVIGATION</small>", unsafe_allow_html=True)
+# ---------- NAVIGATION ----------
+st.sidebar.markdown('<div class="nav-label">NAVIGATION</div>', unsafe_allow_html=True)
 
-page = st.sidebar.radio(
+selected_page = st.sidebar.radio(
     "",
     menu_options,
-    key="sidebar_nav"
+    index=menu_options.index(st.session_state.page)
 )
 
-st.session_state.page = page
+st.session_state.page = selected_page
 
-st.sidebar.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
-# Logout Button
-st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
+# ---------- LOGOUT ----------
+st.sidebar.markdown('<div class="logout-btn">', unsafe_allow_html=True)
 logout = st.sidebar.button("Logout", use_container_width=True)
-st.markdown('</div>', unsafe_allow_html=True)
+st.sidebar.markdown('</div>', unsafe_allow_html=True)
 
 if logout:
     st.session_state.logged_in = False
@@ -574,26 +576,17 @@ if logout:
     st.rerun()
 
 # =========================================================
-# HOME – STARTUP DASHBOARD
+# HOME – CLEAN DASHBOARD
 # =========================================================
 if st.session_state.page == "Home":
 
-    # ---------------- HERO ----------------
-    st.markdown("""
-    <div class="hero-card">
-        <h1>Welcome Back</h1>
-        <p>
-            Your personalized nutrition intelligence dashboard.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+    st.title("Dashboard")
+    st.caption("Your personalized health overview")
 
     # ---------------- LOAD PROFILE ----------------
     cursor.execute("""
-    SELECT age, gender, height, weight, activity, goal
-    FROM users WHERE username=?
+        SELECT age, gender, height, weight, activity, goal
+        FROM users WHERE username=?
     """, (st.session_state.username,))
     profile = cursor.fetchone()
 
@@ -602,157 +595,86 @@ if st.session_state.page == "Home":
         age, gender, height, weight, activity, goal = profile
         bmi = bmi_calc(weight, height)
 
-        # ---------------- SNAPSHOT ----------------
-        st.markdown("""
-        <div class="page-header">
-            <h1>Health Snapshot</h1>
-            <p>Real-time overview of your current status</p>
-        </div>
-        """, unsafe_allow_html=True)
+        # ---------------- SNAPSHOT CARD ----------------
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        st.subheader("Health Snapshot")
 
         c1, c2, c3, c4 = st.columns(4)
 
         with c1:
-            metric_card("Weight", f"{weight} kg", "⚖️")
+            metric_card("Weight", f"{weight} kg")
 
         with c2:
-            metric_card("BMI", f"{bmi:.2f}", "📏")
+            metric_card("BMI", f"{bmi:.2f}")
 
         with c3:
-            metric_card("Activity", activity, "🏃")
+            metric_card("Activity", activity)
 
         with c4:
-            metric_card("Goal", goal, "🎯")
-
-        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
-
-        # ---------------- SMART INSIGHT ----------------
-        st.markdown("""
-        <div class="card">
-            <h3>AI Insight</h3>
-        """, unsafe_allow_html=True)
-
-        if bmi < 18.5:
-            st.info("You are currently underweight. Focus on gradual calorie surplus and strength training.")
-        elif bmi < 25:
-            st.success("You are within a healthy BMI range. Maintain consistency.")
-        elif bmi < 30:
-            st.warning("You are slightly above ideal range. Moderate calorie control recommended.")
-        else:
-            st.error("High BMI detected. Structured fat-loss strategy advised.")
+            metric_card("Goal", goal)
 
         st.markdown("</div>", unsafe_allow_html=True)
 
-        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+        # ---------------- INSIGHT CARD ----------------
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        st.subheader("AI Insight")
+
+        if bmi < 18.5:
+            st.info("Underweight. Gradual calorie surplus + strength training recommended.")
+        elif bmi < 25:
+            st.success("Healthy BMI range. Maintain consistency.")
+        elif bmi < 30:
+            st.warning("Slightly above ideal range. Moderate calorie control advised.")
+        else:
+            st.error("High BMI detected. Structured fat-loss strategy recommended.")
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
         # ---------------- QUICK ACTIONS ----------------
-        st.markdown("""
-        <div class="page-header">
-            <h1>Quick Actions</h1>
-            <p>Start tracking or analyzing instantly</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        st.subheader("Quick Actions")
 
-        c1, c2 = st.columns(2)
+        col1, col2 = st.columns(2)
 
-        with c1:
-            st.markdown("""
-            <div class="feature-card">
-                <h4>Analyze Food</h4>
-                <p>Upload food image or log manually.</p>
-            </div>
-            """, unsafe_allow_html=True)
+        with col1:
+            if st.button("Analyze Food", use_container_width=True):
+                st.session_state.page = "Analyze Food"
+                st.rerun()
 
-        with c2:
-            st.markdown("""
-            <div class="feature-card">
-                <h4>View Insights</h4>
-                <p>Check calorie trends & adaptive targets.</p>
-            </div>
-            """, unsafe_allow_html=True)
+        with col2:
+            if st.button("View Health Insights", use_container_width=True):
+                st.session_state.page = "Health Insights"
+                st.rerun()
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
     else:
-        st.info("Complete your profile in Analyze Food to activate dashboard insights.")
+        st.info("Complete your profile to activate dashboard insights.")
 
-    # ---------------- FEATURES SECTION ----------------
-    st.markdown('<div class="section-title">What You Can Do Here</div>', unsafe_allow_html=True)
-
-    f1, f2, f3 = st.columns(3)
-
-    with f1:
-        st.markdown("""
-        <div class="feature-card">
-            <h4>AI Food Analysis</h4>
-            <ul>
-                <li>Upload food images</li>
-                <li>Instant calorie estimates</li>
-                <li>AI-powered recognition</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-
-    with f2:
-        st.markdown("""
-        <div class="feature-card">
-            <h4>Health Insights</h4>
-            <ul>
-                <li>Weekly calorie reports</li>
-                <li>Food intake trends</li>
-                <li>Visual progress tracking</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-
-    with f3:
-        st.markdown("""
-        <div class="feature-card">
-            <h4>Healthy Weight Toolkit</h4>
-            <ul>
-                <li>BMI analysis</li>
-                <li>Weight predictions</li>
-                <li>Smart AI tips</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-
-    st.markdown("---")
-
-    # ---------------- MOTIVATION / TIP CARD ----------------
-    st.subheader("💡 Today’s Health Tip")
+    # ---------------- DAILY TIP ----------------
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Today’s Health Tip")
 
     tips = [
-        "Drink a glass of water before meals to control appetite.",
-        "Focus on consistency, not perfection.",
+        "Drink water before meals to reduce overeating.",
+        "Consistency beats intensity.",
         "Half your plate should be vegetables.",
-        "Small daily walks make a big difference.",
-        "Sleep is as important as diet for weight control."
+        "Daily walking improves metabolic health.",
+        "Sleep quality affects fat loss."
     ]
 
-    st.info(f"🌿 {np.random.choice(tips)}")
+    st.info(np.random.choice(tips))
 
-    st.markdown("---")
-
-    st.caption("👉 Use the sidebar to explore food analysis, insights, and tools")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =========================================================
-# ANALYZE FOOD – STARTUP GRADE UI VERSION
+# ANALYZE FOOD – CLEAN STRUCTURED UI
 # =========================================================
 elif st.session_state.page == "Analyze Food":
 
-    # -----------------------------------------------------
-    # HEADER
-    # -----------------------------------------------------
-    st.markdown("""
-    <div class="page-header">
-        <h1>AI Food Analysis</h1>
-        <p>Upload a food image or select food manually</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.title("AI Food Analysis")
+    st.caption("Upload a food image or log manually")
 
-    # ---------------- SAFETY CHECK ----------------
     if model is None:
         st.error("AI model not loaded. Please restart the application.")
         st.stop()
@@ -771,8 +693,8 @@ elif st.session_state.page == "Analyze Food":
 
     # ---------------- MODE SELECT ----------------
     mode = st.radio(
-        "",
-        ["Upload Image", "Select Manually"],
+        "Select Mode",
+        ["Upload Image", "Manual Entry"],
         horizontal=True
     )
 
@@ -802,8 +724,8 @@ elif st.session_state.page == "Analyze Food":
             with col2:
 
                 if not st.session_state.analysis_done:
-                    if st.button("Analyze Food", use_container_width=True):
-                        with st.spinner("Analyzing with AI model..."):
+                    if st.button("Analyze", use_container_width=True):
+                        with st.spinner("Running AI analysis..."):
                             processed = preprocess_image(
                                 np.array(st.session_state.current_image)
                             )
@@ -830,18 +752,13 @@ elif st.session_state.page == "Analyze Food":
         # ---------------- SHOW RESULTS ----------------
         if st.session_state.analysis_done and st.session_state.top_results:
 
-            st.markdown("<h3>AI Predictions</h3>", unsafe_allow_html=True)
+            st.markdown("### Top Predictions")
 
             for food, conf in st.session_state.top_results:
-                st.markdown(f"""
-                <div class="feature-card" style="margin-bottom:10px;">
-                    <strong>{food}</strong><br>
-                    Confidence: {conf:.2f}%
-                </div>
-                """, unsafe_allow_html=True)
+                st.write(f"**{food}** — {conf:.2f}% confidence")
 
             st.session_state.selected_food = st.selectbox(
-                "Confirm the detected food:",
+                "Confirm Food",
                 [food for food, _ in st.session_state.top_results]
             )
 
@@ -858,9 +775,9 @@ elif st.session_state.page == "Analyze Food":
 
                 col1, col2 = st.columns(2)
                 col1.metric("Portion", f"{grams} g")
-                col2.metric("Total Calories", f"{total_calories:.0f} kcal")
+                col2.metric("Calories", f"{total_calories:.0f} kcal")
 
-                if st.button("Confirm & Log Food", use_container_width=True):
+                if st.button("Confirm & Log", use_container_width=True):
 
                     today = datetime.date.today().isoformat()
 
@@ -877,7 +794,6 @@ elif st.session_state.page == "Analyze Food":
 
                     st.success("Food logged successfully.")
 
-                    # Reset
                     st.session_state.current_image = None
                     st.session_state.analysis_done = False
                     st.session_state.top_results = None
@@ -890,10 +806,8 @@ elif st.session_state.page == "Analyze Food":
     # =====================================================
     else:
 
-        st.markdown("<h3>Manual Food Selection</h3>", unsafe_allow_html=True)
-
         manual_food = st.selectbox(
-            "Select Food Item",
+            "Select Food",
             sorted(calorie_df["category"].unique())
         )
 
@@ -916,9 +830,9 @@ elif st.session_state.page == "Analyze Food":
 
             col1, col2 = st.columns(2)
             col1.metric("Portion", f"{manual_grams} g")
-            col2.metric("Total Calories", f"{total_calories:.0f} kcal")
+            col2.metric("Calories", f"{total_calories:.0f} kcal")
 
-            if st.button("Log Manual Food", use_container_width=True):
+            if st.button("Log Food", use_container_width=True):
 
                 today = datetime.date.today().isoformat()
 
@@ -933,131 +847,90 @@ elif st.session_state.page == "Analyze Food":
                 )
                 conn.commit()
 
-                st.success("Manual food logged successfully.")
+                st.success("Food logged successfully.")
 
     st.markdown("</div>", unsafe_allow_html=True)
 # =========================================================
-# HEALTH INSIGHTS – FULLY UPGRADED VERSION
+# HEALTH INSIGHTS – CLEAN STRUCTURED VERSION
 # =========================================================
 elif st.session_state.page == "Health Insights":
 
     st.title("Health Insights")
-    st.caption("Track calories • Log exercise • Monitor balance")
+    st.caption("Track intake, burn calories, and monitor trends")
 
-    # ---------------- LOAD USER PROFILE ----------------
+    # ---------------- LOAD PROFILE ----------------
     cursor.execute("""
-    SELECT age, gender, height, weight, activity, goal
-    FROM users WHERE username=?
+        SELECT age, gender, height, weight, activity, goal
+        FROM users WHERE username=?
     """, (st.session_state.username,))
     profile = cursor.fetchone()
 
     if not profile:
-        st.warning("Please complete your profile first.")
+        st.warning("Complete your profile first.")
         st.stop()
 
     age, gender, height, profile_weight, activity, goal = profile
-
-    # ---------------- GET LATEST WEIGHT (Dynamic System) ----------------
-    latest_weight_row = cursor.execute("""
-    SELECT weight FROM weight_logs
-    WHERE username=?
-    ORDER BY date DESC
-    LIMIT 1
-    """, (st.session_state.username,)).fetchone()
-
     weight = get_latest_weight(st.session_state.username, profile_weight)
+
     maintenance_calories, target_calories = calculate_target_calories(
         age, gender, height, weight, activity, goal
     )
 
-
-    # ---------------- CALCULATE BMR ----------------
-    if gender == "Female":
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
-    else:
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
-
-    activity_factor = {
-        "Sedentary": 1.2,
-        "Lightly Active": 1.375,
-        "Moderately Active": 1.55,
-        "Very Active": 1.725
-    }
-
-    maintenance_calories = bmr * activity_factor[activity]
-
-    # ---------------- GOAL BASED TARGET ----------------
-    if goal == "Weight Loss":
-        target_calories = maintenance_calories - 300
-    elif goal == "Weight Gain":
-        target_calories = maintenance_calories + 300
-    else:
-        target_calories = maintenance_calories
-
-    # ==================================================
-    # TODAY'S CALORIE SUMMARY
-    # ==================================================
-    st.subheader("Today's Calorie Summary")
-
     today = datetime.date.today().isoformat()
 
-    # ----- Food Consumed -----
+    # ==================================================
+    # TODAY SUMMARY
+    # ==================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Today’s Summary")
+
     df_today = pd.read_sql_query("""
-    SELECT calories FROM food_logs
-    WHERE username=? AND date=?
+        SELECT calories FROM food_logs
+        WHERE username=? AND date=?
+    """, conn, params=(st.session_state.username, today))
+
+    df_ex_today = pd.read_sql_query("""
+        SELECT calories_burned FROM exercise_logs
+        WHERE username=? AND date=?
     """, conn, params=(st.session_state.username, today))
 
     consumed_today = df_today["calories"].sum() if not df_today.empty else 0
-
-    # ----- Calories Burned -----
-    df_ex_today = pd.read_sql_query("""
-    SELECT calories_burned FROM exercise_logs
-    WHERE username=? AND date=?
-    """, conn, params=(st.session_state.username, today))
-
     burned_today = df_ex_today["calories_burned"].sum() if not df_ex_today.empty else 0
-
-    # ----- Net Calories -----
     net_calories = consumed_today - burned_today
-    remaining_calories = target_calories - net_calories
 
-    col1, col2, col3, col4 = st.columns(4)
+    c1, c2, c3, c4 = st.columns(4)
 
-    with col1:
-        metric_card("Target", f"{target_calories:.0f} kcal", "🎯")
+    with c1:
+        metric_card("Target", f"{target_calories:.0f} kcal")
 
-    with col2:
-        metric_card("Consumed", f"{consumed_today:.0f} kcal", "🔥")
+    with c2:
+        metric_card("Consumed", f"{consumed_today:.0f} kcal")
 
-    with col3:
-        metric_card("Burned", f"{burned_today:.0f} kcal", "🏃")
+    with c3:
+        metric_card("Burned", f"{burned_today:.0f} kcal")
 
-    with col4:
-        metric_card("Net", f"{net_calories:.0f} kcal", "⚖️")
+    with c4:
+        metric_card("Net", f"{net_calories:.0f} kcal")
 
     if net_calories > target_calories:
-        st.error("⚠️ You are in calorie surplus today.")
+        st.error("Calorie surplus today.")
     else:
-        st.success(" You are within calorie control today.")
+        st.success("Within calorie target.")
 
-    st.markdown("---")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # ==================================================
-    #  EXERCISE LOGGING SECTION
+    # EXERCISE LOG
     # ==================================================
-    st.subheader("Log Today's Exercise")
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Log Exercise")
 
     exercise_type = st.selectbox(
-        "Select Exercise",
+        "Exercise Type",
         ["Walking", "Jogging", "Running", "Cycling", "Yoga"]
     )
 
-    minutes = st.number_input(
-        "Duration (minutes)",
-        min_value=0,
-        max_value=300,
-        step=5
-    )
+    minutes = st.number_input("Duration (minutes)", 0, 300, step=5)
 
     MET_VALUES = {
         "Walking": 3.5,
@@ -1067,19 +940,17 @@ elif st.session_state.page == "Health Insights":
         "Yoga": 3
     }
 
-    if st.button("➕ Log Exercise"):
-
+    if st.button("Log Exercise", use_container_width=True):
         if minutes == 0:
-            st.warning("Please enter exercise duration.")
+            st.warning("Enter duration.")
         else:
             met = MET_VALUES[exercise_type]
-            hours = minutes / 60
-            calories_burned = met * weight * hours
+            calories_burned = met * weight * (minutes / 60)
 
             cursor.execute("""
-            INSERT INTO exercise_logs
-            (username, exercise, minutes, calories_burned, date)
-            VALUES (?, ?, ?, ?, ?)
+                INSERT INTO exercise_logs
+                (username, exercise, minutes, calories_burned, date)
+                VALUES (?, ?, ?, ?, ?)
             """, (
                 st.session_state.username,
                 exercise_type,
@@ -1089,226 +960,164 @@ elif st.session_state.page == "Health Insights":
             ))
 
             conn.commit()
-
-            st.success(f"{calories_burned:.0f} kcal burned logged successfully!")
+            st.success(f"{calories_burned:.0f} kcal burned logged.")
             st.rerun()
 
-    st.markdown("---")
-    st.markdown("## Weekly Energy Balance")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # ==================================================
+    # WEEKLY ENERGY BALANCE
+    # ==================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Weekly Energy Balance")
 
     week_ago = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
 
-    # Fetch food data
     df_food_week = pd.read_sql_query("""
-    SELECT date, calories FROM food_logs
-    WHERE username=? AND date>=?
+        SELECT date, calories FROM food_logs
+        WHERE username=? AND date>=?
     """, conn, params=(st.session_state.username, week_ago))
 
-    # Fetch exercise data
     df_ex_week = pd.read_sql_query("""
-    SELECT date, calories_burned FROM exercise_logs
-    WHERE username=? AND date>=?
+        SELECT date, calories_burned FROM exercise_logs
+        WHERE username=? AND date>=?
     """, conn, params=(st.session_state.username, week_ago))
 
-    # Prepare daily totals
     food_grouped = df_food_week.groupby("date")["calories"].sum().reset_index()
     ex_grouped = df_ex_week.groupby("date")["calories_burned"].sum().reset_index()
 
-    # Merge both
     merged = pd.merge(food_grouped, ex_grouped, on="date", how="outer").fillna(0)
-
     merged["net"] = merged["calories"] - merged["calories_burned"]
 
     import plotly.graph_objects as go
 
     fig = go.Figure()
 
-    # Consumed bars
     fig.add_trace(go.Bar(
         x=merged["date"],
         y=merged["calories"],
-        name="Calories Consumed",
-        marker_color="#2563eb"
+        name="Consumed"
     ))
 
-    # Burned bars
     fig.add_trace(go.Bar(
         x=merged["date"],
         y=merged["calories_burned"],
-        name="Calories Burned",
-        marker_color="#16a34a"
+        name="Burned"
     ))
 
-    # Net line
     fig.add_trace(go.Scatter(
         x=merged["date"],
         y=merged["net"],
-        name="Net Balance",
-        mode="lines+markers",
-        line=dict(color="#ef4444", width=3)
+        name="Net",
+        mode="lines+markers"
     ))
 
     fig.update_layout(
-    barmode="group",
-    title="Weekly Energy Balance Overview",
-    title_x=0.5,
-    xaxis_title="Date",
-    yaxis_title="Calories (kcal)",
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#E5E7EB"),
-)
+        barmode="group",
+        paper_bgcolor="#1E293B",
+        plot_bgcolor="#1E293B",
+        font=dict(color="#F8FAFC"),
+        xaxis_title="Date",
+        yaxis_title="Calories"
+    )
 
-    st.plotly_chart(fig, width="stretch")
-    st.markdown("---")
-    st.subheader("AI Daily Health Analysis")
+    st.plotly_chart(fig, use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # Average net calories for week
+    # ==================================================
+    # AI INSIGHT
+    # ==================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("AI Weekly Insight")
+
     if not merged.empty:
-
         weekly_net_avg = merged["net"].mean()
-        difference_from_target = weekly_net_avg - target_calories
+        diff = weekly_net_avg - target_calories
 
-        st.markdown("### Weekly Behavioral Insight")
-
-        if difference_from_target > 150:
-            st.error(
-                "You are consistently in calorie surplus. "
-                "This may lead to gradual weight gain."
-            )
-
-        elif difference_from_target < -150:
-            st.success(
-                "You are maintaining a calorie deficit. "
-                "If consistent, weight reduction is expected."
-            )
-
+        if diff > 150:
+            st.error("Consistent calorie surplus. Weight gain likely.")
+        elif diff < -150:
+            st.success("Consistent deficit. Fat loss expected.")
         else:
-            st.info(
-                "Your calorie intake is close to maintenance level. "
-                "Weight stability is expected."
-            )
+            st.info("Near maintenance. Weight stability expected.")
 
-        predicted_weekly_change = difference_from_target * 7 / 7700
+        predicted_change = diff * 7 / 7700
 
-        st.markdown("### Predicted Impact")
-
-        if predicted_weekly_change > 0:
-            st.warning(
-                f"If this continues, you may gain approx "
-                f"{predicted_weekly_change:.2f} kg per week."
-            )
-        else:
-            st.success(
-                f"If this continues, you may lose approx "
-                f"{abs(predicted_weekly_change):.2f} kg per week."
-            )
-
+        st.metric("Predicted Weekly Change",
+                  f"{predicted_change:+.2f} kg")
     else:
-        st.info("Not enough weekly data for AI insight.")
+        st.info("Not enough weekly data.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
     # ==================================================
-    # ADAPTIVE TARGET ADJUSTMENT SYSTEM (IMPROVED)
+    # ADAPTIVE TARGET
     # ==================================================
-    st.markdown("---")
-    st.subheader("Adaptive Calorie Adjustment")
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Adaptive Calorie Target")
 
     if not merged.empty:
-
         weekly_net_avg = merged["net"].mean()
         adaptive_target = target_calories
-        adjustment_message = None
 
-        # --- WEIGHT LOSS MODE ---
-        if goal == "Weight Loss":
+        if goal == "Weight Loss" and weekly_net_avg > target_calories + 150:
+            adaptive_target -= 150
+        elif goal == "Weight Gain" and weekly_net_avg < target_calories - 150:
+            adaptive_target += 150
 
-            if weekly_net_avg > target_calories + 150:
-                adaptive_target = target_calories - 150
-                adjustment_message = "Deficit too small. Reducing calories slightly."
-
-            elif weekly_net_avg < target_calories - 400:
-                adaptive_target = target_calories + 100
-                adjustment_message = "Deficit too aggressive. Increasing calories for sustainability."
-
-            else:
-                adjustment_message = "Current calorie target is working well."
-
-        # --- WEIGHT GAIN MODE ---
-        elif goal == "Weight Gain":
-
-            if weekly_net_avg < target_calories - 150:
-                adaptive_target = target_calories + 150
-                adjustment_message = "Surplus too small. Increasing calories."
-
-            elif weekly_net_avg > target_calories + 400:
-                adaptive_target = target_calories - 100
-                adjustment_message = "Surplus too high. Reducing slightly to limit fat gain."
-
-            else:
-                adjustment_message = "Current surplus is appropriate."
-
-        # --- MAINTENANCE MODE ---
-        else:
-
-            if abs(weekly_net_avg - target_calories) > 250:
-                if weekly_net_avg > target_calories:
-                    adaptive_target = target_calories - 100
-                else:
-                    adaptive_target = target_calories + 100
-
-                adjustment_message = "Adjusting calories slightly to stabilize weight."
-
-            else:
-                adjustment_message = "Maintenance intake is balanced."
-
-        # --- DISPLAY ---
-        st.metric("Recommended Target", f"{adaptive_target:.0f} kcal/day")
-
-        if adaptive_target != target_calories:
-            st.warning(adjustment_message)
-        else:
-            st.success(adjustment_message)
-
+        st.metric("Recommended Target",
+                  f"{adaptive_target:.0f} kcal/day")
     else:
-        st.info("Adaptive system requires at least a few days of logs.")
+        st.info("Requires more logged data.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
+# =========================================================
+# FACTS & MYTHS – CLEAN EDUCATION MODULE
+# =========================================================
 elif st.session_state.page == "Facts & Myths":
 
     st.title("Food & Calories – Myths vs Facts")
-    st.caption("Clear the confusion. Eat smart. Stay healthy.")
+    st.caption("Evidence-based clarity for smarter decisions")
 
-    st.divider()
+    # =====================================================
+    # MYTHS SECTION
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Common Nutrition Myths")
 
     myths_facts = [
-        ("Eating less always means losing weight",
-         "Extreme calorie restriction slows metabolism and causes fatigue. Balanced nutrition matters."),
+        ("Eating less always guarantees weight loss",
+         "Extreme restriction slows metabolism. Sustainable balance matters."),
 
         ("All calories are the same",
-         "100 calories from vegetables affect the body differently than 100 calories from sugar or junk food."),
+         "Nutrient quality affects hormones, hunger, and energy."),
 
-        ("Skipping meals helps burn fat",
-         "Skipping meals often leads to overeating later and unstable blood sugar levels."),
+        ("Skipping meals burns fat faster",
+         "Often leads to overeating and unstable blood sugar."),
 
         ("Carbs make you fat",
-         "Complex carbs like rice, oats, fruits, and millets are essential energy sources."),
+         "Complex carbs are essential energy sources."),
 
         ("Fat-free foods are always healthy",
-         "Many fat-free foods contain added sugar. Healthy fats are essential for hormones."),
+         "Many contain added sugar. Healthy fats are necessary."),
 
         ("Late-night eating causes weight gain",
-         "Total daily calorie intake matters more than meal timing."),
+         "Total daily intake matters more than timing."),
 
         ("Fruits can be eaten without limits",
-         "Fruits are healthy but still contain calories and natural sugars."),
+         "Fruits are healthy but still contain natural sugars."),
 
-        ("Exercise alone is enough for weight loss",
-         "Weight loss is about 70% diet and 30% exercise."),
+        ("Exercise alone ensures fat loss",
+         "Nutrition plays the larger role."),
 
-        ("Drinking water burns fat instantly",
-         "Water supports digestion but does not directly burn fat."),
+        ("Water burns fat instantly",
+         "Hydration supports health but doesn’t directly burn fat."),
 
         ("You must avoid favorite foods completely",
-         "Sustainable fitness comes from balance, not strict restriction.")
+         "Balance and portion control are more sustainable."
+        )
     ]
 
     col1, col2 = st.columns(2)
@@ -1316,47 +1125,41 @@ elif st.session_state.page == "Facts & Myths":
     for i, (myth, fact) in enumerate(myths_facts):
         container = col1 if i % 2 == 0 else col2
         with container:
-            st.markdown(f"""
-                <div style="
-                    background: var(--secondary-background-color);
-                    padding:18px;
-                    border-radius:16px;
-                    box-shadow:0 6px 18px rgba(0,0,0,0.08);
-                    margin-bottom:16px;
-                ">
-                    <h4 style="color:#ef4444;">Myth</h4>
-                    <p style="font-weight:600;">{myth}</p>
-                    <hr>
-                    <h4 style="color:#16a34a;">Fact</h4>
-                    <p>{fact}</p>
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"**Myth:** {myth}")
+            st.caption(f"Fact: {fact}")
+            st.markdown("---")
 
-    st.divider()
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.subheader("Quick Nutrition Fundamentals")
+    # =====================================================
+    # FUNDAMENTALS
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Nutrition Fundamentals")
 
-    metric1, metric2, metric3, metric4 = st.columns(4)
+    m1, m2, m3, m4 = st.columns(4)
 
-    with metric1:
-        metric_card("Protein", "Muscle repair", "🥦")
+    with m1:
+        metric_card("Protein", "Muscle repair")
 
-    with metric2:
-        metric_card("Fiber", "Hunger control", "🥗")
+    with m2:
+        metric_card("Fiber", "Hunger control")
 
-    with metric3:
-        metric_card("Healthy Fats", "Hormone balance", "🫒")
+    with m3:
+        metric_card("Healthy Fats", "Hormone balance")
 
-    with metric4:
-        metric_card("Low Sugar", "Long-term health", "🧂")
+    with m4:
+        metric_card("Low Sugar", "Metabolic health")
 
-    st.info("Consistency beats restriction. Sustainable habits win.")
+    st.info("Consistency beats restriction.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.divider()
+    # =====================================================
+    # QUIZ MODULE
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Myth or Fact Quiz")
 
-    st.subheader("Quiz Mode — Myth or Fact?")
-
-    # Initialize quiz state
     if "quiz_score" not in st.session_state:
         st.session_state.quiz_score = 0
 
@@ -1369,70 +1172,49 @@ elif st.session_state.page == "Facts & Myths":
     if "quiz_feedback" not in st.session_state:
         st.session_state.quiz_feedback = None
 
-
-    # Create quiz pool
     quiz_pool = [
         ("Eating less always guarantees weight loss", "Myth"),
-        ("Total calorie intake matters more than meal timing", "Fact"),
+        ("Total calorie intake matters more than timing", "Fact"),
         ("Carbs automatically cause fat gain", "Myth"),
-        ("Protein helps in muscle repair", "Fact"),
-        ("Drinking water directly burns fat", "Myth"),
-        ("Fiber improves digestion and hunger control", "Fact"),
-        ("Exercise alone is enough for fat loss", "Myth"),
-        ("Healthy fats are essential for hormones", "Fact"),
+        ("Protein supports muscle repair", "Fact"),
+        ("Drinking water burns fat directly", "Myth"),
+        ("Fiber improves digestion", "Fact"),
+        ("Exercise alone causes fat loss", "Myth"),
+        ("Healthy fats support hormones", "Fact"),
     ]
 
-    # Generate new question
     import random
 
-    if st.button("🎲 New Question") or st.session_state.quiz_question is None:
+    if st.button("New Question") or st.session_state.quiz_question is None:
         question, answer = random.choice(quiz_pool)
         st.session_state.quiz_question = question
         st.session_state.quiz_answer = answer
         st.session_state.quiz_feedback = None
 
-
-    # Display question
     if st.session_state.quiz_question:
 
-        st.markdown(f"""
-            <div style="
-                background: var(--secondary-background-color);
-                padding:20px;
-                border-radius:18px;
-                box-shadow:0 8px 24px rgba(0,0,0,0.08);
-                margin-bottom:15px;
-            ">
-                <h4>{st.session_state.quiz_question}</h4>
-            </div>
-        """, unsafe_allow_html=True)
+        st.write(f"**Question:** {st.session_state.quiz_question}")
 
         user_choice = st.radio(
-            "Your Answer:",
+            "Your Answer",
             ["Myth", "Fact"],
-            key="quiz_choice",
             horizontal=True
         )
 
-        if st.button("Submit Answer"):
-
+        if st.button("Submit"):
             if user_choice == st.session_state.quiz_answer:
                 st.session_state.quiz_score += 1
                 st.session_state.quiz_feedback = "correct"
             else:
                 st.session_state.quiz_feedback = "wrong"
 
-        # Feedback display
         if st.session_state.quiz_feedback == "correct":
-            st.success("Correct! Well done.")
+            st.success("Correct!")
 
         elif st.session_state.quiz_feedback == "wrong":
-            st.error(
-                f"Incorrect. Correct answer: {st.session_state.quiz_answer}"
-            )
+            st.error(f"Incorrect. Answer: {st.session_state.quiz_answer}")
 
-        # Score Display
-        st.markdown(f"### Score: {st.session_state.quiz_score}")
+        st.metric("Score", st.session_state.quiz_score)
 
         if st.button("Reset Quiz"):
             st.session_state.quiz_score = 0
@@ -1440,175 +1222,95 @@ elif st.session_state.page == "Facts & Myths":
             st.session_state.quiz_feedback = None
             st.rerun()
 
+    st.markdown("</div>", unsafe_allow_html=True)
 
+# =========================================================
+# HEALTHY WEIGHT TOOLKIT – CLEAN STRUCTURED VERSION
+# =========================================================
 elif st.session_state.page == "Healthy Weight Toolkit":
 
     st.title("Healthy Weight Toolkit")
-    st.caption("Personalized insights • Smart predictions • Healthy habits")
+    st.caption("Personal metrics • Progress • Predictive intelligence")
 
-    # ---------------- LOAD USER PROFILE ----------------
+    # ---------------- LOAD PROFILE ----------------
     cursor.execute("""
-    SELECT age, gender, height, weight, activity, goal
-    FROM users WHERE username=?
+        SELECT age, gender, height, weight, activity, goal
+        FROM users WHERE username=?
     """, (st.session_state.username,))
     profile = cursor.fetchone()
 
-    if not profile or not all(profile):
-        st.warning("Please complete your profile in 'Analyze Food' section.")
+    if not profile:
+        st.warning("Complete your profile first.")
         st.stop()
 
     age, gender, height, profile_weight, activity, goal = profile
+    weight = get_latest_weight(st.session_state.username, profile_weight)
 
-
-    # ---------------- GET LATEST LOGGED WEIGHT ----------------
-    latest_weight_row = cursor.execute("""
-    SELECT weight FROM weight_logs
-    WHERE username=?
-    ORDER BY date DESC
-    LIMIT 1
-    """, (st.session_state.username,)).fetchone()
-
-    if latest_weight_row:
-        weight = latest_weight_row[0]   # use latest logged weight
-    else:
-        weight = profile_weight        # fallback to profile weight
-
-
-    # ---------------- CALCULATE BMI USING DYNAMIC WEIGHT ----------------
     bmi = bmi_calc(weight, height)
 
+    # =====================================================
+    # BODY METRICS
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Body Metrics")
 
-    # ---------------- CARD UI ----------------
-    
     c1, c2, c3 = st.columns(3)
 
     with c1:
-        metric_card("BMI", f"{bmi:.2f}", "📏")
+        metric_card("BMI", f"{bmi:.2f}")
 
     with c2:
-        metric_card("Weight", f"{weight} kg", "⚖️")
+        metric_card("Weight", f"{weight} kg")
 
     with c3:
-        metric_card("Goal", goal, "🎯")
-        
-    st.markdown("---")
+        metric_card("Goal", goal)
 
-    # ---------------- BMI STATUS & AI TIPS ----------------
-    st.subheader("Smart AI Health Tips")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    if bmi < 18.5:
-        status = "Underweight"
-        tips = [
-            "Increase calorie-dense healthy foods",
-            "Add strength training",
-            "Avoid skipping meals"
-        ]
-    elif bmi < 25:
-        status = "Healthy Weight"
-        tips = [
-            "Maintain balanced nutrition",
-            "Stay consistent with exercise",
-            "Avoid emotional eating"
-        ]
-    elif bmi < 30:
-        status = "Overweight"
-        tips = [
-            "Reduce sugary & fried foods",
-            "Increase daily steps",
-            "Focus on portion control"
-        ]
-    else:
-        status = "Obese"
-        tips = [
-            "Gradual calorie deficit",
-            "Low-impact exercises",
-            "Consult a nutrition expert if needed"
-        ]
-
-    st.success(f"BMI Category: **{status}**")
-    for t in tips:
-        st.write("•", t)
-
-    st.markdown("---")
-
-    # ---------------- PROGRESS TRACKING ----------------
-    st.subheader("Progress Tracking")
+    # =====================================================
+    # WEIGHT PROGRESS
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Weight Progress")
 
     today = datetime.date.today().isoformat()
-    # ---------------- WEIGHT INPUT ----------------
+
     new_weight = st.number_input(
-        "Enter Today's Weight (kg)",
-        min_value=30.0,
-        max_value=200.0,
-        step=0.1,
-        value=float(weight)
+        "Log Today's Weight (kg)",
+        30.0, 200.0,
+        value=float(weight),
+        step=0.1
     )
 
-    if st.button("➕ Log Today's Weight"):
+    if st.button("Log Weight", use_container_width=True):
         cursor.execute(
             "INSERT INTO weight_logs VALUES (?, ?, ?)",
             (st.session_state.username, new_weight, today)
         )
-
         conn.commit()
-
-        st.success("Weight logged successfully!")
+        st.success("Weight logged.")
         st.rerun()
 
-
     progress_df = pd.read_sql_query("""
-    SELECT date, weight FROM weight_logs
-    WHERE username=?
-    ORDER BY date
+        SELECT date, weight FROM weight_logs
+        WHERE username=?
+        ORDER BY date
     """, conn, params=(st.session_state.username,))
 
     if not progress_df.empty:
-
-        # Convert date column to datetime
         progress_df["date"] = pd.to_datetime(progress_df["date"])
-
-        # Show weight trend chart
         st.line_chart(progress_df.set_index("date"))
-
-        # ---------------- RAPID WEIGHT CHANGE DETECTION ----------------
-        if len(progress_df) >= 2:
-
-            latest_weight = progress_df.iloc[-1]["weight"]
-
-            week_ago_date = pd.to_datetime(datetime.date.today() - datetime.timedelta(days=7))
-
-            past_week_data = progress_df[progress_df["date"] >= week_ago_date]
-
-            if not past_week_data.empty:
-                week_start_weight = past_week_data.iloc[0]["weight"]
-                weekly_change = latest_weight - week_start_weight
-
-                st.markdown("### Weight Change Analysis")
-
-                if abs(weekly_change) > 1:
-                    st.error(
-                        f"Rapid weight change detected: {weekly_change:+.2f} kg in the last 7 days. "
-                        "Consider reviewing diet and activity levels."
-                    )
-                else:
-                    st.success(
-                        f"Weight change in last 7 days: {weekly_change:+.2f} kg "
-                        "(within healthy range)."
-                    )
-
     else:
-        st.info("No progress data yet. Start logging your weight.")
+        st.info("No weight history yet.")
 
-    st.markdown("---")
+    st.markdown("</div>", unsafe_allow_html=True)
 
+    # =====================================================
+    # CALORIE GUIDANCE
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Calorie Guidance")
 
-    
-    # -------------------------------------------------
-    # DAILY CALORIE GUIDANCE
-    # -------------------------------------------------
-    st.subheader("Daily Calorie Guidance")
-
-    # BMR Calculation
     if gender == "Female":
         bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
     else:
@@ -1621,634 +1323,114 @@ elif st.session_state.page == "Healthy Weight Toolkit":
         "Very Active": 1.725
     }
 
-    # TRUE Maintenance Calories
-    maintenance_calories = bmr * activity_factor[activity]
+    maintenance = bmr * activity_factor[activity]
 
-    # Goal Target Calories
     if goal == "Weight Loss":
-        target_calories = maintenance_calories - 300
+        target = maintenance - 300
     elif goal == "Weight Gain":
-        target_calories = maintenance_calories + 300
+        target = maintenance + 300
     else:
-        target_calories = maintenance_calories
+        target = maintenance
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.metric("Maintenance Calories", f"{maintenance_calories:.0f} kcal")
+        metric_card("Maintenance", f"{maintenance:.0f} kcal")
 
     with col2:
-        st.metric("Target Calories", f"{target_calories:.0f} kcal")
+        metric_card("Target", f"{target:.0f} kcal")
 
-    st.caption("Maintenance = calories to keep current weight. Target = adjusted for goal.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-
-    # -------------------------------------------------
-    # REAL WEEKLY WEIGHT PREDICTION (STABLE VERSION)
-    # -------------------------------------------------
-    st.subheader("Weekly Weight Change Prediction (Based on Your Logs)")
+    # =====================================================
+    # WEEKLY PREDICTION
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Weekly Prediction")
 
     week_ago = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
 
     df_week = pd.read_sql_query("""
-    SELECT date, calories FROM food_logs
-    WHERE username=? AND date>=?
+        SELECT date, calories FROM food_logs
+        WHERE username=? AND date>=?
     """, conn, params=(st.session_state.username, week_ago))
-
-
-    # -------------------------------------------------
-    # STABLE WEEKLY PREDICTION + CONFIDENCE + BEHAVIOR SCORE
-    # -------------------------------------------------
 
     df_week["calories"] = pd.to_numeric(df_week["calories"], errors="coerce")
     daily_totals = df_week.groupby("date")["calories"].sum().reset_index()
 
-    days_logged = len(daily_totals)
-
-    if days_logged < 3:
-        st.info("At least 3 logged days are required for reliable prediction.")
+    if len(daily_totals) < 3:
+        st.info("Log at least 3 days of food for prediction.")
     else:
-        avg_daily_intake = daily_totals["calories"].mean()
-        estimated_weekly_intake = avg_daily_intake * 7
-        weekly_required = maintenance_calories * 7
-
-        calorie_difference = estimated_weekly_intake - weekly_required
-        predicted_weight_change = calorie_difference / 7700
-        predicted_weight = weight + predicted_weight_change
+        avg_intake = daily_totals["calories"].mean()
+        weekly_diff = (avg_intake * 7) - (maintenance * 7)
+        predicted_change = weekly_diff / 7700
 
         col1, col2 = st.columns(2)
 
         with col1:
-            st.metric("Avg Daily Intake", f"{avg_daily_intake:.0f} kcal")
+            metric_card("Avg Intake", f"{avg_intake:.0f} kcal")
 
         with col2:
-            st.metric("Predicted Weekly Change", f"{predicted_weight_change:+.2f} kg")
+            metric_card("Predicted Change", f"{predicted_change:+.2f} kg")
 
-        # -------------------------------
-        # CONFIDENCE SCORE SYSTEM
-        # -------------------------------
-
-        logging_consistency = (days_logged / 7) * 100
-
-        calorie_variation = daily_totals["calories"].std()
-        if pd.isna(calorie_variation):
-            calorie_variation = 0
-
-        stability_score = max(0, 100 - (calorie_variation / 10))
-
-        confidence_score = (logging_consistency * 0.6) + (stability_score * 0.4)
-        confidence_score = min(100, max(0, confidence_score))
-
-        st.markdown("### Prediction Confidence Score")
-        st.progress(int(confidence_score))
-
-        if confidence_score > 80:
-            st.success("High confidence prediction (consistent logging & stable intake).")
-        elif confidence_score > 50:
-            st.info("Moderate confidence. Logging consistency can improve accuracy.")
+        if predicted_change > 0.2:
+            st.warning("Weight gain trend detected.")
+        elif predicted_change < -0.2:
+            st.success("Weight loss trend detected.")
         else:
-            st.warning("Low confidence. Log daily intake more consistently.")
+            st.info("Weight stability likely.")
 
-        # -------------------------------
-        # BEHAVIORAL DISCIPLINE SCORE
-        # -------------------------------
+    st.markdown("</div>", unsafe_allow_html=True)
 
-        difference_from_target = abs(avg_daily_intake - target_calories)
+    # =====================================================
+    # HABIT TRACKER
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Daily Habit Tracker")
 
-        if difference_from_target < 100:
-            discipline_score = 90
-        elif difference_from_target < 250:
-            discipline_score = 70
-        elif difference_from_target < 400:
-            discipline_score = 50
-        else:
-            discipline_score = 30
+    col1, col2 = st.columns(2)
 
-        st.markdown("### Behavioral Discipline Score")
-        st.progress(discipline_score)
-
-        if discipline_score >= 80:
-            st.success("Excellent calorie control. Strong discipline.")
-        elif discipline_score >= 60:
-            st.info("Good control. Minor improvements needed.")
-        else:
-            st.warning("High deviation from target. Focus on consistency.")
-
-        # -------------------------------
-        # Final Weight Trend Insight
-        # -------------------------------
-
-        if predicted_weight_change > 0.2:
-            st.warning(
-                f"If this continues, weight may increase to "
-                f"{predicted_weight:.2f} kg next week."
-            )
-        elif predicted_weight_change < -0.2:
-            st.success(
-                f"If this continues, weight may decrease to "
-                f"{predicted_weight:.2f} kg next week."
-            )
-        else:
-            st.info("Trend indicates weight stability.")
-
-        st.caption("Prediction uses 7700 kcal ≈ 1 kg body weight estimation model.")
-
-
-    # ---------------- HEALTHY HABITS CARD ----------------
-    st.subheader("Daily Compliance Tracker")
-
-    h1, h2, h3 = st.columns(3)
-
-    with h1:
+    with col1:
         st.checkbox("Balanced meals")
         st.checkbox("Hydration")
 
-    with h2:
+    with col2:
         st.checkbox("Daily activity")
         st.checkbox("7–8 hrs sleep")
 
-    with h3:
-        st.checkbox("Portion control")
-        st.checkbox("Stress management")
+    st.info("Consistency compounds over time.")
 
-    st.info("Consistency beats perfection. Small steps create big results.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # -------------------------------------------------
-    # HEALTHY WEIGHT RANGE
-    # -------------------------------------------------
+    # =====================================================
+    # HEALTH RANGE
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Healthy Weight Range")
 
     h_m = height / 100
-    min_weight = 18.5 * (h_m ** 2)
-    max_weight = 24.9 * (h_m ** 2)
+    min_w = 18.5 * (h_m ** 2)
+    max_w = 24.9 * (h_m ** 2)
 
-    st.info(
-        f"For your height ({height} cm), a healthy weight range is "
-        f"**{min_weight:.1f} kg – {max_weight:.1f} kg**."
-    )
+    st.info(f"Ideal range for your height: {min_w:.1f} kg – {max_w:.1f} kg")
 
-    # -------------------------------------------------
-    # ACTIVITY RECOMMENDATIONS
-    # -------------------------------------------------
-    st.subheader("Activity Recommendations")
-
-    activity_tips = {
-        "Sedentary": "Start with 20–30 minutes of walking daily.",
-        "Lightly Active": "Include brisk walking, yoga, or cycling.",
-        "Moderately Active": "Add strength training 3–4 days per week.",
-        "Very Active": "Ensure proper recovery and balanced nutrition."
-    }
-
-    st.write(f"**Based on your activity level:** {activity_tips[activity]}")
-
-    # -------------------------------------------------
-    # NUTRITION GUIDELINES
-    # -------------------------------------------------
-    st.subheader("Nutrition Guidelines")
-
-    st.markdown("""
-    - Choose **complex carbohydrates** (rice, millets, oats)
-    - Include **fiber-rich vegetables** daily
-    - Ensure adequate **protein intake**
-    - Add **healthy fats** in moderation
-    - Stay hydrated (2–3 liters/day)
-    """)
-
-    # -------------------------------------------------
-    # HEALTHY HABITS CHECKLIST
-    # -------------------------------------------------
-    st.subheader("Healthy Habits Checklist")
-
-    st.checkbox("Eat regular meals")
-    st.checkbox("Avoid sugary drinks")
-    st.checkbox("Sleep 7–8 hours daily")
-    st.checkbox("Exercise at least 30 minutes")
-    st.checkbox("Manage stress effectively")
-
-    st.markdown("---")
-    st.info("Healthy weight is a journey — focus on consistency, not perfection.")
-# -------------------------------------------------
-# COMMON FOODS & CALORIE BURN GUIDE
-# -------------------------------------------------
-    st.markdown("---")
-    st.subheader("Common Foods & Burn Guide")
-
-    food = st.selectbox("Select a food", list(COMMON_FOODS.keys()))
-
-    data = COMMON_FOODS[food]
-    st.metric("Calories", f"{data['calories']} kcal")
-    st.info(f"Exercise to burn: **{data['exercise']}**")
-
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =========================================================
-# INGREDIENTS GUIDE – FULL NUTRITION INTELLIGENCE SYSTEM
-# =========================================================
-elif st.session_state.page == "Ingredients Guide":
-
-    st.title("Nutrition Intelligence & Ingredient Guide")
-    st.caption("Macro analysis • Health scoring • Smart ingredient education")
-    st.markdown("---")
-
-    # =====================================================
-    # LOAD USER PROFILE
-    # =====================================================
-    cursor.execute("""
-        SELECT age, gender, height, weight, activity, goal,
-               diabetes, acidity, constipation, obesity
-        FROM users WHERE username=?
-    """, (st.session_state.username,))
-    user_data = cursor.fetchone()
-
-    age, gender, height, weight, activity, goal, diabetes, acidity, constipation, obesity = user_data
-
-    # =====================================================
-    # SECTION 1 – NUTRITION INTELLIGENCE (CSV BASED)
-    # =====================================================
-    st.markdown("## Nutrition Intelligence Engine")
-
-    food_list = sorted(calorie_df["category"].unique())
-    selected_food = st.selectbox("Select Food to Analyze", food_list)
-
-    food_row = calorie_df[calorie_df["category"] == selected_food]
-
-    if not food_row.empty:
-
-        food = food_row.iloc[0]
-
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Calories", f"{food['calories_per_100g']} kcal")
-        col2.metric("Protein", f"{food['protein_g']} g")
-        col3.metric("Fat", f"{food['fat_g']} g")
-        col4.metric("Carbs", f"{food['carbs_g']} g")
-
-        st.markdown("---")
-
-             # ---------------- ADVANCED SCORING ENGINE ----------------
-        score = 100
-        warnings = []
-        positives = []
-
-        # Base Calorie Impact
-        if food["calories_per_100g"] > 400:
-            score -= 30
-            warnings.append("Very high calorie density.")
-        elif food["calories_per_100g"] > 300:
-            score -= 20
-            warnings.append("High calorie density.")
-
-        # Sugar Impact (applies to everyone)
-        if food["sugar_g"] > 25:
-            score -= 25
-            warnings.append("Very high sugar content.")
-        elif food["sugar_g"] > 10:
-            score -= 15
-            warnings.append("Moderate sugar content.")
-
-        # Fat Impact
-        if food["fat_g"] > 20:
-            score -= 20
-            warnings.append("High fat content.")
-
-        # Sodium Impact
-        if food["sodium_mg"] > 600:
-            score -= 20
-            warnings.append("High sodium level.")
-        elif food["sodium_mg"] > 300:
-            score -= 10
-
-        # Fiber Bonus
-        if food["fiber_g"] >= 5:
-            score += 10
-            positives.append("High fiber supports digestion.")
-
-        # Protein Bonus
-        if food["protein_g"] >= 15:
-            score += 10
-            positives.append("High protein content.")
-
-        # Goal-based Adjustments
-        if goal == "Weight Loss":
-            if food["calories_per_100g"] > 300:
-                score -= 15
-            if food["fiber_g"] >= 5:
-                score += 5
-
-        if goal == "Weight Gain":
-            if food["calories_per_100g"] >= 300:
-                score += 5
-
-        # Diabetes Adjustments
-        if diabetes:
-            if food["sugar_g"] > 10:
-                score -= 25
-                warnings.append("Not ideal for diabetes.")
-            if food["glycemic_index"] > 70:
-                score -= 20
-                warnings.append("High Glycemic Index.")
-
-        # Obesity
-        if obesity and food["fat_g"] > 15:
-            score -= 15
-
-        # Constipation
-        if constipation:
-            if food["fiber_g"] < 3:
-                score -= 10
-                warnings.append("Low fiber for digestion.")
-            else:
-                score += 5
-
-        # Acidity
-        if acidity and selected_food in ["tomato", "fried_food", "chai"]:
-            score -= 10
-            warnings.append("May trigger acidity.")
-
-        # Clamp Score
-        score = max(0, min(100, score))
-
-        st.markdown("### Health Suitability Score")
-        st.progress(score)
-
-        if score > 75:
-            st.success("Excellent choice based on your profile.")
-        elif score > 50:
-            st.info("Moderate choice. Watch portion size.")
-        else:
-            st.warning("Not ideal for your health condition.")
-
-        if warnings:
-            st.markdown("### ⚠ Risk Factors")
-            for w in warnings:
-                st.warning(w)
-
-        if positives:
-            st.markdown("### Positive Factors")
-            for p in positives:
-                st.success(p)
-
-    st.markdown("---")
-
-    # =====================================================
-    # SECTION 2 – SMART INGREDIENT EDUCATION LIBRARY
-    # =====================================================
-    st.markdown("## Smart Ingredient Knowledge Library")
-
-    INGREDIENTS = {
-        "Rice": {
-            "calories": 130,
-            "protein": 2.4,
-            "benefits": "Good energy source. Easy to digest.",
-            "avoid_if": ["Diabetes (limit portion)"]
-        },
-        "Broccoli": {
-            "calories": 34,
-            "protein": 2.8,
-            "benefits": "High fiber. Rich in Vitamin C.",
-            "avoid_if": []
-        },
-        "Eggs": {
-            "calories": 155,
-            "protein": 13,
-            "benefits": "High quality protein. Supports muscle growth.",
-            "avoid_if": []
-        },
-        "Chicken Breast": {
-            "calories": 165,
-            "protein": 31,
-            "benefits": "Lean protein source.",
-            "avoid_if": []
-        },
-        "Paneer": {
-            "calories": 265,
-            "protein": 18,
-            "benefits": "High protein & calcium.",
-            "avoid_if": ["Obesity (limit portion)"]
-        },
-        "Banana": {
-            "calories": 89,
-            "protein": 1.1,
-            "benefits": "Quick energy. Rich in potassium.",
-            "avoid_if": ["Diabetes (monitor intake)"]
-        },
-        "Oats": {
-            "calories": 389,
-            "protein": 16,
-            "benefits": "High fiber. Supports heart health.",
-            "avoid_if": []
-        },
-        "Tomato": {
-            "calories": 18,
-            "protein": 0.9,
-            "benefits": "Rich in antioxidants.",
-            "avoid_if": ["Acidity (if sensitive)"]
-        }
-    }
-
-    INGREDIENT_EMOJIS = {
-    "Banana": "🍌",
-    "Broccoli": "🥦",
-    "Chicken Breast": "🍗",
-    "Eggs": "🥚",
-    "Oats": "🌾",
-    "Paneer": "🧀",
-    "Rice": "🍚",
-    "Tomato": "🍅"
-}
-    
-    search = st.text_input("🔎 Search Ingredient")
-    ingredient_list = sorted(INGREDIENTS.keys())
-
-    if search:
-        ingredient_list = [
-            i for i in ingredient_list
-            if search.lower() in i.lower()
-        ]
-
-    for item in ingredient_list:
-        data = INGREDIENTS[item]
-
-        emoji = INGREDIENT_EMOJIS.get(item, "🥗")
-        with st.expander(f"{emoji} {item}"):
-
-            col1, col2 = st.columns(2)
-            col1.metric("Calories (per 100g)", f"{data['calories']} kcal")
-            col1.metric("Protein (per 100g)", f"{data['protein']} g")
-
-            col2.info(data["benefits"])
-
-            warnings = []
-
-            if diabetes and any("Diabetes" in x for x in data["avoid_if"]):
-                warnings.append("⚠ Not ideal for Diabetes.")
-
-            if acidity and any("Acidity" in x for x in data["avoid_if"]):
-                warnings.append("⚠ May trigger acidity.")
-
-            if obesity and any("Obesity" in x for x in data["avoid_if"]):
-                warnings.append("⚠ High calorie. Portion control recommended.")
-
-            if warnings:
-                for w in warnings:
-                    st.warning(w)
-            else:
-                st.success("Suitable based on your health profile.")
-
-    st.markdown("---")
-    st.info("Intelligence engine uses macro-analysis + rule-based health scoring.")
-
-
-# =========================================================
-# WEIGHT LOSS ENGINE – PERSONALIZED VERSION
-# =========================================================
-elif st.session_state.page == "Lose Weight Safely":
-
-    st.title("Smart Weight Loss Engine")
-    st.caption("Personalized • Science-backed • Sustainable fat loss")
-    st.markdown("---")
-
-    # ---------------- GET USER DATA ----------------
-    cursor.execute("""
-        SELECT age, weight, height, gender
-        FROM users WHERE username=?
-    """, (st.session_state.username,))
-    user = cursor.fetchone()
-
-    if user:
-
-        age, weight, height, gender = user
-
-        activity = st.selectbox(
-        "Select Your Activity Level",
-        ["Sedentary", "Light", "Moderate", "Active", "Very Active"]
-)
-
-        # ---------------- BMR CALCULATION ----------------
-        if gender == "Male":
-            bmr = 10 * weight + 6.25 * height - 5 * age + 5
-        else:
-            bmr = 10 * weight + 6.25 * height - 5 * age - 161
-
-        # ---------------- ACTIVITY MULTIPLIER ----------------
-        ACTIVITY_MULTIPLIERS = {
-            "Sedentary": 1.2,
-            "Light": 1.375,
-            "Moderate": 1.55,
-            "Active": 1.725,
-            "Very Active": 1.9
-        }
-
-        multiplier = ACTIVITY_MULTIPLIERS.get(activity, 1.2)
-
-        maintenance_calories = bmr * multiplier
-
-        # ---------------- SAFE DEFICIT ----------------
-        deficit = 500  # 500 kcal/day = ~0.5kg/week
-        target_calories = maintenance_calories - deficit
-
-        # ---------------- BMI ----------------
-        height_m = height / 100
-        bmi = weight / (height_m ** 2)
-
-        # ---------------- DISPLAY METRICS ----------------
-        col1, col2, col3 = st.columns(3)
-
-        col1.metric("Your BMI", f"{bmi:.1f}")
-        col2.metric("Maintenance Calories", f"{maintenance_calories:.0f} kcal")
-        col3.metric("Target Calories", f"{target_calories:.0f} kcal")
-
-        st.markdown("---")
-
-        # ---------------- BMI INTERPRETATION ----------------
-        if bmi < 18.5:
-            st.info("You are underweight. Focus on healthy weight gain instead.")
-        elif 18.5 <= bmi < 25:
-            st.success("You are in a healthy weight range.")
-        elif 25 <= bmi < 30:
-            st.warning("You are overweight. Moderate fat loss recommended.")
-        else:
-            st.error("Obesity range. Structured fat-loss plan recommended.")
-
-        # ---------------- MACRO BREAKDOWN ----------------
-        st.subheader("Suggested Macro Split")
-
-        protein_target = weight * 1.6  # grams
-        fat_target = target_calories * 0.25 / 9
-        carbs_target = (target_calories - (protein_target * 4 + fat_target * 9)) / 4
-
-        col1, col2, col3 = st.columns(3)
-
-        col1.metric("Protein", f"{protein_target:.0f} g/day")
-        col2.metric("Fats", f"{fat_target:.0f} g/day")
-        col3.metric("Carbs", f"{carbs_target:.0f} g/day")
-
-        st.markdown("---")
-
-        # ---------------- WEEKLY FAT LOSS ESTIMATE ----------------
-        weekly_loss = (deficit * 7) / 7700  # 7700 kcal ≈ 1 kg fat
-
-        st.success(
-            f"Expected fat loss: ~{weekly_loss:.2f} kg per week "
-            "(if consistent)."
-        )
-
-        st.markdown("---")
-
-        # ---------------- PRACTICAL PLAN ----------------
-        st.subheader("Action Plan")
-
-        st.markdown("""
-        ### Nutrition
-        - Prioritize protein in every meal
-        - Increase vegetables & fiber
-        - Reduce sugar & refined carbs
-        - Track portions, not just food types
-
-        ### Activity
-        - 8,000–10,000 steps daily
-        - Strength training 3–4x/week
-        - Cardio 2–3x/week
-
-        ### Lifestyle
-        - 7–8 hours sleep
-        - Manage stress
-        - Drink 2–3 liters water daily
-        """)
-
-        st.markdown("---")
-
-        st.warning("""
-        ⚠ Avoid:
-        - Crash dieting
-        - Skipping meals
-        - Weight-loss pills
-        - Starvation cardio
-        """)
-
-        st.info("Sustainable fat loss beats extreme dieting every time.")
-
-    else:
-        st.error("User profile incomplete. Please update your details.")
-# =========================================================
-# 🍭 SUGAR CONTROL – BEHAVIOR ENGINE
+# SUGAR CONTROL – CLEAN BEHAVIOR ENGINE
 # =========================================================
 elif st.session_state.page == "Fight Sugar Cravings":
 
-    # ---------------- PAGE HEADER ----------------
-    st.markdown("""
-    <div class="page-header">
-        <h1>Sugar Control Engine</h1>
-        <p>Real-time craving intervention & behavior tracking</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.title("Sugar Control Engine")
+    st.caption("Craving intervention • Risk scoring • Weekly behavior tracking")
 
-    # ---------------- INPUT CARD ----------------
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown("<h3>Craving Assessment</h3>", unsafe_allow_html=True)
+    # =====================================================
+    # CRAVING INPUT
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Craving Assessment")
 
-    craving_level = st.slider(
-        "Craving Intensity (1–10)",
-        1, 10, 5
-    )
+    craving_level = st.slider("Craving Intensity (1–10)", 1, 10, 5)
 
     trigger = st.selectbox(
         "Trigger",
@@ -2263,43 +1445,41 @@ elif st.session_state.page == "Fight Sugar Cravings":
         ]
     )
 
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ---------------- AI INTERVENTION ----------------
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown("<h3>AI Intervention</h3>", unsafe_allow_html=True)
+    # =====================================================
+    # AI INTERVENTION
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("AI Intervention")
 
     if craving_level <= 3:
-        intervention = "Hydrate. Wait 10 minutes. Reassess."
+        intervention = "Hydrate and wait 10 minutes."
     elif craving_level <= 6:
-        intervention = "Consume protein (nuts, yogurt, eggs). Stabilize blood sugar."
+        intervention = "Have protein (nuts, yogurt, eggs)."
     else:
-        intervention = "10-minute brisk walk + breathing + protein snack."
+        intervention = "Take a 10-minute brisk walk + protein snack."
 
-    if trigger == "Stress":
-        intervention += " Add 5-minute deep breathing."
-    elif trigger == "Boredom":
-        intervention += " Switch environment immediately."
-    elif trigger == "Hunger":
-        intervention += " Eat a balanced meal instead."
-    elif trigger == "Lack of Sleep":
-        intervention += " Improve sleep tonight."
-    elif trigger == "After Meals":
-        intervention += " Brush teeth to reset craving."
-    elif trigger == "Social Event":
-        intervention += " Choose fruit or small dark chocolate."
-    elif trigger == "Habit":
-        intervention += " Replace with herbal tea."
+    trigger_actions = {
+        "Stress": "Add 5-minute deep breathing.",
+        "Boredom": "Change environment immediately.",
+        "Hunger": "Eat a balanced meal instead.",
+        "Lack of Sleep": "Prioritize sleep tonight.",
+        "After Meals": "Brush teeth to reset craving.",
+        "Social Event": "Choose fruit or dark chocolate.",
+        "Habit": "Replace with herbal tea."
+    }
+
+    intervention += " " + trigger_actions.get(trigger, "")
 
     st.success(intervention)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
-
-    # ---------------- RISK SCORE SYSTEM ----------------
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown("<h3>Relapse Risk Score</h3>", unsafe_allow_html=True)
+    # =====================================================
+    # RISK SCORE
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Relapse Risk Score")
 
     risk_score = 0
 
@@ -2314,33 +1494,32 @@ elif st.session_state.page == "Fight Sugar Cravings":
         risk_score += 1
 
     if risk_score <= 2:
-        st.success("Low risk. Maintain control.")
+        st.success("Low relapse risk.")
     elif risk_score <= 4:
         st.warning("Moderate risk. Follow intervention strictly.")
     else:
-        st.error("High relapse probability. Avoid sugar completely now.")
+        st.error("High relapse probability. Avoid sugar completely.")
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+    # =====================================================
+    # TRACKING SYSTEM
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Behavior Tracking")
 
-    # ---------------- LOGGING SYSTEM ----------------
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown("<h3>Behavior Tracking</h3>", unsafe_allow_html=True)
+    today = datetime.date.today().isoformat()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS sugar_logs (
+            username TEXT,
+            craving_level INTEGER,
+            trigger TEXT,
+            date TEXT
+        )
+    """)
 
     if st.button("Log Craving Event", use_container_width=True):
-
-        today = datetime.date.today().isoformat()
-
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS sugar_logs (
-                username TEXT,
-                craving_level INTEGER,
-                trigger TEXT,
-                date TEXT
-            )
-        """)
-
         cursor.execute("""
             INSERT INTO sugar_logs VALUES (?, ?, ?, ?)
         """, (
@@ -2349,11 +1528,10 @@ elif st.session_state.page == "Fight Sugar Cravings":
             trigger,
             today
         ))
-
         conn.commit()
-        st.success("Craving logged successfully.")
+        st.success("Craving logged.")
+        st.rerun()
 
-    # Show weekly craving frequency
     week_ago = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
 
     df_week = pd.read_sql_query("""
@@ -2363,143 +1541,151 @@ elif st.session_state.page == "Fight Sugar Cravings":
 
     if not df_week.empty:
         avg_craving = df_week["craving_level"].mean()
-        st.info(f"Weekly Avg Craving Level: {avg_craving:.1f}/10")
+        metric_card("Weekly Avg Craving", f"{avg_craving:.1f}/10")
+    else:
+        st.info("No weekly data yet.")
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+    # =====================================================
+    # EDUCATION PANEL
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Proven Sugar Control Strategies")
 
-    # ---------------- EDUCATION PANEL ----------------
-    with st.expander("Proven Sugar Control Strategies"):
-        tips = [
-            "Hydrate before reacting.",
-            "Increase daily protein intake.",
-            "Sleep 7–8 hours consistently.",
-            "Manage stress proactively.",
-            "Avoid grocery shopping hungry.",
-            "Use distraction strategy (10-minute rule).",
-            "Practice mindful eating."
-        ]
+    tips = [
+        "Hydrate before reacting.",
+        "Increase daily protein intake.",
+        "Sleep 7–8 hours consistently.",
+        "Manage stress proactively.",
+        "Avoid grocery shopping hungry.",
+        "Use the 10-minute delay rule.",
+        "Practice mindful eating."
+    ]
 
-        for tip in tips:
-            st.write("•", tip)
+    for tip in tips:
+        st.write("•", tip)
 
+    st.markdown("</div>", unsafe_allow_html=True)
 # =========================================================
-# ABOUT PROJECT – UPGRADED
+# ABOUT PROJECT – CLEAN PRODUCT OVERVIEW
 # =========================================================
 elif st.session_state.page == "About Project":
 
     st.title("About the Project")
-    st.caption("AI-powered nutrition intelligence for healthier living")
+    st.caption("AI-powered nutrition intelligence platform")
 
-    st.markdown("""
-    ### Food Calorie & Fitness Recommendation System
+    # =====================================================
+    # OVERVIEW
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Project Overview")
 
-    This project is an **AI-based personalized health and nutrition platform** designed to help users
-    make smarter food choices, manage calorie intake, and maintain a healthy lifestyle.
-
-    By combining **Computer Vision, Machine Learning, and Personalized Health Analytics**, the system
-    provides real-time food analysis, calorie estimation, and customized fitness guidance.
+    st.write("""
+    The Food Calorie & Fitness Recommendation System is an AI-based 
+    personalized health platform designed to help users make smarter 
+    nutrition decisions and maintain a sustainable lifestyle.
     """)
 
-    st.markdown("---")
-
-    # ---------------- PROBLEM STATEMENT ----------------
-    st.subheader("Problem Statement")
-    st.markdown("""
-    Many individuals struggle with:
-    - Lack of awareness about calorie content in daily meals  
-    - Difficulty tracking food intake consistently  
-    - Generic diet plans that ignore personal health factors  
-
-    This project addresses these challenges by offering **AI-driven, user-specific insights**
-    instead of one-size-fits-all solutions.
+    st.write("""
+    It combines computer vision, machine learning, and behavioral 
+    analytics to deliver real-time food recognition, calorie estimation,
+    and adaptive health recommendations.
     """)
 
-    st.markdown("---")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ---------------- SOLUTION OVERVIEW ----------------
-    st.subheader("💡 Our Solution")
-    st.markdown("""
-    The system allows users to:
-    - Upload food images for **AI-based food recognition**
-    - Instantly estimate **calorie values**
-    - Receive **personalized recommendations** based on BMI, activity level, and goals
-    - Track weekly food intake and weight progress
-    - Learn healthy habits through curated guidance
-    """)
+    # =====================================================
+    # PROBLEM & SOLUTION
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Problem & Solution")
 
-    st.markdown("---")
+    col1, col2 = st.columns(2)
 
-    # ---------------- TECHNOLOGIES ----------------
-    st.subheader("Technologies Used")
+    with col1:
+        st.markdown("**Challenges**")
+        st.write("- Poor awareness of calorie intake")
+        st.write("- Inconsistent food tracking")
+        st.write("- Generic diet advice")
+        st.write("- Lack of personalized insights")
+
+    with col2:
+        st.markdown("**Our Approach**")
+        st.write("- AI-based food recognition")
+        st.write("- Personalized calorie targets")
+        st.write("- Weekly behavior analytics")
+        st.write("- Health-condition aware guidance")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # =====================================================
+    # TECHNOLOGY STACK
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Technology Stack")
 
     c1, c2 = st.columns(2)
 
     with c1:
-        st.markdown("""
-        **Frontend & UI**
-        - Streamlit  
-        - Custom CSS  
-        - Responsive Layout  
-        """)
+        st.markdown("**Frontend**")
+        st.write("- Streamlit")
+        st.write("- Custom CSS")
 
-        st.markdown("""
-        **AI & ML**
-        - Convolutional Neural Networks (CNN)  
-        - TensorFlow / Keras  
-        - Image Preprocessing (OpenCV, PIL)  
-        """)
+        st.markdown("**AI & ML**")
+        st.write("- CNN (TensorFlow / Keras)")
+        st.write("- Image preprocessing (PIL / OpenCV)")
 
     with c2:
-        st.markdown("""
-        **Backend & Database**
-        - Python  
-        - SQLite  
-        - Secure Password Hashing (SHA-256)  
-        """)
+        st.markdown("**Backend**")
+        st.write("- Python")
+        st.write("- SQLite")
 
-        st.markdown("""
-        **Data Handling**
-        - Pandas  
-        - NumPy  
-        - CSV-based nutrition dataset  
-        """)
+        st.markdown("**Data Processing**")
+        st.write("- Pandas")
+        st.write("- NumPy")
 
-    st.markdown("---")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ---------------- KEY FEATURES ----------------
+    # =====================================================
+    # KEY FEATURES
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Key Features")
-    st.markdown("""
-    - Secure login & user-specific data storage  
-    - Image-based food calorie detection  
-    - Weekly health & calorie reports  
-    - BMI-based smart health tips  
-    - Weight tracking & prediction  
-    - Focus on sustainable and healthy habits  
-    """)
 
-    st.markdown("---")
+    st.write("- Secure user authentication")
+    st.write("- Image-based food calorie detection")
+    st.write("- Weekly calorie & energy analysis")
+    st.write("- Weight tracking & prediction")
+    st.write("- Sugar craving intervention engine")
+    st.write("- Adaptive calorie target system")
 
-    # ---------------- FUTURE SCOPE ----------------
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # =====================================================
+    # FUTURE ROADMAP
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Future Enhancements")
-    st.markdown("""
-    - Multi-food detection from a single image  
-    - Portion size estimation  
-    - Mobile app integration  
-    - Cloud-based deployment  
-    - Nutritionist & doctor recommendations  
-    """)
 
-    st.markdown("---")
+    st.write("- Multi-food detection in single image")
+    st.write("- Portion size estimation via AI")
+    st.write("- Mobile app integration")
+    st.write("- Cloud deployment")
+    st.write("- Professional nutritionist integration")
 
-    # ---------------- PROJECT CONTEXT ----------------
-    st.subheader("Academic Context")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # =====================================================
+    # CONTEXT
+    # =====================================================
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("Project Context")
+
     st.info("""
-    This application is developed as a **Final Year B.Tech Project**, demonstrating the practical
-    application of Artificial Intelligence, Machine Learning, and Full-Stack Development
-    in the healthcare and fitness domain.
+    Developed as a Final Year B.Tech project demonstrating
+    practical implementation of Artificial Intelligence,
+    Machine Learning, and Full-Stack Development in healthcare.
     """)
 
-    st.success("Healthy living starts with informed choices — this project aims to make that easier.")
-
+    st.markdown("</div>", unsafe_allow_html=True)
