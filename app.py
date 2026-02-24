@@ -324,23 +324,31 @@ section[data-testid="stSidebar"] .stButton > button {
     font-weight: 600;
 }
 
-/* ================= LOGIN MODE ONLY ================= */
+//* ================= LOGIN MODE ONLY ================= */
 
 body:has(.login-active) section[data-testid="stSidebar"] {
     display: none !important;
 }
 
 body:has(.login-active) .block-container {
-    max-width: 480px !important;
-    margin: 10vh auto !important;
-    padding: 55px !important;
-    border-radius: 24px;
-    background: rgba(20, 0, 25, 0.92);
-    border: 1px solid rgba(190,24,93,0.35);
+    max-width: 520px !important;
+    margin: 12vh auto !important;
+    padding: 60px !important;
+    border-radius: 28px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(40, 0, 50, 0.95),
+        rgba(60, 0, 40, 0.95)
+    );
+
+    border: 1px solid rgba(255, 0, 150, 0.35);
+
     box-shadow:
-        0 50px 100px rgba(0,0,0,0.75),
-        0 0 60px rgba(139,0,139,0.35);
-    backdrop-filter: blur(18px);
+        0 60px 120px rgba(0,0,0,0.8),
+        0 0 80px rgba(139,0,139,0.45);
+
+    backdrop-filter: blur(20px);
 }
 
 /* ================= LOGIN INPUTS ONLY ================= */
@@ -361,11 +369,22 @@ body:has(.login-active) .stButton > button {
     color: white !important;
     border: none !important;
 }
+            
+body:has(.login-active) h2,
+body:has(.login-active) h3 {
+    color: #ffffff !important;
+}
+
+body:has(.login-active) label {
+    color: #f3e8ff !important;
+}
 
 </style>
 """, unsafe_allow_html=True)
 
 if not st.session_state.get("logged_in", False):
+
+    st.markdown('<div class="login-active"></div>', unsafe_allow_html=True)
 
     st.markdown("<h2>Food Fitness</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center;opacity:0.7;color:#e0c7ff;'>AI Nutrition Intelligence Platform</p>", unsafe_allow_html=True)
