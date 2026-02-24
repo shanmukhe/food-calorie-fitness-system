@@ -255,251 +255,174 @@ st.markdown("""
 <style>
 
 /* ==========================================================
-   GLOBAL BASE
+   IMPORT PREMIUM FONT
 ========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-html, body {
-    height: 100%;
+html, body, [class*="css"]  {
+    font-family: 'Inter', sans-serif;
 }
+
+/* ==========================================================
+   MAIN BACKGROUND – DARK LUXURY BASE
+========================================================== */
 
 .stApp {
     min-height: 100vh;
-    transition: background 0.4s ease;
+    transition: 0.4s ease;
 }
 
-/* Remove empty blocks */
-div[data-testid="stVerticalBlock"] > div:empty {
-    display: none !important;
-}
-
-/* ==========================================================
-   MAIN APP BACKGROUND (SOFT PREMIUM)
-========================================================== */
-
-/* LIGHT THEME MAIN BACKGROUND */
+/* Light Mode – Soft Luxury */
 html[data-theme="light"] .stApp {
     background:
-        radial-gradient(circle at 10% 10%, rgba(99,102,241,0.25), transparent 40%),
-        radial-gradient(circle at 90% 90%, rgba(14,165,233,0.25), transparent 40%),
-        linear-gradient(180deg, #eef2ff 0%, #ffffff 60%);
+        radial-gradient(circle at 20% 20%, rgba(139,92,246,0.15), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(168,85,247,0.12), transparent 40%),
+        linear-gradient(180deg, #f5f3ff 0%, #ffffff 70%);
 }
-/* DARK THEME */
+
+/* Dark Mode – Deep Luxury */
 html[data-theme="dark"] .stApp {
     background:
-        radial-gradient(circle at 15% 20%, rgba(124,58,237,0.25), transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(6,182,212,0.25), transparent 40%),
-        linear-gradient(180deg, #0f172a 0%, #111827 100%);
+        radial-gradient(circle at 15% 15%, rgba(168,85,247,0.15), transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(139,92,246,0.15), transparent 40%),
+        linear-gradient(180deg, #0b0b0f 0%, #111118 100%);
 }
 
 /* ==========================================================
-   SIDEBAR – FULL GRADIENT (LIKE YOUR PREVIOUS DESIGN)
+   SIDEBAR – MATTE LUXURY PANEL
 ========================================================== */
 
 [data-testid="stSidebar"] {
-    padding: 28px 18px;
-    color: white;
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255,255,255,0.05);
 }
 
-/* LIGHT SIDEBAR */
+/* Light */
 html[data-theme="light"] [data-testid="stSidebar"] {
-    background: linear-gradient(
-        180deg,
-        #4f46e5 0%,
-        #3b82f6 50%,
-        #06b6d4 100%
-    );
-}
-html[data-theme="light"] div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg, #7c3aed, #06b6d4);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    background: linear-gradient(180deg, #1e1b4b, #312e81);
+    color: white;
 }
 
-/* DARK SIDEBAR */
+/* Dark */
 html[data-theme="dark"] [data-testid="stSidebar"] {
-    background: linear-gradient(
-        180deg,
-        #1e1b4b 0%,
-        #312e81 50%,
-        #0e7490 100%
-    );
+    background: linear-gradient(180deg, #0f0f17, #1a1a2e);
+    color: white;
 }
 
-/* ==========================================================
-   SIDEBAR MENU ITEMS (GRADIENT ACTIVE)
-========================================================== */
-
-div[role="radiogroup"] input {
-    display: none !important;
-}
-
+/* Sidebar menu items */
 div[role="radiogroup"] > label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
     padding: 12px 16px;
-    margin: 10px 4px;
+    margin: 8px 4px;
     border-radius: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    color: white;
-}
-
-/* Default subtle */
-div[role="radiogroup"] > label {
-    background: rgba(255,255,255,0.08);
-}
-
-/* Hover */
-div[role="radiogroup"] > label:hover {
-    background: rgba(255,255,255,0.18);
-    transform: translateX(6px);
-}
-
-/* Active */
-div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg, #a855f7, #06b6d4);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-}
-
-/* ==========================================================
-   LOGOUT BUTTON
-========================================================== */
-
-[data-testid="stSidebar"] button {
-    margin-top: 25px;
-    border-radius: 16px;
-    font-weight: 600;
-    padding: 10px 0;
-    border: none;
-    background: linear-gradient(90deg, #ef4444, #dc2626);
-    color: white;
     transition: 0.25s ease;
+    background: rgba(255,255,255,0.04);
 }
 
-[data-testid="stSidebar"] button:hover {
-    transform: translateY(-2px);
+div[role="radiogroup"] > label:hover {
+    background: rgba(168,85,247,0.25);
+    transform: translateX(4px);
+}
+
+div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(90deg, #7c3aed, #a855f7);
+    box-shadow: 0 0 18px rgba(168,85,247,0.6);
 }
 
 /* ==========================================================
-   HERO CARD (MATCHING GRADIENT STYLE)
+   HERO CARD – GLASS LUXURY
 ========================================================== */
 
 .hero-card {
-    padding: 32px;
+    padding: 36px;
     border-radius: 22px;
     color: white;
-    transition: all 0.3s ease;
-}
-
-/* LIGHT */
-html[data-theme="light"] .hero-card {
-    background: linear-gradient(135deg, #6366f1, #3b82f6, #06b6d4);
-    box-shadow: 0 30px 60px rgba(59,130,246,0.25);
-}
-
-/* DARK */
-html[data-theme="dark"] .hero-card {
-    background: linear-gradient(135deg, #9333ea, #2563eb, #0891b2);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+    backdrop-filter: blur(18px);
+    background: linear-gradient(135deg, #5b21b6, #7c3aed);
+    box-shadow: 0 25px 60px rgba(124,58,237,0.4);
 }
 
 /* ==========================================================
-   CARDS
+   PREMIUM CARDS
 ========================================================== */
 
 .card,
 .feature-card,
 .metric-card {
-    border-radius: 18px;
-    transition: all 0.25s ease;
+    padding: 22px;
+    border-radius: 20px;
+    backdrop-filter: blur(18px);
+    transition: 0.3s ease;
 }
 
-/* LIGHT CARDS */
+/* Light */
 html[data-theme="light"] .card,
 html[data-theme="light"] .feature-card,
 html[data-theme="light"] .metric-card {
-    background: #ffffff;
-    border: 1px solid rgba(99,102,241,0.15);
-    box-shadow: 0 15px 35px rgba(99,102,241,0.08);
-    backdrop-filter: blur(6px);
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(139,92,246,0.2);
+    box-shadow: 0 20px 40px rgba(139,92,246,0.1);
 }
 
-/* DARK */
+/* Dark */
 html[data-theme="dark"] .card,
 html[data-theme="dark"] .feature-card,
 html[data-theme="dark"] .metric-card {
-    background: #1e293b;
-    border: 1px solid rgba(255,255,255,0.06);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    background: rgba(30,30,40,0.6);
+    border: 1px solid rgba(168,85,247,0.15);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 
+/* Hover Lift */
+.card:hover,
+.feature-card:hover,
+.metric-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 70px rgba(124,58,237,0.35);
+}
+
+/* Metric text */
 .metric-label {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 13px;
     opacity: 0.7;
 }
 
 .metric-value {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 700;
     margin-top: 6px;
 }
 
-/* Light specific */
-html[data-theme="light"] .metric-value {
-    color: #1e293b;
-}
-
-/* Dark specific */
-html[data-theme="dark"] .metric-value {
-    color: #f1f5f9;
-}
 /* ==========================================================
-   LOGIN / SIGNUP FULL GRADIENT BACKGROUND
+   BUTTONS – JEWEL TONE ACCENT
 ========================================================== */
 
-body:has(.login-active) section[data-testid="stSidebar"] {
-    display: none !important;
-}
-
-body:has(.login-active) .block-container {
-    max-width: 520px !important;
-    margin-top: 10vh !important;
-}
-
-/* LIGHT LOGIN */
-html[data-theme="light"] body:has(.login-active) .stApp {
-    background: linear-gradient(
-        135deg,
-        #4f46e5,
-        #7c3aed,
-        #06b6d4
-    );
-}
-
-/* DARK LOGIN */
-html[data-theme="dark"] body:has(.login-active) .stApp {
-    background: linear-gradient(
-        135deg,
-        #0f172a,
-        #312e81,
-        #0e7490
-    );
-}
-
-/* Login card styling */
-body:has(.login-active) .block-container {
-    background: rgba(255,255,255,0.95);
-    padding: 40px;
-    border-radius: 28px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.25);
-}
-
-html[data-theme="dark"] body:has(.login-active) .block-container {
-    background: rgba(30,41,59,0.95);
+.stButton > button {
+    border-radius: 14px;
+    background: linear-gradient(90deg, #7c3aed, #a855f7);
     color: white;
+    border: none;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(168,85,247,0.6);
+}
+
+/* ==========================================================
+   LOGIN PAGE – FULL IMMERSION
+========================================================== */
+
+body:has(.login-active) .stApp {
+    background: linear-gradient(135deg, #0f0f17, #312e81);
+}
+
+body:has(.login-active) .block-container {
+    background: rgba(20,20,30,0.9);
+    padding: 45px;
+    border-radius: 28px;
+    box-shadow: 0 30px 70px rgba(124,58,237,0.6);
 }
 
 </style>
