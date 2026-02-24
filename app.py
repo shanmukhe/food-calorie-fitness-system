@@ -257,62 +257,51 @@ st.markdown("""
 /* ================= GLOBAL FONT ================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 * {
     font-family: 'Inter', sans-serif !important;
 }
 
-/* ================= UNIVERSAL TEXT VISIBILITY ================= */
+/* ================= GLOBAL TEXT VISIBILITY ================= */
 
 h1, h2, h3, h4, h5, h6 {
     color: #FFFFFF !important;
 }
 
 p, span, label, div, small {
-    color: #F3F4F6 !important;
+    color: #F1F5F9 !important;
 }
 
-/* Ensure input text always visible */
 input, textarea {
     color: #FFFFFF !important;
     font-weight: 500 !important;
 }
 
-/* ================= MAIN BACKGROUND (BLUE → VIOLET) ================= */
+/* ================= MAIN BACKGROUND (GLOBAL GRADIENT) ================= */
 
 .stApp {
+    background: #020024 !important;
     background: linear-gradient(
-        135deg,
-        #2563EB 0%,     /* Blue */
-        #4F46E5 50%,    /* Indigo */
-        #7C3AED 100%    /* Violet */
+        90deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgba(9, 9, 121, 1) 35%,
+        rgba(0, 212, 255, 1) 100%
     ) !important;
 
     background-attachment: fixed;
 }
 
-/* ================= SIDEBAR (VIOLET → SKYBLUE) ================= */
+/* ================= SIDEBAR SAME GRADIENT ================= */
 
 section[data-testid="stSidebar"] {
     background: linear-gradient(
-        180deg,
-        #7C3AED 0%,     /* Violet */
-        #6366F1 40%,    /* Indigo */
-        #38BDF8 100%    /* Skyblue */
+        90deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgba(9, 9, 121, 1) 35%,
+        rgba(0, 212, 255, 1) 100%
     ) !important;
 
-    padding: 28px 18px;
     border-right: 1px solid rgba(255,255,255,0.25);
-}
-
-/* ================= SIDEBAR WELCOME CARD ================= */
-
-.sidebar-welcome {
-    background: linear-gradient(135deg, #7C3AED, #38BDF8);
-    padding: 20px;
-    border-radius: 18px;
-    margin-bottom: 25px;
-    color: white !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
 }
 
 /* ================= SIDEBAR NAV ITEMS ================= */
@@ -322,7 +311,7 @@ section[data-testid="stSidebar"] div[role="radiogroup"] > label {
     padding: 10px 16px;
     margin: 6px 0;
     background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.4);
     color: #FFFFFF !important;
     font-weight: 500;
     transition: 0.25s ease;
@@ -334,20 +323,18 @@ section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
 }
 
 section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg, #7C3AED, #38BDF8);
-    border: none;
-    color: white !important;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    background: rgba(255,255,255,0.35);
+    color: #020024 !important;
+    font-weight: 600;
 }
 
 /* ================= SIDEBAR BUTTON ================= */
 
 section[data-testid="stSidebar"] .stButton > button {
-    margin-top: 25px;
     border-radius: 14px !important;
-    background: linear-gradient(90deg, #7C3AED, #38BDF8) !important;
+    background: rgba(255,255,255,0.25) !important;
     color: white !important;
-    border: none !important;
+    border: 1px solid rgba(255,255,255,0.4) !important;
     font-weight: 600;
 }
 
@@ -357,9 +344,7 @@ body:has(.login-active) section[data-testid="stSidebar"] {
     display: none !important;
 }
 
-/* Background stays blue-violet */
-
-/* ================= LOGIN CARD (VIOLET → SKYBLUE) ================= */
+/* ================= LOGIN CARD ================= */
 
 body:has(.login-active) .block-container {
     max-width: 520px !important;
@@ -367,25 +352,20 @@ body:has(.login-active) .block-container {
     padding: 60px !important;
     border-radius: 28px;
 
-    background: linear-gradient(
-        135deg,
-        #7C3AED,
-        #38BDF8
-    );
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(18px);
 
-    border: 2px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.4);
 
     box-shadow:
-        0 40px 80px rgba(0,0,0,0.35);
-
-    backdrop-filter: blur(12px);
+        0 40px 80px rgba(0,0,0,0.6);
 }
 
 /* ================= LOGIN INPUTS ================= */
 
 body:has(.login-active) div[data-baseweb="input"] > div {
     border-radius: 14px !important;
-    background: rgba(0,0,0,0.25) !important;
+    background: rgba(255,255,255,0.15) !important;
     border: 1px solid rgba(255,255,255,0.5) !important;
 }
 
@@ -402,9 +382,9 @@ body:has(.login-active) label {
 
 body:has(.login-active) .stButton > button {
     border-radius: 14px !important;
-    background: linear-gradient(90deg, #2563EB, #7C3AED) !important;
+    background: rgba(255,255,255,0.25) !important;
     color: white !important;
-    border: none !important;
+    border: 1px solid rgba(255,255,255,0.5) !important;
     font-weight: 600;
 }
 
