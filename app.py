@@ -277,21 +277,37 @@ input, textarea {
     font-weight: 500 !important;
 }
 
-/* ================= MAIN BACKGROUND (GLOBAL GRADIENT) ================= */
 
-.stApp {
-    background: #020024 !important;
+/* ================= MAIN PAGE BACKGROUND ================= */
+
+/* Apply ONLY when not in login mode */
+
+body:not(:has(.login-active)) .stApp {
     background: linear-gradient(
-        90deg,
-        rgba(2, 0, 36, 1) 0%,
-        rgba(9, 9, 121, 1) 35%,
-        rgba(0, 212, 255, 1) 100%
+        0deg,
+        rgba(23, 249, 252, 1) 0%,
+        rgba(144, 49, 173, 1) 100%
     ) !important;
 
     background-attachment: fixed;
 }
 
-/* ================= SIDEBAR SAME GRADIENT ================= */
+/* ================= TEXT VISIBILITY ON MAIN PAGE ================= */
+
+body:not(:has(.login-active)) h1,
+body:not(:has(.login-active)) h2,
+body:not(:has(.login-active)) h3,
+body:not(:has(.login-active)) h4 {
+    color: #ffffff !important;
+}
+
+body:not(:has(.login-active)) p,
+body:not(:has(.login-active)) span,
+body:not(:has(.login-active)) label,
+body:not(:has(.login-active)) div {
+    color: #f1f5f9 !important;
+}
+
 
 section[data-testid="stSidebar"] {
     background: linear-gradient(
