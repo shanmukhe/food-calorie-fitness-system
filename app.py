@@ -254,9 +254,9 @@ if "chat_history" not in st.session_state:
 st.markdown("""
 <style>
 
-/* ==========================================================
-   GLOBAL FONT
-========================================================== */
+/* ===============================
+   GLOBAL RESET
+=================================*/
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -264,229 +264,149 @@ st.markdown("""
     font-family: 'Inter', sans-serif !important;
 }
 
-/* ==========================================================
-   STRONG BACKGROUND (VISIBLE GRADIENT)
-========================================================== */
+/* Remove default padding issues */
+.block-container {
+    padding-top: 2rem !important;
+}
+
+/* ===============================
+   FULL PAGE GRADIENT BACKGROUND
+=================================*/
 
 .stApp {
-    background:
-        radial-gradient(circle at 15% 20%, rgba(109,40,217,0.35), transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(168,85,247,0.25), transparent 45%),
-        linear-gradient(180deg, #0B0B12 0%, #111118 100%);
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(139, 0, 139, 0.35), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(128, 0, 64, 0.35), transparent 45%),
+        linear-gradient(135deg, #1a001f 0%, #2a0033 50%, #3a001a 100%);
 }
 
-/* Light Mode */
-[data-theme="light"] .stApp {
-    background:
-        radial-gradient(circle at 20% 20%, rgba(109,40,217,0.15), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(168,85,247,0.12), transparent 45%),
-        #F5F7FB;
+/* ===============================
+   CENTER LOGIN WRAPPER
+=================================*/
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
 }
 
-/* ==========================================================
-   SIDEBAR – PREMIUM GRADIENT PANEL
-========================================================== */
+/* ===============================
+   LOGIN CARD
+=================================*/
 
-section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg,#141421,#0F0F17);
-    box-shadow: 4px 0 40px rgba(109,40,217,0.25);
-    border-right: 1px solid rgba(168,85,247,0.25);
-}
-
-/* Light Sidebar */
-[data-theme="light"] section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg,#FFFFFF,#F3F4F6);
-    box-shadow: 4px 0 25px rgba(0,0,0,0.08);
-    border-right: 1px solid rgba(0,0,0,0.08);
-}
-
-/* Sidebar Radio */
-section[data-testid="stSidebar"] div[role="radiogroup"] > label {
-    border-radius: 14px;
-    padding: 12px 16px;
-    margin: 8px 0;
-    transition: 0.2s ease;
-}
-
-/* Active */
-section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(90deg,#6D28D9,#A855F7);
-    color: white !important;
-    box-shadow: 0 8px 20px rgba(109,40,217,0.35);
-}
-
-/* Hover */
-section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
-    background: rgba(109,40,217,0.15);
-}
-
-/* ==========================================================
-   LOGIN FIX – PROPER CENTERING
-========================================================== */
-
-.login-active .block-container {
-    max-width: 460px !important;
-    margin-top: 10vh !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding: 55px !important;
+.login-card {
+    width: 420px;
+    padding: 50px;
     border-radius: 22px;
-    backdrop-filter: blur(16px);
+
+    background: rgba(20, 0, 25, 0.85);
+    border: 1px solid rgba(255, 0, 120, 0.25);
+
+    box-shadow:
+        0 40px 80px rgba(0,0,0,0.6),
+        0 0 40px rgba(139,0,139,0.25);
+
+    backdrop-filter: blur(18px);
 }
 
-/* Dark Login Card */
-.login-active .block-container {
-    background: rgba(20,20,30,0.92);
-    border: 1px solid rgba(168,85,247,0.25);
-    box-shadow: 0 50px 100px rgba(0,0,0,0.75);
-}
+/* ===============================
+   HEADINGS
+=================================*/
 
-/* Light Login Card */
-[data-theme="light"] .login-active .block-container {
-    background: rgba(255,255,255,0.97);
-    border: 1px solid rgba(0,0,0,0.08);
-    box-shadow: 0 30px 70px rgba(0,0,0,0.12);
-}
-
-/* ==========================================================
-   CARDS – STRONGER VISUAL
-========================================================== */
-
-.card, .feature-card, .metric-card {
-    border-radius: 20px;
-    padding: 30px;
-    background: rgba(25,25,40,0.95);
-    border: 1px solid rgba(168,85,247,0.25);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.65);
-    transition: 0.2s ease;
-}
-
-[data-theme="light"] .card,
-[data-theme="light"] .feature-card,
-[data-theme="light"] .metric-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(0,0,0,0.08);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-}
-
-.card:hover {
-    transform: translateY(-4px);
-}
-
-/* ==========================================================
-   HERO CARD
-========================================================== */
-
-.hero-card {
-    border-radius: 24px;
-    padding: 60px;
-    background: linear-gradient(135deg,#4C1D95,#6D28D9);
-    box-shadow: 0 40px 90px rgba(109,40,217,0.45);
-    color: white;
-}
-
-/* ==========================================================
-   BUTTONS – GLOW EFFECT
-========================================================== */
-
-.stButton > button {
-    border-radius: 14px;
+.login-card h2 {
+    text-align: center;
+    margin-bottom: 8px;
     font-weight: 600;
-    background: linear-gradient(90deg,#6D28D9,#A855F7);
     color: white;
-    border: none;
-    transition: 0.2s ease;
 }
 
-.stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(109,40,217,0.45);
+.login-card p {
+    text-align: center;
+    opacity: 0.7;
+    margin-bottom: 30px;
+    color: #e0c7ff;
 }
 
-/* ==========================================================
-   INPUT FIELDS
-========================================================== */
+/* ===============================
+   INPUTS
+=================================*/
 
-input, textarea {
+.login-card input {
     border-radius: 14px !important;
-}
-
-[data-theme="dark"] input,
-[data-theme="dark"] textarea {
     background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(168,85,247,0.35) !important;
+    border: 1px solid rgba(255,0,120,0.3) !important;
     color: white !important;
 }
 
-[data-theme="light"] input,
-[data-theme="light"] textarea {
-    background: #FFFFFF !important;
-    border: 1px solid rgba(0,0,0,0.1) !important;
+.login-card input:focus {
+    border: 1px solid #c026d3 !important;
+    box-shadow: 0 0 12px rgba(192,38,211,0.6) !important;
 }
 
-/* ==========================================================
-   SLIDER
-========================================================== */
+/* ===============================
+   BUTTON
+=================================*/
 
-.stSlider > div[data-baseweb="slider"] > div > div {
-    background-color: #6D28D9 !important;
+.login-card button {
+    border-radius: 14px !important;
+    font-weight: 600 !important;
+    background: linear-gradient(90deg,#7e22ce,#be185d) !important;
+    color: white !important;
+    border: none !important;
+    transition: 0.25s ease !important;
 }
 
-/* ==========================================================
-   SPACING
-========================================================== */
+.login-card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(190,24,93,0.45);
+}
 
-.spacer {
-    height: 28px;
+/* ===============================
+   RADIO BUTTONS
+=================================*/
+
+.login-card div[role="radiogroup"] > label {
+    border-radius: 999px;
+    padding: 8px 20px;
+    border: 1px solid rgba(190,24,93,0.4);
+}
+
+.login-card div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(90deg,#7e22ce,#be185d);
+    color: white !important;
+    border: none;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# =========================================================
-# 🔐 AUTH SYSTEM – STARTUP LEVEL VERSION
-# =========================================================
 if not st.session_state.get("logged_in", False):
 
-    st.markdown('<div class="login-active"></div>', unsafe_allow_html=True)
-
-    # Logo / Brand
-    st.markdown("""
-    <div style="text-align:center;margin-bottom:35px;">
-        <h2 style="font-weight:600;margin-bottom:6px;">Food Fitness</h2>
-        <p style="opacity:0.6;font-size:14px;">
-            AI-Powered Nutrition Intelligence
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<h2>Food Fitness</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;opacity:0.7;color:#e0c7ff;'>AI Nutrition Intelligence Platform</p>", unsafe_allow_html=True)
 
     auth_mode = st.radio(
         "",
-        ["Login", "Create Account"],
+        ["Login", "Sign Up"],
         horizontal=True,
         label_visibility="collapsed"
     )
 
-    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # ================= LOGIN =================
     if auth_mode == "Login":
 
-        st.markdown("<h3 style='text-align:center;'>Welcome Back</h3>", unsafe_allow_html=True)
-        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
-
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
 
-        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
 
-        st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
-        login_clicked = st.button("Login", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("Login", use_container_width=True):
 
-        if login_clicked:
             if not username or not password:
-                st.error("Enter both username and password.")
+                st.error("Enter username and password")
             else:
                 cursor.execute("SELECT password FROM users WHERE username=?", (username,))
                 result = cursor.fetchone()
@@ -496,19 +416,16 @@ if not st.session_state.get("logged_in", False):
                     st.session_state.username = username
                     st.rerun()
                 else:
-                    st.error("Invalid credentials.")
+                    st.error("Invalid credentials")
 
     # ================= SIGNUP =================
     else:
-
-        st.markdown("<h3 style='text-align:center;'>Create Account</h3>", unsafe_allow_html=True)
-        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
         su_username = st.text_input("Username")
         su_password = st.text_input("Password", type="password")
         su_confirm = st.text_input("Confirm Password", type="password")
 
-        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
 
@@ -525,27 +442,23 @@ if not st.session_state.get("logged_in", False):
             ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"]
         )
 
-        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
 
-        st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
-        signup_clicked = st.button("Create Account", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        if signup_clicked:
+        if st.button("Create Account", use_container_width=True):
 
             if not su_username or not su_password:
-                st.error("Username and password required.")
+                st.error("Username & password required")
 
             elif len(su_password) < 6:
-                st.error("Password must be at least 6 characters.")
+                st.error("Password must be at least 6 characters")
 
             elif su_password != su_confirm:
-                st.error("Passwords do not match.")
+                st.error("Passwords do not match")
 
             else:
                 cursor.execute("SELECT username FROM users WHERE username=?", (su_username,))
                 if cursor.fetchone():
-                    st.error("Username already exists.")
+                    st.error("Username already exists")
                 else:
                     hashed_pw = bcrypt.hashpw(
                         su_password.encode("utf-8"),
