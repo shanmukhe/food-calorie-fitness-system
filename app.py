@@ -277,34 +277,39 @@ input, textarea {
     font-weight: 500 !important;
 }
 
-/* ================= MAIN BACKGROUND (GLOBAL GRADIENT) ================= */
+/* =========================================================
+   LOGIN + SIDEBAR GRADIENT (DARK BLUE → CYAN)
+========================================================= */
 
-.stApp {
-    background: #020024 !important;
+section[data-testid="stSidebar"],
+body:has(.login-active) .stApp {
     background: linear-gradient(
         90deg,
         rgba(2, 0, 36, 1) 0%,
         rgba(9, 9, 121, 1) 35%,
         rgba(0, 212, 255, 1) 100%
     ) !important;
+}
 
+/* =========================================================
+   MAIN PAGE GRADIENT (CYAN → VIOLET VERTICAL)
+========================================================= */
+
+body:not(:has(.login-active)) .stApp {
+    background: #EEAECA;
+    background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
     background-attachment: fixed;
 }
 
-/* ================= SIDEBAR SAME GRADIENT ================= */
+/* =========================================================
+   SIDEBAR STYLING
+========================================================= */
 
 section[data-testid="stSidebar"] {
-    background: linear-gradient(
-        90deg,
-        rgba(2, 0, 36, 1) 0%,
-        rgba(9, 9, 121, 1) 35%,
-        rgba(0, 212, 255, 1) 100%
-    ) !important;
-
     border-right: 1px solid rgba(255,255,255,0.25);
 }
 
-/* ================= SIDEBAR NAV ITEMS ================= */
+/* Sidebar Navigation Pills */
 
 section[data-testid="stSidebar"] div[role="radiogroup"] > label {
     border-radius: 999px;
@@ -328,7 +333,7 @@ section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checke
     font-weight: 600;
 }
 
-/* ================= SIDEBAR BUTTON ================= */
+/* Sidebar Buttons */
 
 section[data-testid="stSidebar"] .stButton > button {
     border-radius: 14px !important;
@@ -338,13 +343,13 @@ section[data-testid="stSidebar"] .stButton > button {
     font-weight: 600;
 }
 
-/* ================= LOGIN MODE ================= */
+/* =========================================================
+   LOGIN CARD (DO NOT CHANGE CONTAINER STRUCTURE)
+========================================================= */
 
 body:has(.login-active) section[data-testid="stSidebar"] {
     display: none !important;
 }
-
-/* ================= LOGIN CARD ================= */
 
 body:has(.login-active) .block-container {
     max-width: 520px !important;
@@ -361,7 +366,7 @@ body:has(.login-active) .block-container {
         0 40px 80px rgba(0,0,0,0.6);
 }
 
-/* ================= LOGIN INPUTS ================= */
+/* Login Inputs */
 
 body:has(.login-active) div[data-baseweb="input"] > div {
     border-radius: 14px !important;
@@ -378,8 +383,6 @@ body:has(.login-active) label {
     color: #FFFFFF !important;
 }
 
-/* ================= LOGIN BUTTON ================= */
-
 body:has(.login-active) .stButton > button {
     border-radius: 14px !important;
     background: rgba(255,255,255,0.25) !important;
@@ -388,7 +391,9 @@ body:has(.login-active) .stButton > button {
     font-weight: 600;
 }
 
-/* ================= MOBILE RESPONSIVENESS ================= */
+/* =========================================================
+   MOBILE RESPONSIVENESS
+========================================================= */
 
 @media (max-width: 768px) {
     .block-container {
