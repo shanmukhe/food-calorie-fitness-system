@@ -572,7 +572,7 @@ if not st.session_state.get("logged_in", False):
 
     # Project Title
     st.markdown(
-            "<h2 style='color:white; text-align:left;'>FOOD CALORIE FITNESS RECOMENDATION </h2>",
+            "<h1 style='color:white; text-align:left;'>FOOD CALORIE FITNESS RECOMENDATION </h1>",
             unsafe_allow_html=True
     )
 
