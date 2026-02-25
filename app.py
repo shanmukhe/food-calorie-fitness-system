@@ -572,7 +572,7 @@ if not st.session_state.get("logged_in", False):
 
     # Project Title
     st.markdown(
-            "<h2 style='color:white; text-align:left;'>FOOD CALORIE ESTIMATOR FITNESS RECOMENDATION SYSTEM</h2>",
+            "<h2 style='color:white; text-align:left;'>FOOD CALORIE FITNESS RECOMENDATION </h2>",
             unsafe_allow_html=True
     )
 
