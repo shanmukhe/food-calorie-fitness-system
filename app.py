@@ -585,7 +585,7 @@ if not st.session_state.get("logged_in", False):
 
     # Project Title
     st.markdown(
-            "<h2 style='color:white; text-align:centre;'>Smart Nutrition & Intelligence Sysytem /h2>",
+            "<h2 style='color:white; text-align:centre;'>Smart Nutrition & Intelligence Sysytem </h2>",
             unsafe_allow_html=True
     )
 
