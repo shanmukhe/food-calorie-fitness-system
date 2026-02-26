@@ -761,8 +761,7 @@ if "page" not in st.session_state:
 menu_options = [
     "🏠 Home",
     "📷 Analyze Food",
-    "❤️ Health Insights",
-    "🧠 Healthy Weight Toolkit",
+    "🧠 Health Analytics",
     "📚 Facts & Myths",
     "🥗 Ingredients Guide",
     "👤 Edit Profile",
@@ -917,24 +916,10 @@ if st.session_state.page == "🏠 Home":
         </div>
         """, unsafe_allow_html=True)
 
-
     with f2:
         st.markdown("""
         <div class="feature-card">
-            <h4>❤️ Health Insights</h4>
-            <ul>
-                <li>Weekly calorie reports</li>
-                <li>Food intake trends</li>
-                <li>Visual progress tracking</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-
-    with f3:
-        st.markdown("""
-        <div class="feature-card">
-            <h4>🧠 Healthy Weight Toolkit</h4>
+            <h4>🧠 Health Analytics </h4>
             <ul>
                 <li>BMI analysis</li>
                 <li>Weight predictions</li>
@@ -1256,340 +1241,7 @@ elif st.session_state.page == "📷 Analyze Food":
                 conn.commit()
 
                 st.success("Manual food logged successfully!")
-# =========================================================
-# ❤️ HEALTH INSIGHTS – FULLY UPGRADED VERSION
-# =========================================================
-elif st.session_state.page == "❤️ Health Insights":
 
-    st.title("❤️ Health Insights")
-    st.caption("Track calories • Log exercise • Monitor balance")
-
-    # ---------------- LOAD USER PROFILE ----------------
-    cursor.execute("""
-    SELECT age, gender, height, weight, activity, goal
-    FROM users WHERE username=?
-    """, (st.session_state.username,))
-    profile = cursor.fetchone()
-
-    if not profile:
-        st.warning("Please complete your profile first.")
-        st.stop()
-
-    age, gender, height, profile_weight, activity, goal = profile
-
-    # ---------------- GET LATEST WEIGHT (Dynamic System) ----------------
-    latest_weight_row = cursor.execute("""
-    SELECT weight FROM weight_logs
-    WHERE username=?
-    ORDER BY date DESC
-    LIMIT 1
-    """, (st.session_state.username,)).fetchone()
-
-    weight = get_latest_weight(st.session_state.username, profile_weight)
-    maintenance_calories, target_calories = calculate_target_calories(
-        age, gender, height, weight, activity, goal
-    )
-
-
-    # ---------------- CALCULATE BMR ----------------
-    if gender == "Female":
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
-    else:
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
-
-    activity_factor = {
-        "Sedentary": 1.2,
-        "Lightly Active": 1.375,
-        "Moderately Active": 1.55,
-        "Very Active": 1.725
-    }
-
-    maintenance_calories = bmr * activity_factor[activity]
-
-    # ---------------- GOAL BASED TARGET ----------------
-    if goal == "Weight Loss":
-        target_calories = maintenance_calories - 300
-    elif goal == "Weight Gain":
-        target_calories = maintenance_calories + 300
-    else:
-        target_calories = maintenance_calories
-
-    # ==================================================
-    # 📊 TODAY'S CALORIE SUMMARY
-    # ==================================================
-    st.subheader("📊 Today's Calorie Summary")
-
-    today = datetime.date.today().isoformat()
-
-    # ----- Food Consumed -----
-    df_today = pd.read_sql_query("""
-    SELECT calories FROM food_logs
-    WHERE username=? AND date=?
-    """, conn, params=(st.session_state.username, today))
-
-    consumed_today = df_today["calories"].sum() if not df_today.empty else 0
-
-    # ----- Calories Burned -----
-    df_ex_today = pd.read_sql_query("""
-    SELECT calories_burned FROM exercise_logs
-    WHERE username=? AND date=?
-    """, conn, params=(st.session_state.username, today))
-
-    burned_today = df_ex_today["calories_burned"].sum() if not df_ex_today.empty else 0
-
-    # ----- Net Calories -----
-    net_calories = consumed_today - burned_today
-    remaining_calories = target_calories - net_calories
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        metric_card("Target", f"{target_calories:.0f} kcal", "🎯")
-
-    with col2:
-        metric_card("Consumed", f"{consumed_today:.0f} kcal", "🔥")
-
-    with col3:
-        metric_card("Burned", f"{burned_today:.0f} kcal", "🏃")
-
-    with col4:
-        metric_card("Net", f"{net_calories:.0f} kcal", "⚖️")
-
-    if net_calories > target_calories:
-        st.error("⚠️ You are in calorie surplus today.")
-    else:
-        st.success("✅ You are within calorie control today.")
-
-    st.markdown("---")
-
-    # ==================================================
-    # 🏃 EXERCISE LOGGING SECTION
-    # ==================================================
-    st.subheader("🏃 Log Today's Exercise")
-
-    exercise_type = st.selectbox(
-        "Select Exercise",
-        ["Walking", "Jogging", "Running", "Cycling", "Yoga"]
-    )
-
-    minutes = st.number_input(
-        "Duration (minutes)",
-        min_value=0,
-        max_value=300,
-        step=5
-    )
-
-    MET_VALUES = {
-        "Walking": 3.5,
-        "Jogging": 7,
-        "Running": 11,
-        "Cycling": 8,
-        "Yoga": 3
-    }
-
-    if st.button("➕ Log Exercise"):
-
-        if minutes == 0:
-            st.warning("Please enter exercise duration.")
-        else:
-            met = MET_VALUES[exercise_type]
-            hours = minutes / 60
-            calories_burned = met * weight * hours
-
-            cursor.execute("""
-            INSERT INTO exercise_logs
-            (username, exercise, minutes, calories_burned, date)
-            VALUES (?, ?, ?, ?, ?)
-            """, (
-                st.session_state.username,
-                exercise_type,
-                minutes,
-                calories_burned,
-                today
-            ))
-
-            conn.commit()
-
-            st.success(f"{calories_burned:.0f} kcal burned logged successfully!")
-            st.rerun()
-
-    st.markdown("---")
-    st.markdown("## 📊 Weekly Energy Balance")
-
-    week_ago = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
-
-    # Fetch food data
-    df_food_week = pd.read_sql_query("""
-    SELECT date, calories FROM food_logs
-    WHERE username=? AND date>=?
-    """, conn, params=(st.session_state.username, week_ago))
-
-    # Fetch exercise data
-    df_ex_week = pd.read_sql_query("""
-    SELECT date, calories_burned FROM exercise_logs
-    WHERE username=? AND date>=?
-    """, conn, params=(st.session_state.username, week_ago))
-
-    # Prepare daily totals
-    food_grouped = df_food_week.groupby("date")["calories"].sum().reset_index()
-    ex_grouped = df_ex_week.groupby("date")["calories_burned"].sum().reset_index()
-
-    # Merge both
-    merged = pd.merge(food_grouped, ex_grouped, on="date", how="outer").fillna(0)
-
-    merged["net"] = merged["calories"] - merged["calories_burned"]
-
-    import plotly.graph_objects as go
-
-    fig = go.Figure()
-
-    # Consumed bars
-    fig.add_trace(go.Bar(
-        x=merged["date"],
-        y=merged["calories"],
-        name="Calories Consumed",
-        marker_color="#2563eb"
-    ))
-
-    # Burned bars
-    fig.add_trace(go.Bar(
-        x=merged["date"],
-        y=merged["calories_burned"],
-        name="Calories Burned",
-        marker_color="#16a34a"
-    ))
-
-    # Net line
-    fig.add_trace(go.Scatter(
-        x=merged["date"],
-        y=merged["net"],
-        name="Net Balance",
-        mode="lines+markers",
-        line=dict(color="#ef4444", width=3)
-    ))
-
-    fig.update_layout(
-        barmode="group",
-        title="Weekly Energy Balance Overview",
-        title_x=0.5,
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        xaxis_title="Date",
-        yaxis_title="Calories (kcal)",
-        font=dict(size=14)
-    )
-
-    st.plotly_chart(fig, width="stretch")
-    st.markdown("---")
-    st.subheader("🧠 AI Daily Health Analysis")
-
-    # Average net calories for week
-    if not merged.empty:
-
-        weekly_net_avg = merged["net"].mean()
-        difference_from_target = weekly_net_avg - target_calories
-
-        st.markdown("### 📊 Weekly Behavioral Insight")
-
-        if difference_from_target > 150:
-            st.error(
-                "You are consistently in calorie surplus. "
-                "This may lead to gradual weight gain."
-            )
-
-        elif difference_from_target < -150:
-            st.success(
-                "You are maintaining a calorie deficit. "
-                "If consistent, weight reduction is expected."
-            )
-
-        else:
-            st.info(
-                "Your calorie intake is close to maintenance level. "
-                "Weight stability is expected."
-            )
-
-        predicted_weekly_change = difference_from_target * 7 / 7700
-
-        st.markdown("### 📈 Predicted Impact")
-
-        if predicted_weekly_change > 0:
-            st.warning(
-                f"If this continues, you may gain approx "
-                f"{predicted_weekly_change:.2f} kg per week."
-            )
-        else:
-            st.success(
-                f"If this continues, you may lose approx "
-                f"{abs(predicted_weekly_change):.2f} kg per week."
-            )
-
-    else:
-        st.info("Not enough weekly data for AI insight.")
-    # ==================================================
-    # 🧠 ADAPTIVE TARGET ADJUSTMENT SYSTEM (IMPROVED)
-    # ==================================================
-    st.markdown("---")
-    st.subheader("🎯 Adaptive Calorie Adjustment")
-
-    if not merged.empty:
-
-        weekly_net_avg = merged["net"].mean()
-        adaptive_target = target_calories
-        adjustment_message = None
-
-        # --- WEIGHT LOSS MODE ---
-        if goal == "Weight Loss":
-
-            if weekly_net_avg > target_calories + 150:
-                adaptive_target = target_calories - 150
-                adjustment_message = "Deficit too small. Reducing calories slightly."
-
-            elif weekly_net_avg < target_calories - 400:
-                adaptive_target = target_calories + 100
-                adjustment_message = "Deficit too aggressive. Increasing calories for sustainability."
-
-            else:
-                adjustment_message = "Current calorie target is working well."
-
-        # --- WEIGHT GAIN MODE ---
-        elif goal == "Weight Gain":
-
-            if weekly_net_avg < target_calories - 150:
-                adaptive_target = target_calories + 150
-                adjustment_message = "Surplus too small. Increasing calories."
-
-            elif weekly_net_avg > target_calories + 400:
-                adaptive_target = target_calories - 100
-                adjustment_message = "Surplus too high. Reducing slightly to limit fat gain."
-
-            else:
-                adjustment_message = "Current surplus is appropriate."
-
-        # --- MAINTENANCE MODE ---
-        else:
-
-            if abs(weekly_net_avg - target_calories) > 250:
-                if weekly_net_avg > target_calories:
-                    adaptive_target = target_calories - 100
-                else:
-                    adaptive_target = target_calories + 100
-
-                adjustment_message = "Adjusting calories slightly to stabilize weight."
-
-            else:
-                adjustment_message = "Maintenance intake is balanced."
-
-        # --- DISPLAY ---
-        st.metric("📌 Recommended Target", f"{adaptive_target:.0f} kcal/day")
-
-        if adaptive_target != target_calories:
-            st.warning(adjustment_message)
-        else:
-            st.success(adjustment_message)
-
-    else:
-        st.info("Adaptive system requires at least a few days of logs.")
 
 # =========================================================
 # 👤 PREMIUM PROFILE MANAGEMENT
@@ -1968,15 +1620,17 @@ elif st.session_state.page == "📚 Facts & Myths":
 
 
 # =========================================================
-# 🧠 HEALTHY WEIGHT TOOLKIT — CLEAN INTELLIGENT VERSION
+# 🧠 SMART HEALTH ENGINE (UNIFIED INTELLIGENCE SYSTEM)
 # =========================================================
-elif st.session_state.page == "🧠 Healthy Weight Toolkit":
+elif st.session_state.page == "🧠 Health Analytics":
 
-    st.title("🧠 Healthy Weight Toolkit")
-    st.caption("Data-driven insights • Predictive analytics • Smart guidance")
+    st.title("🧠 Smart Health Intelligence")
+    st.caption("Energy balance • Body metrics • Predictive insights • Adaptive targets")
     st.markdown("---")
 
-    # ---------------- LOAD USER PROFILE ----------------
+    # =====================================================
+    # LOAD USER PROFILE
+    # =====================================================
     cursor.execute("""
         SELECT age, gender, height, weight, activity, goal
         FROM users WHERE username=?
@@ -1984,172 +1638,179 @@ elif st.session_state.page == "🧠 Healthy Weight Toolkit":
     profile = cursor.fetchone()
 
     if not profile or not all(profile):
-        st.warning("Please complete your profile first.")
+        st.warning("Complete your profile first.")
         st.stop()
 
     age, gender, height, profile_weight, activity, goal = profile
+    weight = get_latest_weight(st.session_state.username, profile_weight)
 
-    # ---------------- GET LATEST LOGGED WEIGHT ----------------
-    latest_weight_row = cursor.execute("""
-        SELECT weight FROM weight_logs
-        WHERE username=?
-        ORDER BY date DESC
-        LIMIT 1
-    """, (st.session_state.username,)).fetchone()
-
-    weight = latest_weight_row[0] if latest_weight_row else profile_weight
-
-    # ---------------- BMI CALCULATION ----------------
-    bmi = bmi_calc(weight, height)
-
-    col1, col2, col3 = st.columns(3)
-    col1.metric("BMI", f"{bmi:.2f}")
-    col2.metric("Current Weight", f"{weight:.1f} kg")
-    col3.metric("Goal", goal)
-
-    st.markdown("---")
-
-    # =========================================================
-    # 🧠 BMI INTERPRETATION ENGINE
-    # =========================================================
-    st.subheader("📊 BMI Analysis")
-
-    if bmi < 18.5:
-        status = "Underweight"
-        message = "Increase calorie intake gradually and focus on strength training."
-    elif bmi < 25:
-        status = "Healthy Weight"
-        message = "Maintain consistency in diet and activity."
-    elif bmi < 30:
-        status = "Overweight"
-        message = "Moderate calorie deficit and increased activity recommended."
-    else:
-        status = "Obese"
-        message = "Structured calorie control and progressive activity needed."
-
-    st.success(f"Category: **{status}**")
-    st.info(message)
-
-    st.markdown("---")
-
-    # =========================================================
-    # 📈 WEIGHT PROGRESS TRACKING
-    # =========================================================
-    st.subheader("📈 Weight Progress")
-
-    today = datetime.date.today().isoformat()
-
-    new_weight = st.number_input(
-        "Log Today's Weight (kg)",
-        min_value=30.0,
-        max_value=200.0,
-        step=0.1,
-        value=float(weight)
-    )
-
-    if st.button("➕ Save Weight"):
-        cursor.execute(
-            "INSERT INTO weight_logs VALUES (?, ?, ?)",
-            (st.session_state.username, new_weight, today)
-        )
-        conn.commit()
-        st.success("Weight logged successfully.")
-        st.rerun()
-
-    progress_df = pd.read_sql_query("""
-        SELECT date, weight FROM weight_logs
-        WHERE username=?
-        ORDER BY date
-    """, conn, params=(st.session_state.username,))
-
-    if not progress_df.empty:
-        progress_df["date"] = pd.to_datetime(progress_df["date"])
-        st.line_chart(progress_df.set_index("date"))
-
-    st.markdown("---")
-
-    # =========================================================
-    # 🔥 CALORIE TARGET CALCULATION
-    # =========================================================
-    st.subheader("🔥 Calorie Intelligence")
-
-    maintenance_calories, target_calories = calculate_target_calories(
+    maintenance, target = calculate_target_calories(
         age, gender, height, weight, activity, goal
     )
 
-    col1, col2 = st.columns(2)
-    col1.metric("Maintenance", f"{maintenance_calories:.0f} kcal")
-    col2.metric("Target", f"{target_calories:.0f} kcal")
+    bmi = bmi_calc(weight, height)
+
+    # =====================================================
+    # CORE METRICS
+    # =====================================================
+    c1, c2, c3, c4 = st.columns(4)
+
+    c1.metric("BMI", f"{bmi:.2f}")
+    c2.metric("Weight", f"{weight:.1f} kg")
+    c3.metric("Maintenance", f"{maintenance:.0f} kcal")
+    c4.metric("Target", f"{target:.0f} kcal")
 
     st.markdown("---")
 
-    # =========================================================
-    # 📊 WEEKLY PREDICTIVE ENGINE
-    # =========================================================
-    st.subheader("📊 Weekly Weight Prediction")
+    # =====================================================
+    # TODAY ENERGY BALANCE
+    # =====================================================
+    st.subheader("📊 Today’s Energy Balance")
+
+    today = datetime.date.today().isoformat()
+
+    df_food = pd.read_sql_query("""
+        SELECT calories FROM food_logs
+        WHERE username=? AND date=?
+    """, conn, params=(st.session_state.username, today))
+
+    consumed = df_food["calories"].sum() if not df_food.empty else 0
+
+    df_ex = pd.read_sql_query("""
+        SELECT calories_burned FROM exercise_logs
+        WHERE username=? AND date=?
+    """, conn, params=(st.session_state.username, today))
+
+    burned = df_ex["calories_burned"].sum() if not df_ex.empty else 0
+
+    net = consumed - burned
+    remaining = target - net
+
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Consumed", f"{consumed:.0f}")
+    col2.metric("Burned", f"{burned:.0f}")
+    col3.metric("Net", f"{net:.0f}")
+    col4.metric("Remaining", f"{remaining:.0f}")
+
+    if net > target:
+        st.error("Calorie surplus today.")
+    else:
+        st.success("Within target range.")
+
+    st.markdown("---")
+
+    # =====================================================
+    # EXERCISE LOGGER
+    # =====================================================
+    st.subheader("🏃 Log Exercise")
+
+    exercise_type = st.selectbox(
+        "Exercise Type",
+        ["Walking", "Jogging", "Running", "Cycling", "Yoga"]
+    )
+
+    minutes = st.number_input("Duration (minutes)", 0, 300, 0, step=5)
+
+    MET = {
+        "Walking": 3.5,
+        "Jogging": 7,
+        "Running": 11,
+        "Cycling": 8,
+        "Yoga": 3
+    }
+
+    if st.button("Log Exercise"):
+        if minutes > 0:
+            calories_burned = MET[exercise_type] * weight * (minutes / 60)
+
+            cursor.execute("""
+                INSERT INTO exercise_logs
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                st.session_state.username,
+                exercise_type,
+                minutes,
+                calories_burned,
+                today
+            ))
+
+            conn.commit()
+            st.success(f"{calories_burned:.0f} kcal burned logged.")
+            st.rerun()
+        else:
+            st.warning("Enter valid duration.")
+
+    st.markdown("---")
+
+    # =====================================================
+    # WEEKLY ANALYSIS
+    # =====================================================
+    st.subheader("📈 Weekly Energy Intelligence")
 
     week_ago = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
 
-    df_week = pd.read_sql_query("""
+    df_food_week = pd.read_sql_query("""
         SELECT date, calories FROM food_logs
         WHERE username=? AND date>=?
     """, conn, params=(st.session_state.username, week_ago))
 
-    if df_week.empty:
-        st.info("Log at least 3 days of food data for prediction.")
+    df_ex_week = pd.read_sql_query("""
+        SELECT date, calories_burned FROM exercise_logs
+        WHERE username=? AND date>=?
+    """, conn, params=(st.session_state.username, week_ago))
+
+    food_grouped = df_food_week.groupby("date")["calories"].sum().reset_index()
+    ex_grouped = df_ex_week.groupby("date")["calories_burned"].sum().reset_index()
+
+    merged = pd.merge(food_grouped, ex_grouped, on="date", how="outer").fillna(0)
+    merged["net"] = merged["calories"] - merged["calories_burned"]
+
+    if not merged.empty:
+        st.line_chart(merged.set_index("date")[["calories", "calories_burned", "net"]])
     else:
-        df_week["calories"] = pd.to_numeric(df_week["calories"], errors="coerce")
-        daily_totals = df_week.groupby("date")["calories"].sum().reset_index()
-
-        if len(daily_totals) < 3:
-            st.info("Minimum 3 logged days required.")
-        else:
-            avg_daily_intake = daily_totals["calories"].mean()
-            weekly_required = maintenance_calories * 7
-
-            weekly_intake = avg_daily_intake * 7
-            calorie_difference = weekly_intake - weekly_required
-
-            predicted_change = calorie_difference / 7700
-            predicted_weight = weight + predicted_change
-
-            col1, col2 = st.columns(2)
-            col1.metric("Avg Daily Intake", f"{avg_daily_intake:.0f} kcal")
-            col2.metric("Predicted Weekly Change", f"{predicted_change:+.2f} kg")
-
-            # Confidence Score
-            consistency = (len(daily_totals) / 7) * 100
-            variation = daily_totals["calories"].std() or 0
-            stability = max(0, 100 - (variation / 10))
-
-            confidence = min(100, (consistency * 0.6) + (stability * 0.4))
-
-            st.markdown("### 🎯 Prediction Confidence")
-            st.progress(int(confidence))
-
-            if predicted_change > 0.2:
-                st.warning(f"Trend indicates weight may rise to {predicted_weight:.2f} kg.")
-            elif predicted_change < -0.2:
-                st.success(f"Trend indicates weight may reduce to {predicted_weight:.2f} kg.")
-            else:
-                st.info("Trend indicates weight stability.")
+        st.info("Not enough weekly data.")
 
     st.markdown("---")
 
-    # =========================================================
-    # 🎯 HEALTHY WEIGHT RANGE
-    # =========================================================
-    st.subheader("🎯 Healthy Weight Range")
+    # =====================================================
+    # PREDICTIVE MODEL
+    # =====================================================
+    st.subheader("🔮 Weekly Weight Prediction")
 
-    h_m = height / 100
-    min_weight = 18.5 * (h_m ** 2)
-    max_weight = 24.9 * (h_m ** 2)
+    if len(merged) >= 3:
 
-    st.info(
-        f"For your height ({height} cm), healthy range: "
-        f"{min_weight:.1f} kg – {max_weight:.1f} kg"
-    )
+        avg_net = merged["net"].mean()
+        weekly_diff = (avg_net - target) * 7
+        predicted_change = weekly_diff / 7700
+        predicted_weight = weight + predicted_change
 
+        col1, col2 = st.columns(2)
+        col1.metric("Avg Daily Net", f"{avg_net:.0f} kcal")
+        col2.metric("Predicted Weekly Change", f"{predicted_change:+.2f} kg")
+
+        if predicted_change > 0.2:
+            st.warning(f"Weight may increase to {predicted_weight:.2f} kg.")
+        elif predicted_change < -0.2:
+            st.success(f"Weight may decrease to {predicted_weight:.2f} kg.")
+        else:
+            st.info("Weight likely stable.")
+
+        # =====================================================
+        # ADAPTIVE TARGET ENGINE
+        # =====================================================
+        adaptive_target = target
+
+        if goal == "Weight Loss" and avg_net > target + 150:
+            adaptive_target -= 150
+        elif goal == "Weight Gain" and avg_net < target - 150:
+            adaptive_target += 150
+
+        st.markdown("### 🎯 Adaptive Recommendation")
+        st.metric("Suggested Target", f"{adaptive_target:.0f} kcal/day")
+
+    else:
+        st.info("Log at least 3 days for prediction & adaptive system.")
+        
 # =========================================================
 # 🥗 INGREDIENTS GUIDE – FULL NUTRITION INTELLIGENCE SYSTEM
 # =========================================================
