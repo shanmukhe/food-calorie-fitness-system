@@ -103,6 +103,15 @@ CREATE TABLE IF NOT EXISTS exercise_logs (
     date TEXT
 )
 """)
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS user_activity (
+    username TEXT PRIMARY KEY,
+    last_login TEXT
+)
+""")
+
+
 conn.commit()
 
 
@@ -205,6 +214,10 @@ def column_exists(table, column):
 # Add avatar column if missing
 if not column_exists("users", "avatar"):
     cursor.execute("ALTER TABLE users ADD COLUMN avatar BLOB")
+    conn.commit()
+
+if not column_exists("users", "is_admin"):
+    cursor.execute("ALTER TABLE users ADD COLUMN is_admin INTEGER DEFAULT 0")
     conn.commit()
 
 exercise_map = {
@@ -572,7 +585,7 @@ if not st.session_state.get("logged_in", False):
 
     # Project Title
     st.markdown(
-            "<h2 style='color:white; text-align:centre;'>FOOD CALORIE FITNESS RECOMENDATION </h2>",
+            "<h2 style='color:white; text-align:centre;'>Smart Nutrition & Intelligence Sysytem /h2>",
             unsafe_allow_html=True
     )
 
@@ -607,8 +620,21 @@ if not st.session_state.get("logged_in", False):
                 result = cursor.fetchone()
 
                 if result and bcrypt.checkpw(password.encode("utf-8"), result[0]):
+
+                    # ✅ Record login activity
+                    now = datetime.datetime.now().isoformat()
+
+                    cursor.execute("""
+                        INSERT OR REPLACE INTO user_activity (username, last_login)
+                        VALUES (?, ?)
+                    """, (username, now))
+
+                    conn.commit()
+
+                    # ✅ Set session
                     st.session_state.logged_in = True
                     st.session_state.username = username
+
                     st.toast("Login successful 🎉")
                     st.rerun()
                 else:
@@ -703,6 +729,17 @@ menu_options = [
     "🔥 Lose Weight Safely",
     "ℹ️ About Project",
 ]
+# Check if current user is admin
+cursor.execute(
+    "SELECT is_admin FROM users WHERE username=?",
+    (st.session_state.username,)
+)
+admin_row = cursor.fetchone()
+
+is_admin = admin_row[0] if admin_row else 0
+
+if is_admin == 1:
+    menu_options.append("🔒 Admin Dashboard")
 
 # Reset invalid stored page automatically
 if "page" not in st.session_state or st.session_state.page not in menu_options:
@@ -2712,7 +2749,102 @@ elif st.session_state.page == "🍭 Fight Sugar Cravings":
 
     st.info("💡 Cravings last 10–20 minutes. Smart response builds discipline.")
 
+# =========================================================
+# 🔒 ADMIN DASHBOARD – FULL PROFESSIONAL VERSION
+# =========================================================
+elif st.session_state.page == "🔒 Admin Dashboard":
 
+    # ================= SECURITY CHECK =================
+    cursor.execute(
+        "SELECT is_admin FROM users WHERE username=?",
+        (st.session_state.username,)
+    )
+    admin_row = cursor.fetchone()
+
+    if not admin_row or admin_row[0] != 1:
+        st.error("Access Denied.")
+        st.stop()
+
+    st.title("🔒 Admin Analytics Panel")
+    st.caption("Private system usage statistics")
+
+    st.markdown("---")
+
+    # ================= CORE METRICS =================
+    cursor.execute("SELECT COUNT(*) FROM users")
+    total_users = cursor.fetchone()[0]
+
+    # Daily Active Users (safe for datetime storage)
+    today = datetime.date.today().isoformat()
+
+    cursor.execute("""
+        SELECT COUNT(*) FROM user_activity
+        WHERE substr(last_login, 1, 10)=?
+    """, (today,))
+    dau = cursor.fetchone()[0]
+
+    # Weekly Active Users
+    week_ago = (
+        datetime.date.today() - datetime.timedelta(days=7)
+    ).isoformat()
+
+    cursor.execute("""
+        SELECT COUNT(*) FROM user_activity
+        WHERE substr(last_login, 1, 10)>=?
+    """, (week_ago,))
+    wau = cursor.fetchone()[0]
+
+    # Engagement Metric
+    cursor.execute("SELECT COUNT(*) FROM food_logs")
+    total_food_logs = cursor.fetchone()[0]
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    col1.metric("👥 Total Users", total_users)
+    col2.metric("🔥 Daily Active", dau)
+    col3.metric("📈 Weekly Active", wau)
+    col4.metric("🍽 Total Food Logs", total_food_logs)
+
+    st.markdown("---")
+
+    # ================= USER ACTIVITY TREND =================
+    st.subheader("📊 Daily Active User Trend")
+
+    df_growth = pd.read_sql_query("""
+        SELECT substr(last_login, 1, 10) as date,
+               COUNT(*) as active_users
+        FROM user_activity
+        GROUP BY date
+        ORDER BY date
+    """, conn)
+
+    if not df_growth.empty:
+        st.line_chart(df_growth.set_index("date"))
+    else:
+        st.info("No activity data available yet.")
+
+    st.markdown("---")
+
+    # ================= USER DETAILS TABLE =================
+    st.subheader("📋 Registered Users Overview")
+
+    df_users = pd.read_sql_query("""
+        SELECT users.username,
+               users.age,
+               users.goal,
+               users.activity,
+               user_activity.last_login
+        FROM users
+        LEFT JOIN user_activity
+        ON users.username = user_activity.username
+        ORDER BY user_activity.last_login DESC
+    """, conn)
+
+    if not df_users.empty:
+        st.dataframe(df_users, use_container_width=True)
+    else:
+        st.info("No registered users found.")
+    
 # =========================================================
 # ℹ️ ABOUT PROJECT – UPGRADED
 # =========================================================
