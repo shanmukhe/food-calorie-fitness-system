@@ -1083,6 +1083,7 @@ elif st.session_state.page == "📷 Analyze Food":
 
                     today = datetime.date.today().isoformat()
 
+                    # 1️⃣ Save log in database
                     cursor.execute(
                         "INSERT INTO food_logs VALUES (?, ?, ?, ?)",
                         (
@@ -1094,7 +1095,36 @@ elif st.session_state.page == "📷 Analyze Food":
                     )
                     conn.commit()
 
-                    st.success("Food logged successfully!")
+                    # 2️⃣ Save image for future training
+                    DATASET_DIR = os.path.join(BASE_DIR, "user_added_data")
+
+                    if not os.path.exists(DATASET_DIR):
+                        os.makedirs(DATASET_DIR)
+
+                    label_dir = os.path.join(
+                        DATASET_DIR,
+                        st.session_state.selected_food
+                    )
+
+                    if not os.path.exists(label_dir):
+                        os.makedirs(label_dir)
+
+                    image_path = os.path.join(
+                        label_dir,
+                        f"{datetime.datetime.now().timestamp()}.jpg"
+                    )
+
+                    st.session_state.current_image.save(image_path)
+
+                    st.success("Food logged & training image saved successfully! 📸")
+
+                    # 3️⃣ Clear session
+                    st.session_state.current_image = None
+                    st.session_state.analysis_done = False
+                    st.session_state.top_results = None
+                    st.session_state.selected_food = None
+                    st.session_state.uploader_key += 1
+                    st.rerun()
 
                     # AUTO CLEAR AFTER LOGGING
                     st.session_state.current_image = None
@@ -1186,6 +1216,7 @@ elif st.session_state.page == "📷 Analyze Food":
 
                     today = datetime.date.today().isoformat()
 
+                    # 1️⃣ Save food log
                     cursor.execute(
                         "INSERT INTO food_logs VALUES (?, ?, ?, ?)",
                         (
@@ -1197,13 +1228,38 @@ elif st.session_state.page == "📷 Analyze Food":
                     )
                     conn.commit()
 
-                    st.success("Food logged successfully!")
+                    # 2️⃣ Save image for future training
+                    DATASET_DIR = os.path.join(BASE_DIR, "user_added_data")
 
-                    # Clear after log
-                    st.session_state.camera_image = None
+                    if not os.path.exists(DATASET_DIR):
+                        os.makedirs(DATASET_DIR)
+
+                    label_dir = os.path.join(
+                        DATASET_DIR,
+                        st.session_state.selected_food
+                    )
+
+                    if not os.path.exists(label_dir):
+                        os.makedirs(label_dir)
+
+                    image_path = os.path.join(
+                        label_dir,
+                        f"{datetime.datetime.now().timestamp()}.jpg"
+                    )
+
+                    # Save uploaded image
+                    if st.session_state.current_image is not None:
+                        st.session_state.current_image.save(image_path)
+
+                    st.success("Food logged & training image saved successfully! 📸")
+
+                    # 3️⃣ Clear session
+                    st.session_state.current_image = None
                     st.session_state.analysis_done = False
                     st.session_state.top_results = None
                     st.session_state.selected_food = None
+                    st.session_state.uploader_key += 1
+
                     st.rerun()
 
     # =====================================================
@@ -2708,6 +2764,44 @@ elif st.session_state.page == "🔒 Admin Dashboard":
         st.dataframe(df_users, use_container_width=True)
     else:
         st.info("No registered users found.")
+
+    st.markdown("---")
+    st.subheader("📦 Dataset Export (For Model Improvement)")
+
+    import zipfile
+
+    DATASET_DIR = os.path.join(BASE_DIR, "user_added_data")
+
+    if os.path.exists(DATASET_DIR):
+
+        total_images = 0
+        for root, dirs, files in os.walk(DATASET_DIR):
+            total_images += len(files)
+
+        st.metric("📸 Collected Training Images", total_images)
+
+        zip_path = os.path.join(BASE_DIR, "user_training_data.zip")
+
+        if st.button("📥 Prepare Dataset for Download"):
+
+            with zipfile.ZipFile(zip_path, "w") as zipf:
+                for root, dirs, files in os.walk(DATASET_DIR):
+                    for file in files:
+                        file_path = os.path.join(root, file)
+                        zipf.write(file_path)
+
+            st.success("Dataset ready for download.")
+
+        if os.path.exists(zip_path):
+            with open(zip_path, "rb") as f:
+                st.download_button(
+                    "⬇ Download Training Dataset",
+                    f,
+                    file_name="user_training_data.zip"
+                )
+
+    else:
+        st.info("No collected training data available yet.")   
     
 # =========================================================
 # ℹ️ ABOUT PROJECT – UPGRADED
