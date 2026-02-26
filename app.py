@@ -153,6 +153,7 @@ def clean_dataframe_for_streamlit(df):
 
     return df
 def get_latest_weight(username, profile_weight):
+
     row = cursor.execute("""
         SELECT weight FROM weight_logs
         WHERE username=?
@@ -160,7 +161,13 @@ def get_latest_weight(username, profile_weight):
         LIMIT 1
     """, (username,)).fetchone()
 
+    if row:
+        return float(row[0])
+
+    return float(profile_weight)
+
     return row[0] if row else profile_weight
+
 def calculate_target_calories(age, gender, height, weight, activity, goal):
     if gender == "Female":
         bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
@@ -1544,6 +1551,7 @@ elif st.session_state.page == "👤 Edit Profile":
 
     if st.button("💾 Save Profile Changes", use_container_width=True):
 
+        # 1️⃣ Update main profile
         cursor.execute("""
             UPDATE users
             SET age=?, gender=?, height=?, weight=?, activity=?, goal=?,
@@ -1563,7 +1571,20 @@ elif st.session_state.page == "👤 Edit Profile":
             st.session_state.username
         ))
 
+        # 2️⃣ Insert weight log entry (VERY IMPORTANT)
+        today = datetime.date.today().isoformat()
+
+        cursor.execute("""
+            INSERT OR REPLACE INTO weight_logs (username, weight, date)
+            VALUES (?, ?, ?)
+        """, (
+            st.session_state.username,
+            new_weight,
+            today
+        ))
+
         conn.commit()
+
         st.success("Profile updated successfully 🎉")
         st.rerun()
 
