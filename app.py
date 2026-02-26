@@ -1967,341 +1967,178 @@ elif st.session_state.page == "📚 Facts & Myths":
             st.rerun()
 
 
+# =========================================================
+# 🧠 HEALTHY WEIGHT TOOLKIT — CLEAN INTELLIGENT VERSION
+# =========================================================
 elif st.session_state.page == "🧠 Healthy Weight Toolkit":
 
     st.title("🧠 Healthy Weight Toolkit")
-    st.caption("Personalized insights • Smart predictions • Healthy habits")
+    st.caption("Data-driven insights • Predictive analytics • Smart guidance")
+    st.markdown("---")
 
     # ---------------- LOAD USER PROFILE ----------------
     cursor.execute("""
-    SELECT age, gender, height, weight, activity, goal
-    FROM users WHERE username=?
+        SELECT age, gender, height, weight, activity, goal
+        FROM users WHERE username=?
     """, (st.session_state.username,))
     profile = cursor.fetchone()
 
     if not profile or not all(profile):
-        st.warning("Please complete your profile in 'Analyze Food' section.")
+        st.warning("Please complete your profile first.")
         st.stop()
 
     age, gender, height, profile_weight, activity, goal = profile
 
-
     # ---------------- GET LATEST LOGGED WEIGHT ----------------
     latest_weight_row = cursor.execute("""
-    SELECT weight FROM weight_logs
-    WHERE username=?
-    ORDER BY date DESC
-    LIMIT 1
+        SELECT weight FROM weight_logs
+        WHERE username=?
+        ORDER BY date DESC
+        LIMIT 1
     """, (st.session_state.username,)).fetchone()
 
-    if latest_weight_row:
-        weight = latest_weight_row[0]   # use latest logged weight
-    else:
-        weight = profile_weight        # fallback to profile weight
+    weight = latest_weight_row[0] if latest_weight_row else profile_weight
 
-
-    # ---------------- CALCULATE BMI USING DYNAMIC WEIGHT ----------------
+    # ---------------- BMI CALCULATION ----------------
     bmi = bmi_calc(weight, height)
 
+    col1, col2, col3 = st.columns(3)
+    col1.metric("BMI", f"{bmi:.2f}")
+    col2.metric("Current Weight", f"{weight:.1f} kg")
+    col3.metric("Goal", goal)
 
-    # ---------------- CARD UI ----------------
-    
-    c1, c2, c3 = st.columns(3)
-
-    with c1:
-        metric_card("BMI", f"{bmi:.2f}", "📏")
-
-    with c2:
-        metric_card("Weight", f"{weight} kg", "⚖️")
-
-    with c3:
-        metric_card("Goal", goal, "🎯")
-        
     st.markdown("---")
 
-    # ---------------- BMI STATUS & AI TIPS ----------------
-    st.subheader("🧠 Smart AI Health Tips")
+    # =========================================================
+    # 🧠 BMI INTERPRETATION ENGINE
+    # =========================================================
+    st.subheader("📊 BMI Analysis")
 
     if bmi < 18.5:
         status = "Underweight"
-        tips = [
-            "Increase calorie-dense healthy foods",
-            "Add strength training",
-            "Avoid skipping meals"
-        ]
+        message = "Increase calorie intake gradually and focus on strength training."
     elif bmi < 25:
         status = "Healthy Weight"
-        tips = [
-            "Maintain balanced nutrition",
-            "Stay consistent with exercise",
-            "Avoid emotional eating"
-        ]
+        message = "Maintain consistency in diet and activity."
     elif bmi < 30:
         status = "Overweight"
-        tips = [
-            "Reduce sugary & fried foods",
-            "Increase daily steps",
-            "Focus on portion control"
-        ]
+        message = "Moderate calorie deficit and increased activity recommended."
     else:
         status = "Obese"
-        tips = [
-            "Gradual calorie deficit",
-            "Low-impact exercises",
-            "Consult a nutrition expert if needed"
-        ]
+        message = "Structured calorie control and progressive activity needed."
 
-    st.success(f"✅ BMI Category: **{status}**")
-    for t in tips:
-        st.write("•", t)
+    st.success(f"Category: **{status}**")
+    st.info(message)
 
     st.markdown("---")
 
-    # ---------------- PROGRESS TRACKING ----------------
-    st.subheader("📊 Progress Tracking")
+    # =========================================================
+    # 📈 WEIGHT PROGRESS TRACKING
+    # =========================================================
+    st.subheader("📈 Weight Progress")
 
     today = datetime.date.today().isoformat()
-    # ---------------- WEIGHT INPUT ----------------
+
     new_weight = st.number_input(
-        "Enter Today's Weight (kg)",
+        "Log Today's Weight (kg)",
         min_value=30.0,
         max_value=200.0,
         step=0.1,
         value=float(weight)
     )
 
-    if st.button("➕ Log Today's Weight"):
+    if st.button("➕ Save Weight"):
         cursor.execute(
             "INSERT INTO weight_logs VALUES (?, ?, ?)",
             (st.session_state.username, new_weight, today)
         )
-
         conn.commit()
-
-        st.success("Weight logged successfully!")
+        st.success("Weight logged successfully.")
         st.rerun()
 
-
     progress_df = pd.read_sql_query("""
-    SELECT date, weight FROM weight_logs
-    WHERE username=?
-    ORDER BY date
+        SELECT date, weight FROM weight_logs
+        WHERE username=?
+        ORDER BY date
     """, conn, params=(st.session_state.username,))
 
     if not progress_df.empty:
-
-        # Convert date column to datetime
         progress_df["date"] = pd.to_datetime(progress_df["date"])
-
-        # Show weight trend chart
         st.line_chart(progress_df.set_index("date"))
-
-        # ---------------- RAPID WEIGHT CHANGE DETECTION ----------------
-        if len(progress_df) >= 2:
-
-            latest_weight = progress_df.iloc[-1]["weight"]
-
-            week_ago_date = pd.to_datetime(datetime.date.today() - datetime.timedelta(days=7))
-
-            past_week_data = progress_df[progress_df["date"] >= week_ago_date]
-
-            if not past_week_data.empty:
-                week_start_weight = past_week_data.iloc[0]["weight"]
-                weekly_change = latest_weight - week_start_weight
-
-                st.markdown("### 🚨 Weight Change Analysis")
-
-                if abs(weekly_change) > 1:
-                    st.error(
-                        f"Rapid weight change detected: {weekly_change:+.2f} kg in the last 7 days. "
-                        "Consider reviewing diet and activity levels."
-                    )
-                else:
-                    st.success(
-                        f"Weight change in last 7 days: {weekly_change:+.2f} kg "
-                        "(within healthy range)."
-                    )
-
-    else:
-        st.info("No progress data yet. Start logging your weight.")
 
     st.markdown("---")
 
+    # =========================================================
+    # 🔥 CALORIE TARGET CALCULATION
+    # =========================================================
+    st.subheader("🔥 Calorie Intelligence")
 
-    
-    # -------------------------------------------------
-    # DAILY CALORIE GUIDANCE
-    # -------------------------------------------------
-    st.subheader("🔥 Daily Calorie Guidance")
-
-    # BMR Calculation
-    if gender == "Female":
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
-    else:
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
-
-    activity_factor = {
-        "Sedentary": 1.2,
-        "Lightly Active": 1.375,
-        "Moderately Active": 1.55,
-        "Very Active": 1.725
-    }
-
-    # TRUE Maintenance Calories
-    maintenance_calories = bmr * activity_factor[activity]
-
-    # Goal Target Calories
-    if goal == "Weight Loss":
-        target_calories = maintenance_calories - 300
-    elif goal == "Weight Gain":
-        target_calories = maintenance_calories + 300
-    else:
-        target_calories = maintenance_calories
+    maintenance_calories, target_calories = calculate_target_calories(
+        age, gender, height, weight, activity, goal
+    )
 
     col1, col2 = st.columns(2)
+    col1.metric("Maintenance", f"{maintenance_calories:.0f} kcal")
+    col2.metric("Target", f"{target_calories:.0f} kcal")
 
-    with col1:
-        st.metric("Maintenance Calories", f"{maintenance_calories:.0f} kcal")
+    st.markdown("---")
 
-    with col2:
-        st.metric("Target Calories", f"{target_calories:.0f} kcal")
-
-    st.caption("Maintenance = calories to keep current weight. Target = adjusted for goal.")
-
-
-    # -------------------------------------------------
-    # REAL WEEKLY WEIGHT PREDICTION (STABLE VERSION)
-    # -------------------------------------------------
-    st.subheader("📈 Weekly Weight Change Prediction (Based on Your Logs)")
+    # =========================================================
+    # 📊 WEEKLY PREDICTIVE ENGINE
+    # =========================================================
+    st.subheader("📊 Weekly Weight Prediction")
 
     week_ago = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
 
     df_week = pd.read_sql_query("""
-    SELECT date, calories FROM food_logs
-    WHERE username=? AND date>=?
+        SELECT date, calories FROM food_logs
+        WHERE username=? AND date>=?
     """, conn, params=(st.session_state.username, week_ago))
 
-
-    # -------------------------------------------------
-    # 📈 STABLE WEEKLY PREDICTION + CONFIDENCE + BEHAVIOR SCORE
-    # -------------------------------------------------
-
-    df_week["calories"] = pd.to_numeric(df_week["calories"], errors="coerce")
-    daily_totals = df_week.groupby("date")["calories"].sum().reset_index()
-
-    days_logged = len(daily_totals)
-
-    if days_logged < 3:
-        st.info("At least 3 logged days are required for reliable prediction.")
+    if df_week.empty:
+        st.info("Log at least 3 days of food data for prediction.")
     else:
-        avg_daily_intake = daily_totals["calories"].mean()
-        estimated_weekly_intake = avg_daily_intake * 7
-        weekly_required = maintenance_calories * 7
+        df_week["calories"] = pd.to_numeric(df_week["calories"], errors="coerce")
+        daily_totals = df_week.groupby("date")["calories"].sum().reset_index()
 
-        calorie_difference = estimated_weekly_intake - weekly_required
-        predicted_weight_change = calorie_difference / 7700
-        predicted_weight = weight + predicted_weight_change
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.metric("Avg Daily Intake", f"{avg_daily_intake:.0f} kcal")
-
-        with col2:
-            st.metric("Predicted Weekly Change", f"{predicted_weight_change:+.2f} kg")
-
-        # -------------------------------
-        # 🎯 CONFIDENCE SCORE SYSTEM
-        # -------------------------------
-
-        logging_consistency = (days_logged / 7) * 100
-
-        calorie_variation = daily_totals["calories"].std()
-        if pd.isna(calorie_variation):
-            calorie_variation = 0
-
-        stability_score = max(0, 100 - (calorie_variation / 10))
-
-        confidence_score = (logging_consistency * 0.6) + (stability_score * 0.4)
-        confidence_score = min(100, max(0, confidence_score))
-
-        st.markdown("### 🎯 Prediction Confidence Score")
-        st.progress(int(confidence_score))
-
-        if confidence_score > 80:
-            st.success("High confidence prediction (consistent logging & stable intake).")
-        elif confidence_score > 50:
-            st.info("Moderate confidence. Logging consistency can improve accuracy.")
+        if len(daily_totals) < 3:
+            st.info("Minimum 3 logged days required.")
         else:
-            st.warning("Low confidence. Log daily intake more consistently.")
+            avg_daily_intake = daily_totals["calories"].mean()
+            weekly_required = maintenance_calories * 7
 
-        # -------------------------------
-        # 🤖 BEHAVIORAL DISCIPLINE SCORE
-        # -------------------------------
+            weekly_intake = avg_daily_intake * 7
+            calorie_difference = weekly_intake - weekly_required
 
-        difference_from_target = abs(avg_daily_intake - target_calories)
+            predicted_change = calorie_difference / 7700
+            predicted_weight = weight + predicted_change
 
-        if difference_from_target < 100:
-            discipline_score = 90
-        elif difference_from_target < 250:
-            discipline_score = 70
-        elif difference_from_target < 400:
-            discipline_score = 50
-        else:
-            discipline_score = 30
+            col1, col2 = st.columns(2)
+            col1.metric("Avg Daily Intake", f"{avg_daily_intake:.0f} kcal")
+            col2.metric("Predicted Weekly Change", f"{predicted_change:+.2f} kg")
 
-        st.markdown("### 🤖 Behavioral Discipline Score")
-        st.progress(discipline_score)
+            # Confidence Score
+            consistency = (len(daily_totals) / 7) * 100
+            variation = daily_totals["calories"].std() or 0
+            stability = max(0, 100 - (variation / 10))
 
-        if discipline_score >= 80:
-            st.success("Excellent calorie control. Strong discipline.")
-        elif discipline_score >= 60:
-            st.info("Good control. Minor improvements needed.")
-        else:
-            st.warning("High deviation from target. Focus on consistency.")
+            confidence = min(100, (consistency * 0.6) + (stability * 0.4))
 
-        # -------------------------------
-        # 📈 Final Weight Trend Insight
-        # -------------------------------
+            st.markdown("### 🎯 Prediction Confidence")
+            st.progress(int(confidence))
 
-        if predicted_weight_change > 0.2:
-            st.warning(
-                f"If this continues, weight may increase to "
-                f"{predicted_weight:.2f} kg next week."
-            )
-        elif predicted_weight_change < -0.2:
-            st.success(
-                f"If this continues, weight may decrease to "
-                f"{predicted_weight:.2f} kg next week."
-            )
-        else:
-            st.info("Trend indicates weight stability.")
+            if predicted_change > 0.2:
+                st.warning(f"Trend indicates weight may rise to {predicted_weight:.2f} kg.")
+            elif predicted_change < -0.2:
+                st.success(f"Trend indicates weight may reduce to {predicted_weight:.2f} kg.")
+            else:
+                st.info("Trend indicates weight stability.")
 
-        st.caption("Prediction uses 7700 kcal ≈ 1 kg body weight estimation model.")
+    st.markdown("---")
 
-
-    # ---------------- HEALTHY HABITS CARD ----------------
-    st.subheader("✅ Daily Compliance Tracker")
-
-    h1, h2, h3 = st.columns(3)
-
-    with h1:
-        st.checkbox("🥗 Balanced meals")
-        st.checkbox("🚰 Hydration")
-
-    with h2:
-        st.checkbox("🏃 Daily activity")
-        st.checkbox("🛌 7–8 hrs sleep")
-
-    with h3:
-        st.checkbox("📉 Portion control")
-        st.checkbox("🧘 Stress management")
-
-    st.info("🌱 Consistency beats perfection. Small steps create big results.")
-
-    # -------------------------------------------------
-    # HEALTHY WEIGHT RANGE
-    # -------------------------------------------------
+    # =========================================================
+    # 🎯 HEALTHY WEIGHT RANGE
+    # =========================================================
     st.subheader("🎯 Healthy Weight Range")
 
     h_m = height / 100
@@ -2309,62 +2146,9 @@ elif st.session_state.page == "🧠 Healthy Weight Toolkit":
     max_weight = 24.9 * (h_m ** 2)
 
     st.info(
-        f"For your height ({height} cm), a healthy weight range is "
-        f"**{min_weight:.1f} kg – {max_weight:.1f} kg**."
+        f"For your height ({height} cm), healthy range: "
+        f"{min_weight:.1f} kg – {max_weight:.1f} kg"
     )
-
-    # -------------------------------------------------
-    # ACTIVITY RECOMMENDATIONS
-    # -------------------------------------------------
-    st.subheader("🏃 Activity Recommendations")
-
-    activity_tips = {
-        "Sedentary": "Start with 20–30 minutes of walking daily.",
-        "Lightly Active": "Include brisk walking, yoga, or cycling.",
-        "Moderately Active": "Add strength training 3–4 days per week.",
-        "Very Active": "Ensure proper recovery and balanced nutrition."
-    }
-
-    st.write(f"💡 **Based on your activity level:** {activity_tips[activity]}")
-
-    # -------------------------------------------------
-    # NUTRITION GUIDELINES
-    # -------------------------------------------------
-    st.subheader("🥗 Nutrition Guidelines")
-
-    st.markdown("""
-    - 🍚 Choose **complex carbohydrates** (rice, millets, oats)
-    - 🥦 Include **fiber-rich vegetables** daily
-    - 🥩 Ensure adequate **protein intake**
-    - 🫒 Add **healthy fats** in moderation
-    - 🚰 Stay hydrated (2–3 liters/day)
-    """)
-
-    # -------------------------------------------------
-    # HEALTHY HABITS CHECKLIST
-    # -------------------------------------------------
-    st.subheader("✅ Healthy Habits Checklist")
-
-    st.checkbox("Eat regular meals")
-    st.checkbox("Avoid sugary drinks")
-    st.checkbox("Sleep 7–8 hours daily")
-    st.checkbox("Exercise at least 30 minutes")
-    st.checkbox("Manage stress effectively")
-
-    st.markdown("---")
-    st.info("🌱 Healthy weight is a journey — focus on consistency, not perfection.")
-# -------------------------------------------------
-# COMMON FOODS & CALORIE BURN GUIDE
-# -------------------------------------------------
-    st.markdown("---")
-    st.subheader("🍽️ Common Foods & Burn Guide")
-
-    food = st.selectbox("Select a food", list(COMMON_FOODS.keys()))
-
-    data = COMMON_FOODS[food]
-    st.metric("🔥 Calories", f"{data['calories']} kcal")
-    st.info(f"🏃 Exercise to burn: **{data['exercise']}**")
-
 
 # =========================================================
 # 🥗 INGREDIENTS GUIDE – FULL NUTRITION INTELLIGENCE SYSTEM
