@@ -621,6 +621,14 @@ if not st.session_state.get("logged_in", False):
 
                 if result and bcrypt.checkpw(password.encode("utf-8"), result[0]):
 
+                    # 🔐 TEMP ADMIN ACTIVATION (REMOVE AFTER LOGIN ONCE)
+                    if username == "Shannu":
+                        cursor.execute(
+                            "UPDATE users SET is_admin=1 WHERE username=?",
+                            (username,)
+                        )
+                        conn.commit()
+
                     # ✅ Record login activity
                     now = datetime.datetime.now().isoformat()
 
