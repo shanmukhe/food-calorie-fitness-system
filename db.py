@@ -1,10 +1,8 @@
 import os
 import sqlite3
 
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "users.db")
-
 
 class Database:
     def __init__(self):
@@ -26,7 +24,9 @@ class Database:
                 diabetes INTEGER,
                 acidity INTEGER,
                 constipation INTEGER,
-                obesity INTEGER
+                obesity INTEGER,
+                avatar BLOB,
+                is_admin INTEGER DEFAULT 0
             )
         """)
         self.conn.commit()
@@ -40,6 +40,5 @@ class Database:
 
     def fetchall(self, query, params=()):
         return self.cursor.execute(query, params).fetchall()
-
 
 db = Database()

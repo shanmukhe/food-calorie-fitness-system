@@ -2758,7 +2758,7 @@ elif st.session_state.page == "🍭 Fight Sugar Cravings":
     st.info("💡 Cravings last 10–20 minutes. Smart response builds discipline.")
 
 # =========================================================
-# 🔒 ADMIN DASHBOARD – FULL PROFESSIONAL VERSION
+# 🔒 ADMIN DASHBOARD – ANALYTICS VERSION
 # =========================================================
 elif st.session_state.page == "🔒 Admin Dashboard":
 
@@ -2774,7 +2774,7 @@ elif st.session_state.page == "🔒 Admin Dashboard":
         st.stop()
 
     st.title("🔒 Admin Analytics Panel")
-    st.caption("Private system usage statistics")
+    st.caption("System growth • Engagement • Retention metrics")
 
     st.markdown("---")
 
@@ -2782,44 +2782,44 @@ elif st.session_state.page == "🔒 Admin Dashboard":
     cursor.execute("SELECT COUNT(*) FROM users")
     total_users = cursor.fetchone()[0]
 
-    # Daily Active Users (safe for datetime storage)
     today = datetime.date.today().isoformat()
 
     cursor.execute("""
         SELECT COUNT(*) FROM user_activity
-        WHERE substr(last_login, 1, 10)=?
+        WHERE substr(last_login,1,10)=?
     """, (today,))
     dau = cursor.fetchone()[0]
 
-    # Weekly Active Users
     week_ago = (
         datetime.date.today() - datetime.timedelta(days=7)
     ).isoformat()
 
     cursor.execute("""
         SELECT COUNT(*) FROM user_activity
-        WHERE substr(last_login, 1, 10)>=?
+        WHERE substr(last_login,1,10)>=?
     """, (week_ago,))
     wau = cursor.fetchone()[0]
 
-    # Engagement Metric
     cursor.execute("SELECT COUNT(*) FROM food_logs")
     total_food_logs = cursor.fetchone()[0]
 
-    col1, col2, col3, col4 = st.columns(4)
+    engagement_rate = (wau / total_users * 100) if total_users > 0 else 0
+
+    col1, col2, col3, col4, col5 = st.columns(5)
 
     col1.metric("👥 Total Users", total_users)
     col2.metric("🔥 Daily Active", dau)
     col3.metric("📈 Weekly Active", wau)
-    col4.metric("🍽 Total Food Logs", total_food_logs)
+    col4.metric("🍽 Food Logs", total_food_logs)
+    col5.metric("📊 Engagement %", f"{engagement_rate:.1f}%")
 
     st.markdown("---")
 
-    # ================= USER ACTIVITY TREND =================
+    # ================= USER GROWTH TREND =================
     st.subheader("📊 Daily Active User Trend")
 
     df_growth = pd.read_sql_query("""
-        SELECT substr(last_login, 1, 10) as date,
+        SELECT substr(last_login,1,10) as date,
                COUNT(*) as active_users
         FROM user_activity
         GROUP BY date
@@ -2830,6 +2830,43 @@ elif st.session_state.page == "🔒 Admin Dashboard":
         st.line_chart(df_growth.set_index("date"))
     else:
         st.info("No activity data available yet.")
+
+    st.markdown("---")
+
+    # ================= GOAL DISTRIBUTION =================
+    st.subheader("🎯 User Goal Distribution")
+
+    df_goals = pd.read_sql_query("""
+        SELECT goal, COUNT(*) as count
+        FROM users
+        GROUP BY goal
+    """, conn)
+
+    if not df_goals.empty:
+        st.bar_chart(df_goals.set_index("goal"))
+    else:
+        st.info("No goal data available.")
+
+    st.markdown("---")
+
+    # ================= MOST ACTIVE USER =================
+    st.subheader("🏆 Most Active User")
+
+    df_active = pd.read_sql_query("""
+        SELECT username, COUNT(*) as logs
+        FROM food_logs
+        GROUP BY username
+        ORDER BY logs DESC
+        LIMIT 1
+    """, conn)
+
+    if not df_active.empty:
+        st.success(
+            f"Most active user: **{df_active.iloc[0]['username']}** "
+            f"({df_active.iloc[0]['logs']} logs)"
+        )
+    else:
+        st.info("No activity yet.")
 
     st.markdown("---")
 
