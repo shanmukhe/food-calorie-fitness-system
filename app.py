@@ -220,6 +220,39 @@ if not column_exists("users", "is_admin"):
     cursor.execute("ALTER TABLE users ADD COLUMN is_admin INTEGER DEFAULT 0")
     conn.commit()
 
+def suggest_exercises(total_calories):
+    st.markdown("### 🏃 Exercise Recommendation to Burn This Meal")
+
+    # Get user weight
+    cursor.execute(
+        "SELECT weight FROM users WHERE username=?",
+        (st.session_state.username,)
+    )
+    user_weight = cursor.fetchone()[0]
+
+    # MET values
+    EXERCISE_MET = {
+        "Walking (5 km/h)": 3.5,
+        "Jogging": 7,
+        "Running": 11,
+        "Cycling": 8,
+        "Skipping": 12,
+        "Yoga": 3
+    }
+
+    suggestions = []
+
+    for exercise, met in EXERCISE_MET.items():
+        calories_per_hour = met * user_weight
+        minutes_needed = (total_calories / calories_per_hour) * 60
+        suggestions.append((exercise, round(minutes_needed)))
+
+    # Sort by shortest duration
+    suggestions = sorted(suggestions, key=lambda x: x[1])
+
+    for exercise, minutes in suggestions[:3]:
+        st.write(f"• **{exercise}** → {minutes} minutes")
+
 exercise_map = {
     "Idli": ("Brisk walking", 25),
     "Dosa": ("Cycling", 35),
@@ -961,7 +994,7 @@ elif st.session_state.page == "📷 Analyze Food":
     # ---------------- MODE SELECT ----------------
     mode = st.radio(
         "Choose Input Method:",
-        ["📷 Upload Image", "📝 Select Manually"],
+        ["📷 Upload Image", "📸 Use Camera", "📝 Select Manually"],
         horizontal=True
     )
 
@@ -1040,6 +1073,7 @@ elif st.session_state.page == "📷 Analyze Food":
 
                 calories_per_100g = float(row["calories_per_100g"].values[0])
                 total_calories = (calories_per_100g / 100) * grams
+                suggest_exercises(total_calories)
 
                 col1, col2 = st.columns(2)
                 col1.metric("Portion", f"{grams} g")
@@ -1071,6 +1105,108 @@ elif st.session_state.page == "📷 Analyze Food":
                     st.rerun()
 
     # =====================================================
+# 📸 CAMERA MODE
+# =====================================================
+elif mode == "📸 Use Camera":
+
+    if "camera_image" not in st.session_state:
+        st.session_state.camera_image = None
+
+    camera_input = st.camera_input("Take a picture of your food")
+
+    if camera_input is not None:
+        st.session_state.camera_image = Image.open(camera_input).convert("RGB")
+
+    if st.session_state.camera_image is not None:
+
+        st.image(st.session_state.camera_image, width=350)
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button("🗑 Remove Image"):
+                st.session_state.camera_image = None
+                st.session_state.analysis_done = False
+                st.session_state.top_results = None
+                st.session_state.selected_food = None
+                st.rerun()
+
+        if not st.session_state.analysis_done:
+            if st.button("🔍 Analyze Captured Image"):
+
+                with st.spinner("Analyzing image with AI model..."):
+                    processed = preprocess_image(
+                        np.array(st.session_state.camera_image)
+                    )
+                    preds = model.predict(processed, verbose=0)[0]
+
+                top_indices = preds.argsort()[-3:][::-1]
+
+                st.session_state.top_results = [
+                    (class_names[i], float(preds[i] * 100))
+                    for i in top_indices
+                ]
+
+                st.session_state.analysis_done = True
+                st.rerun()
+
+    # ---------------- SHOW RESULTS ----------------
+    if st.session_state.analysis_done and st.session_state.top_results:
+
+        st.markdown("## 🔍 AI Predictions")
+
+        for food, conf in st.session_state.top_results:
+            st.write(f"• **{food}** — {conf:.2f}%")
+
+        st.session_state.selected_food = st.selectbox(
+            "Confirm the detected food:",
+            [food for food, _ in st.session_state.top_results]
+        )
+
+        grams = st.slider("Portion Size (grams)", 50, 500, 100, 10)
+
+        row = calorie_df[
+            calorie_df["category"] == st.session_state.selected_food
+        ]
+
+        if not row.empty:
+
+            calories_per_100g = float(
+                row["calories_per_100g"].values[0]
+            )
+
+            total_calories = (calories_per_100g / 100) * grams
+            suggest_exercises(total_calories)
+
+            col1, col2 = st.columns(2)
+            col1.metric("Portion", f"{grams} g")
+            col2.metric("Total Calories", f"{total_calories:.0f} kcal")
+
+            if st.button("✅ Confirm & Log Food"):
+
+                today = datetime.date.today().isoformat()
+
+                cursor.execute(
+                    "INSERT INTO food_logs VALUES (?, ?, ?, ?)",
+                    (
+                        st.session_state.username,
+                        st.session_state.selected_food,
+                        total_calories,
+                        today
+                    )
+                )
+                conn.commit()
+
+                st.success("Food logged successfully!")
+
+                # Clear after log
+                st.session_state.camera_image = None
+                st.session_state.analysis_done = False
+                st.session_state.top_results = None
+                st.session_state.selected_food = None
+                st.rerun()
+
+    # =====================================================
     # 📝 MANUAL MODE
     # =====================================================
     else:
@@ -1098,6 +1234,7 @@ elif st.session_state.page == "📷 Analyze Food":
             )
 
             total_calories = (calories_per_100g / 100) * manual_grams
+            suggest_exercises(total_calories)
 
             col1, col2 = st.columns(2)
             col1.metric("Portion", f"{manual_grams} g")
