@@ -152,6 +152,7 @@ def clean_dataframe_for_streamlit(df):
         df[col] = df[col].map(clean_value)
 
     return df
+
 def get_latest_weight(username, profile_weight):
 
     row = cursor.execute("""
@@ -884,7 +885,13 @@ if st.session_state.page == "🏠 Home":
     profile = cursor.fetchone()
 
     if profile and all(profile):
-        age, gender, height, weight, activity, goal = profile
+        age, gender, height, profile_weight, activity, goal = profile
+
+        weight = get_latest_weight(
+            st.session_state.username,
+            profile_weight
+        )
+
         bmi = bmi_calc(weight, height)
 
         st.subheader("📊 Your Quick Health Snapshot")
