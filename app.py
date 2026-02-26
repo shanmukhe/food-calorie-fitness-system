@@ -1243,143 +1243,200 @@ elif st.session_state.page == "📷 Analyze Food":
 
                 st.success("Manual food logged successfully!")
 
-#=========================================================
-#🏋️ FITNESS INTELLIGENCE LIBRARY
-#=========================================================
 elif st.session_state.page == "🏋️ Fitness Library":
 
-    st.title("🏋️ Fitness Intelligence Library")
-    st.caption("Exercise science • Calorie burn • Proper technique • Smart training")
+    st.title("🏋️ AI Fitness Recommendation Engine")
+    st.caption("Personalized workouts • Smart burn goals • Performance tracking")
     st.markdown("---")
 
     # -----------------------------------------------------
-    # GET USER WEIGHT (for personalized calorie burn)
+    # LOAD USER DATA
     # -----------------------------------------------------
     cursor.execute("""
-        SELECT weight FROM users WHERE username=?
+        SELECT weight, goal FROM users WHERE username=?
     """, (st.session_state.username,))
-    result = cursor.fetchone()
+    user_data = cursor.fetchone()
 
-    if not result:
+    if not user_data:
         st.warning("Profile incomplete.")
         st.stop()
 
-    user_weight = result[0]
+    user_weight, goal = user_data
 
-    st.info(f"All calorie burn estimates are personalized for **{user_weight} kg** body weight.")
+    today = datetime.date.today().isoformat()
+
+    # -----------------------------------------------------
+    # GET TODAY'S CALORIE BALANCE
+    # -----------------------------------------------------
+    df_food = pd.read_sql_query("""
+        SELECT calories FROM food_logs
+        WHERE username=? AND date=?
+    """, conn, params=(st.session_state.username, today))
+
+    consumed = df_food["calories"].sum() if not df_food.empty else 0
+
+    df_ex = pd.read_sql_query("""
+        SELECT calories_burned FROM exercise_logs
+        WHERE username=? AND date=?
+    """, conn, params=(st.session_state.username, today))
+
+    burned = df_ex["calories_burned"].sum() if not df_ex.empty else 0
+
+    net_today = consumed - burned
+
+    st.metric("🔥 Today's Net Calories", f"{net_today:.0f} kcal")
+
+    # -----------------------------------------------------
+    # AI SURPLUS BURN SUGGESTION
+    # -----------------------------------------------------
+    st.markdown("### 🧠 AI Burn Recommendation")
+
+    if net_today > 200:
+        burn_target = net_today - 200
+        st.warning(f"You are in surplus. Burn ~{burn_target:.0f} kcal to balance.")
+
+        if st.button("⚡ Generate Burn Plan"):
+
+            MET_VALUES = {
+                "Jump Rope": 12,
+                "Running": 11,
+                "Stair Sprint": 13,
+                "Burpees": 10
+            }
+
+            suggestions = []
+            for ex, met in MET_VALUES.items():
+                minutes = (burn_target / (met * user_weight)) * 60
+                suggestions.append((ex, round(minutes)))
+
+            suggestions = sorted(suggestions, key=lambda x: x[1])
+
+            st.markdown("### 🔥 Quick Burn Plan")
+            for ex, mins in suggestions[:3]:
+                st.write(f"• {ex} → {mins} minutes")
+
+    else:
+        st.success("Energy balance under control today.")
 
     st.markdown("---")
 
     # -----------------------------------------------------
-    # EXERCISE DATABASE (INCLUDING UNCOMMON ONES)
+    # GOAL-BASED WORKOUT GENERATOR
     # -----------------------------------------------------
+    st.markdown("### 🎯 Smart Workout Generator")
+
+    if st.button("Generate Today’s Workout"):
+
+        if goal == "Weight Loss":
+            workout = [
+                "5 min brisk walk (warm-up)",
+                "15 min HIIT (jump rope / burpees)",
+                "10 min stair climbing",
+                "5 min stretching"
+            ]
+        elif goal == "Weight Gain":
+            workout = [
+                "5 min light warm-up",
+                "3 sets squats",
+                "3 sets push-ups",
+                "3 sets dumbbell rows",
+                "Core exercises"
+            ]
+        else:
+            workout = [
+                "20 min moderate cardio",
+                "10 min mobility training",
+                "5 min breathing"
+            ]
+
+        for step in workout:
+            st.info(step)
+
+    st.markdown("---")
+
+    # -----------------------------------------------------
+    # WEEKLY CONSISTENCY SCORE
+    # -----------------------------------------------------
+    st.markdown("### 📊 Weekly Exercise Score")
+
+    week_ago = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
+
+    df_week = pd.read_sql_query("""
+        SELECT date FROM exercise_logs
+        WHERE username=? AND date>=?
+    """, conn, params=(st.session_state.username, week_ago))
+
+    active_days = df_week["date"].nunique() if not df_week.empty else 0
+    consistency_score = (active_days / 7) * 100
+
+    st.progress(int(consistency_score))
+    st.write(f"Active Days This Week: {active_days}/7")
+
+    if consistency_score >= 70:
+        st.success("Excellent consistency 💪")
+    elif consistency_score >= 40:
+        st.info("Good effort. Improve slightly.")
+    else:
+        st.warning("Low activity. Build routine.")
+
+    st.markdown("---")
+
+    # -----------------------------------------------------
+    # STREAK SYSTEM
+    # -----------------------------------------------------
+    st.markdown("### 🏆 Activity Streak")
+
+    df_all = pd.read_sql_query("""
+        SELECT DISTINCT date FROM exercise_logs
+        WHERE username=?
+        ORDER BY date DESC
+    """, conn, params=(st.session_state.username,))
+
+    streak = 0
+    current_date = datetime.date.today()
+
+    for i in range(len(df_all)):
+        expected_date = current_date - datetime.timedelta(days=i)
+        if df_all.iloc[i]["date"] == expected_date.isoformat():
+            streak += 1
+        else:
+            break
+
+    st.metric("Current Streak", f"{streak} days")
+
+    if streak >= 5:
+        st.success("🔥 Strong discipline!")
+    elif streak >= 2:
+        st.info("Nice momentum.")
+    else:
+        st.warning("Start building streak today.")
+
+    st.markdown("---")
+
+    # -----------------------------------------------------
+    # EXPANDABLE EXERCISE LIBRARY
+    # -----------------------------------------------------
+    st.markdown("### 📚 Advanced Exercise Library")
+
     EXERCISES = {
-
-        # 🔥 Cardio
-        "Running (8 km/h)": {
-            "met": 8.3,
-            "type": "Cardio",
-            "how": "Maintain steady pace. Land mid-foot. Keep posture upright.",
-            "rules": "Warm up 5 min. Avoid heel striking."
-        },
-        "Jump Rope (High Intensity)": {
-            "met": 12,
-            "type": "Cardio",
-            "how": "Small jumps. Rotate rope with wrists, not shoulders.",
-            "rules": "Do in intervals. Soft surface preferred."
-        },
-
-        # 💪 Strength
-        "Burpees": {
-            "met": 10,
-            "type": "Full Body",
-            "how": "Squat → plank → push-up → jump.",
-            "rules": "Maintain straight back in plank."
-        },
-        "Kettlebell Swings": {
-            "met": 9.5,
-            "type": "Strength",
-            "how": "Hip hinge movement. Swing to chest height.",
-            "rules": "Drive with hips, not arms."
-        },
-
-        # 🧠 Functional / Uncommon
-        "Animal Flow": {
-            "met": 6,
-            "type": "Mobility",
-            "how": "Ground-based movements like bear crawl & crab reach.",
-            "rules": "Focus on control & breathing."
-        },
-        "Farmer’s Carry": {
-            "met": 8,
-            "type": "Functional Strength",
-            "how": "Hold heavy dumbbells and walk steadily.",
-            "rules": "Keep shoulders back and core tight."
-        },
-        "Backward Walking": {
-            "met": 4,
-            "type": "Joint Health",
-            "how": "Walk slowly backwards on flat ground.",
-            "rules": "Keep head neutral. Improves knee strength."
-        },
-        "Wall Sits": {
-            "met": 5,
-            "type": "Isometric",
-            "how": "Back against wall, knees at 90°.",
-            "rules": "Hold as long as possible. Breathe steadily."
-        },
-        "Sandbag Training": {
-            "met": 7,
-            "type": "Functional",
-            "how": "Lift uneven weight from floor to shoulder.",
-            "rules": "Engage core and lift with legs."
-        },
-        "Stair Sprint Intervals": {
-            "met": 13,
-            "type": "HIIT",
-            "how": "Sprint upstairs, walk down slowly.",
-            "rules": "3–5 rounds max if beginner."
-        }
+        "Animal Flow": 6,
+        "Farmer’s Carry": 8,
+        "Backward Walking": 4,
+        "Sandbag Training": 7,
+        "Wall Sits": 5,
+        "Stair Sprint Intervals": 13
     }
 
-    # -----------------------------------------------------
-    # FILTER OPTION
-    # -----------------------------------------------------
-    category = st.selectbox(
-        "Filter by Type",
-        ["All", "Cardio", "Strength", "Full Body", "Mobility", "Functional Strength", "Joint Health", "Isometric", "Functional", "HIIT"]
-    )
+    for name, met in EXERCISES.items():
+        with st.expander(name):
 
-    st.markdown("---")
+            minutes = st.slider(f"{name} duration", 5, 45, 15, 5, key=name)
+            calories = met * user_weight * (minutes / 60)
 
-    for name, data in EXERCISES.items():
-
-        if category != "All" and data["type"] != category:
-            continue
-
-        with st.expander(f"🏋️ {name}"):
-
-            minutes = st.slider(
-                f"Duration for {name} (minutes)",
-                5, 60, 20, 5,
-                key=name
-            )
-
-            calories = data["met"] * user_weight * (minutes / 60)
-
-            col1, col2 = st.columns(2)
-            col1.metric("Calories Burned", f"{calories:.0f} kcal")
-            col2.metric("Intensity (MET)", data["met"])
-
-            st.markdown("**How To Do It:**")
-            st.write(data["how"])
-
-            st.markdown("**Training Rules:**")
-            st.write(data["rules"])
+            st.metric("Calories Burned", f"{calories:.0f} kcal")
+            st.write(f"MET Value: {met}")
 
             if st.button(f"Log {name}", key=f"log_{name}"):
-
-                today = datetime.date.today().isoformat()
 
                 cursor.execute("""
                     INSERT INTO exercise_logs
@@ -1393,7 +1450,7 @@ elif st.session_state.page == "🏋️ Fitness Library":
                 ))
 
                 conn.commit()
-                st.success("Exercise logged successfully.")
+                st.success("Logged successfully.")
                 st.rerun()
 # =========================================================
 # 👤 PREMIUM PROFILE MANAGEMENT
