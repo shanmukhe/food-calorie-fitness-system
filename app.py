@@ -765,6 +765,7 @@ menu_options = [
     "📚 Facts & Myths",
     "🥗 Ingredients Guide",
     "👤 Edit Profile",
+    "🏋️ Fitness Library",
     "🍭 Fight Sugar Cravings",
     "🔥 Lose Weight Safely",
     "ℹ️ About Project",
@@ -1242,7 +1243,158 @@ elif st.session_state.page == "📷 Analyze Food":
 
                 st.success("Manual food logged successfully!")
 
+#=========================================================
+#🏋️ FITNESS INTELLIGENCE LIBRARY
+#=========================================================
+elif st.session_state.page == "🏋️ Fitness Library":
 
+    st.title("🏋️ Fitness Intelligence Library")
+    st.caption("Exercise science • Calorie burn • Proper technique • Smart training")
+    st.markdown("---")
+
+    # -----------------------------------------------------
+    # GET USER WEIGHT (for personalized calorie burn)
+    # -----------------------------------------------------
+    cursor.execute("""
+        SELECT weight FROM users WHERE username=?
+    """, (st.session_state.username,))
+    result = cursor.fetchone()
+
+    if not result:
+        st.warning("Profile incomplete.")
+        st.stop()
+
+    user_weight = result[0]
+
+    st.info(f"All calorie burn estimates are personalized for **{user_weight} kg** body weight.")
+
+    st.markdown("---")
+
+    # -----------------------------------------------------
+    # EXERCISE DATABASE (INCLUDING UNCOMMON ONES)
+    # -----------------------------------------------------
+    EXERCISES = {
+
+        # 🔥 Cardio
+        "Running (8 km/h)": {
+            "met": 8.3,
+            "type": "Cardio",
+            "how": "Maintain steady pace. Land mid-foot. Keep posture upright.",
+            "rules": "Warm up 5 min. Avoid heel striking."
+        },
+        "Jump Rope (High Intensity)": {
+            "met": 12,
+            "type": "Cardio",
+            "how": "Small jumps. Rotate rope with wrists, not shoulders.",
+            "rules": "Do in intervals. Soft surface preferred."
+        },
+
+        # 💪 Strength
+        "Burpees": {
+            "met": 10,
+            "type": "Full Body",
+            "how": "Squat → plank → push-up → jump.",
+            "rules": "Maintain straight back in plank."
+        },
+        "Kettlebell Swings": {
+            "met": 9.5,
+            "type": "Strength",
+            "how": "Hip hinge movement. Swing to chest height.",
+            "rules": "Drive with hips, not arms."
+        },
+
+        # 🧠 Functional / Uncommon
+        "Animal Flow": {
+            "met": 6,
+            "type": "Mobility",
+            "how": "Ground-based movements like bear crawl & crab reach.",
+            "rules": "Focus on control & breathing."
+        },
+        "Farmer’s Carry": {
+            "met": 8,
+            "type": "Functional Strength",
+            "how": "Hold heavy dumbbells and walk steadily.",
+            "rules": "Keep shoulders back and core tight."
+        },
+        "Backward Walking": {
+            "met": 4,
+            "type": "Joint Health",
+            "how": "Walk slowly backwards on flat ground.",
+            "rules": "Keep head neutral. Improves knee strength."
+        },
+        "Wall Sits": {
+            "met": 5,
+            "type": "Isometric",
+            "how": "Back against wall, knees at 90°.",
+            "rules": "Hold as long as possible. Breathe steadily."
+        },
+        "Sandbag Training": {
+            "met": 7,
+            "type": "Functional",
+            "how": "Lift uneven weight from floor to shoulder.",
+            "rules": "Engage core and lift with legs."
+        },
+        "Stair Sprint Intervals": {
+            "met": 13,
+            "type": "HIIT",
+            "how": "Sprint upstairs, walk down slowly.",
+            "rules": "3–5 rounds max if beginner."
+        }
+    }
+
+    # -----------------------------------------------------
+    # FILTER OPTION
+    # -----------------------------------------------------
+    category = st.selectbox(
+        "Filter by Type",
+        ["All", "Cardio", "Strength", "Full Body", "Mobility", "Functional Strength", "Joint Health", "Isometric", "Functional", "HIIT"]
+    )
+
+    st.markdown("---")
+
+    for name, data in EXERCISES.items():
+
+        if category != "All" and data["type"] != category:
+            continue
+
+        with st.expander(f"🏋️ {name}"):
+
+            minutes = st.slider(
+                f"Duration for {name} (minutes)",
+                5, 60, 20, 5,
+                key=name
+            )
+
+            calories = data["met"] * user_weight * (minutes / 60)
+
+            col1, col2 = st.columns(2)
+            col1.metric("Calories Burned", f"{calories:.0f} kcal")
+            col2.metric("Intensity (MET)", data["met"])
+
+            st.markdown("**How To Do It:**")
+            st.write(data["how"])
+
+            st.markdown("**Training Rules:**")
+            st.write(data["rules"])
+
+            if st.button(f"Log {name}", key=f"log_{name}"):
+
+                today = datetime.date.today().isoformat()
+
+                cursor.execute("""
+                    INSERT INTO exercise_logs
+                    VALUES (?, ?, ?, ?, ?)
+                """, (
+                    st.session_state.username,
+                    name,
+                    minutes,
+                    calories,
+                    today
+                ))
+
+                conn.commit()
+                st.success("Exercise logged successfully.")
+                st.rerun()
 # =========================================================
 # 👤 PREMIUM PROFILE MANAGEMENT
 # =========================================================
@@ -1810,7 +1962,7 @@ elif st.session_state.page == "🧠 Health Analytics":
 
     else:
         st.info("Log at least 3 days for prediction & adaptive system.")
-        
+
 # =========================================================
 # 🥗 INGREDIENTS GUIDE – FULL NUTRITION INTELLIGENCE SYSTEM
 # =========================================================
